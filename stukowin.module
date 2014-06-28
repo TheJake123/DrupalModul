@@ -98,15 +98,12 @@ function stukowin_retreive()
 
 function ideal_curriculum()
 {
-    $form = array();
-  $form['stukowin_ceus_api_url'] = array(
+  $form = array();
+  $form['stukowin_itsv_test'] = array(
    '#type' => 'textfield',
-    '#title' => t('URL to CEUS API'),
-    '#default_value' => variable_get('stukowin_ceus_api_url', 'https://lss.jku.at/studienhandbuch/api/0.1/'),
+    '#title' => t('Hier kommt der WahnsinnsITSV'),
     '#size' => 40,
-    '#maxlength' => 255,
-    '#description' => t("The URL to CEUS API"),
-    '#required' => TRUE,      
+    '#maxlength' => 255,      
   );
   return system_settings_form($form);
 }
@@ -163,7 +160,7 @@ function stukowin_menu()
     'access arguments' => array('administer stukowin settings'),
     'type' => MENU_NORMAL_ITEM,
   );
-  $items['admin/settings/stukowin/settings'] = array(
+  $items['admin/settings/stukowin/ideal_settings'] = array(
     'title' => 'Ideal Curriculum',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ideal_curriculum'),
