@@ -1,0 +1,63 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 29.03.2014, 08:52:14
+    Author     : Dino
+*/
+
+dt {font-weight: bold;}
+.main div {
+  border: 1px solid #999;
+  padding: 0.5em 1em;
+  position: relative;
+}
+.level1 {
+  background-color: #ffc; /* gelb */
+  width: 380px;
+  margin: 15px;  
+}
+.level1 div {
+  margin: 5px;
+  position: relative;
+}
+
+.level2 {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: #ccf; /* blau */
+}
+
+.level3 {
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.required {
+  background-color: red;
+}
+
+.desired {
+  background-color: orange;
+}
+
+div.ects {
+  font-size: .8em;
+  width: 15px;
+  position: absolute;
+  background-color: cornsilk;
+  color: black;
+  padding: 2px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  top: 0px;
+  right: 0px;
+  text-align: center;
+}

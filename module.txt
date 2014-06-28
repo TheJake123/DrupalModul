@@ -1,0 +1,9 @@
+Module im Einsatz:
+
+Locale: Deutsch anlegen & default
+Chaos Tools Suite
+Services
+CKEditor
+jQuery Update
+Fieldable vocabularies
+Entity API
