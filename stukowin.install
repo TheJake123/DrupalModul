@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 
 /**
@@ -465,4 +466,473 @@ function stukowin_uninstall()
 
   // Purge all field infromation 
   field_purge_batch(1000); 
+=======
+<?php
+
+/**
+ * @file stukowin.install
+ * TODO: Enter file description here.
+ */
+
+/** 
+* Implements hook_install(). 
+* - Add the body field. 
+* - Configure the body field. 
+* - Create the company name field. 
+*/ 
+function stukowin_install() 
+{ 
+  $t = get_t(); 
+  node_types_rebuild();
+  
+  $types = node_type_get_types(); 
+  
+  $stukowin_type = array(
+    'type' => 'stukowin',
+    'name' => $t('Stukowin LVA'),
+    'base' => 'node_content',
+    'description' => $t('LVA content type for stukowin module.'),
+    'title_label' => $t('LVA content type for stukowin module'),
+    'custom' => TRUE,
+  );
+  $content_type = node_type_set_defaults($stukowin_type);    
+  // add the body field to the node type 
+  node_add_body_field($content_type); 
+  node_type_save($content_type);
+  // Load the instance definition for our content type's body 
+  $body_instance = field_info_instance('node', 'body', 'stukowin'); 
+  // Configure the body field 
+  $body_instance['type'] = 'text_summary_or_trimmed'; 
+  // Save our changes to the body field instance. 
+  field_update_instance($body_instance); 
+  // Create all the fields we are adding to our content type. 
+  foreach (_stukowin_installed_fields() as $field) { 
+    field_create_field($field); 
+  } 
+  // Create all the instances for our fields. 
+  foreach (_stukowin_installed_instances() as $instance) { 
+    $instance['entity_type'] = 'node'; 
+    $instance['bundle'] = 'stukowin'; 
+    field_create_instance($instance); 
+  } 
+  // Create all the fields we are adding to our content type. 
+  foreach (_stukowin_installed_taxonomy_fields() as $field) { 
+    field_create_field($field); 
+  } 
+  // Create all the instances for our fields. 
+  foreach (_stukowin_installed_taxonomy_instances() as $instance) { 
+    $instance['entity_type'] = 'taxonomy_vocabulary'; 
+    $instance['bundle'] = 'taxonomy_vocabulary'; 
+    field_create_instance($instance); 
+  } 
+} 
+
+function _stukowin_installed_taxonomy_fields()
+{
+    $t = get_t();
+    return array(
+        'faculty' => array(
+            'field_name' => 'faculty',
+            'label' => $t('faculty'), 
+            'type' => 'text',
+        ),  
+        'version' => array(
+            'field_name' => 'version',
+            'label' => $t('Version'), 
+            'type' => 'text',
+        ),  
+        'currtype' => array(
+            'field_name' => 'currtype',
+            'label' => $t('Typ'), 
+            'type' => 'text',
+        ),  
+        
+    );
+    
+  
+}
+
+function _stukowin_installed_taxonomy_instances() 
+{ 
+    $t = get_t();
+    return array(
+        'faculty' => array(
+            'label' => $t('Fakultät'),
+            'field_name' => 'faculty',
+            'type' => 'text', 
+            'widget' => array(
+              'type' => 'text_textfield',
+            ),
+        ),
+        
+        'version' => array(
+            'field_name' => 'version',
+            'label' => $t('Version'),
+            'type' => 'text', 
+            'widget' => array(
+                'type' => 'text_textfield',
+            ),
+        ),
+        'currtype' => array(
+            'field_name' => 'currtype',
+            'label' => $t('Typ'),
+            'type' => 'text', 
+            'widget' => array(
+                'type' => 'text_textfield',
+            ),
+        ),
+    );
+}
+
+/** 
+* Return a structured array defining the fields created by this content type. 
+* For the job post module there is only one additional field – the company name 
+* Other fields could be added by defining them in this function as additional elements 
+* in the array below 
+*/
+function _stukowin_installed_fields() 
+{ 
+  $t = get_t(); 
+  return array( 
+    'code' => array( 
+      'field_name' => 'code', 
+      'label' => $t('Code'), 
+      'type' => 'text', 
+    ), 
+    'ects' => array( 
+      'field_name' => 'ects', 
+      'label' => $t('ects'), 
+      'type' => 'text', 
+    ), 
+    'wst' => array( 
+      'field_name' => 'wst', 
+      'label' => $t('Wochenstunden'), 
+      'type' => 'text', 
+    ), 
+    'verantname' => array( 
+      'field_name' => 'verantname', 
+      'label' => $t('verantname'), 
+      'type' => 'text', 
+    ), 
+    'verantemail' => array( 
+      'field_name' => 'verantemail', 
+      'label' => $t('verantemail'), 
+      'type' => 'text', 
+    ), 
+    'changedate' => array( 
+      'field_name' => 'changedate', 
+      'label' => $t('changedate'), 
+      'type' => 'text', 
+    ), 
+    'lvtypname' => array( 
+      'field_name' => 'lvtypname', 
+      'label' => $t('lvtypname'), 
+      'type' => 'text', 
+    ), 
+    'lvtypshort' => array( 
+      'field_name' => 'lvtypshort', 
+      'label' => $t('lvtypshort'), 
+      'type' => 'text', 
+    ), 
+    'lvatype' => array( 
+      'field_name' => 'lvatype', 
+      'label' => $t('type'), 
+      'type' => 'text', 
+    ), 
+    'typename' => array( 
+      'field_name' => 'typename', 
+      'label' => $t('typename'), 
+      'type' => 'text', 
+    ), 
+    'ziele' => array( 
+      'field_name' => 'ziele', 
+      'label' => $t('ziele'), 
+      'type' => 'text_long', 
+    ), 
+    'lehrinhalte' => array( 
+      'field_name' => 'lehrinhalte', 
+      'label' => $t('lehrinhalte'), 
+      'type' => 'text_long', 
+    ), 
+    'voraussetzungen' => array( 
+      'field_name' => 'voraussetzungen', 
+      'label' => $t('Voraussetzungen'), 
+      'type' => 'text_long', 
+    ),       
+    'term' => array( 
+      'field_name' => 'term', 
+      'label' => $t('term'), 
+      'type' => 'taxonomy_term_reference', 
+    ), 
+    'ideal_curriculum' => array( 
+      'field_name' => 'ideal_curriculum', 
+      'label' => $t('ideal curriculum'), 
+      'type' => 'taxonomy_term_reference', 
+    ),       
+  ); 
+} 
+/** 
+* Return a structured array defining the field instances associated with this content type. 
+*/ 
+function _stukowin_installed_instances() 
+{ 
+  $t = get_t(); 
+  return array( 
+    'code' => array( 
+      'field_name' => 'code', 
+      'type' => 'text', 
+      'label' => $t('Code'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('Code'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'ects' => array( 
+      'field_name' => 'ects', 
+      'type' => 'text', 
+      'label' => $t('ECTS'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('ECTS'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'wst' => array( 
+      'field_name' => 'wst', 
+      'type' => 'text', 
+      'label' => $t('Semesterwochenstunden'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('Semesterwochenstunden'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'verantname' => array( 
+      'field_name' => 'verantname', 
+      'type' => 'text', 
+      'label' => $t('Veranstalter'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('Veranstalter'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'verantemail' => array( 
+      'field_name' => 'verantemail', 
+      'type' => 'text', 
+      'label' => $t('E-Mail Veranstalter'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('E-Mail Veranstalter'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'changedate' => array( 
+      'field_name' => 'changedate', 
+      'type' => 'text', 
+      'label' => $t('changedate'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('changedate'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'lvtypname' => array( 
+      'field_name' => 'lvtypname', 
+      'type' => 'text', 
+      'label' => $t('LV-Type'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('LV-Type'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'lvtypshort' => array( 
+      'field_name' => 'lvtypshort', 
+      'type' => 'text', 
+      'label' => $t('lvtypshort'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('lvtypshort'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'lvatype' => array( 
+      'field_name' => 'lvatype', 
+      'type' => 'text', 
+      'label' => $t('lvatype'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('type'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'typename' => array( 
+      'field_name' => 'typename', 
+      'type' => 'text', 
+      'label' => $t('typename'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('typename'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ), 
+    'ziele' => array( 
+      'field_name' => 'ziele', 
+      'type' => 'text', 
+      'label' => $t('ziele'), 
+      'widget' => array( 
+        'type' => 'text_long', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('ziele'), 
+        'type' => 'text_long', 
+        ), 
+      ), 
+    ), 
+    'lehrinhalte' => array( 
+      'field_name' => 'lehrinhalte', 
+      'type' => 'text', 
+      'label' => $t('lehrinhalte'), 
+      'widget' => array( 
+        'type' => 'text_long', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('lehrinhalte'), 
+        'type' => 'text_long', 
+        ), 
+      ), 
+    ), 
+    'voraussetzungen' => array( 
+      'field_name' => 'voraussetzungen', 
+      'type' => 'text', 
+      'label' => $t('Requirements'), 
+      'widget' => array( 
+        'type' => 'text_long', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('voraussetzungen'), 
+        'type' => 'text_long', 
+        ), 
+      ), 
+    ), 
+    'term' => array( 
+      'field_name' => 'term', 
+      'type' => 'taxonomy_term_reference', 
+      'label' => $t('term'), 
+      'widget' => array( 
+        'type' => 'taxonomy_term_reference', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('term'), 
+        'type' => 'taxonomy_term_reference', 
+        ), 
+      ), 
+    ), 
+    'ideal_curriculum' => array( 
+      'field_name' => 'ideal_curriculum', 
+      'type' => 'taxonomy_term_reference', 
+      'label' => $t('ideal_curriculum'), 
+      'widget' => array( 
+        'type' => 'taxonomy_term_reference', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('ideal_curriculum'), 
+        'type' => 'taxonomy_term_reference', 
+        ), 
+      ), 
+    ), 
+      
+  ); 
+} 
+/** 
+* Implements hook_uninstall(). 
+*/ 
+function stukowin_uninstall() 
+{ 
+  // Gather all the example content that might have been created while this 
+  // module was enabled. 
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type'; 
+  $result = db_query($sql, array(':type' => 'stukowin')); 
+  $nids = array(); 
+  foreach ($result as $row) { 
+    $nids[] = $row->nid; 
+  } 
+  // Delete all the nodes at once 
+  node_delete_multiple($nids); 
+  // Loop over each of the fields defined by this module and delete 
+  // all instances of the field, their data, and the field itself. 
+  foreach (array_keys(_stukowin_installed_fields()) as $field) { 
+    field_delete_field($field); 
+  } 
+  // Loop over any remaining field instances attached to the stukowin 
+  // content type (such as the body field) and delete them individually. 
+  $instances = field_info_instances('node', 'stukowin'); 
+  foreach ($instances as $instance_name => $instance) { 
+    field_delete_instance($instance); 
+  } 
+  // Delete our content type 
+  node_type_delete('stukowin'); 
+
+  // Loop over each of the fields defined by this module and delete 
+  // all instances of the field, their data, and the field itself. 
+  foreach (array_keys(_stukowin_installed_taxonomy_fields()) as $field) { 
+    field_delete_field($field); 
+  } 
+  // Loop over any remaining field instances attached to the stukowin 
+  // content type (such as the body field) and delete them individually. 
+  $instances = field_info_instances('taxonomy'); 
+  foreach ($instances as $instance_name => $instance) { 
+    field_delete_instance($instance); 
+  } 
+
+  // Purge all field infromation 
+  field_purge_batch(1000); 
+>>>>>>> refs/remotes/origin/master
 }

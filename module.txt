@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Module im Einsatz:
 
 Locale: Deutsch anlegen & default
@@ -6,4 +7,14 @@ Services
 CKEditor
 jQuery Update
 Fieldable vocabularies
+=======
+Module im Einsatz:
+
+Locale: Deutsch anlegen & default
+Chaos Tools Suite
+Services
+CKEditor
+jQuery Update
+Fieldable vocabularies
+>>>>>>> refs/remotes/origin/master
 Entity API

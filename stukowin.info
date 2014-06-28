@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 ; $Id$
 name = Stukowin - CEUS
 description = Anbindung an die CEUS-API
 package = JKU
+=======
+; $Id$
+name = Stukowin - CEUS
+description = Anbindung an die CEUS-API
+package = JKU
+>>>>>>> refs/remotes/origin/master
 core = 7.x
