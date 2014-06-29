@@ -1,12 +1,12 @@
 Module im Einsatz:
 
-Locale: Deutsch anlegen & default
-Chaos Tools Suite
-Services
-(CKEditor)
-jQuery Update
-Fieldable vocabularies
-Entity API
+Locale: Deutsch anlegen & default https://www.drupal.org/node/21145
+Chaos Tools Suite http://ftp.drupal.org/files/projects/ctools-7.x-1.4.tar.gz
+Services http://ftp.drupal.org/files/projects/services-7.x-3.7.tar.gz
+(CKEditor) http://ftp.drupal.org/files/projects/ckeditor-7.x-1.14.tar.gz
+jQuery Update http://ftp.drupal.org/files/projects/jquery_update-7.x-2.4.tar.gz
+Fieldable vocabularies http://ftp.drupal.org/files/projects/fieldable_vocabularies-7.x-1.0.tar.gz
+Entity API 
 Relation
 Relation Select
 Views
