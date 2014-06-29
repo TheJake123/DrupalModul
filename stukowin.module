@@ -83,9 +83,8 @@ function stukowin_retreive()
 {
   include_once dirname(__FILE__).'/stukowin.install';
   // Call Module Installer - so you don't have to install the module for every change
-// stukowin_uninstall(); 
-// die("des woas");
   //  Call Module Uninstaller to de-register the content type
+// stukowin_uninstall(); 
 // stukowin_install();die('fäddisch');
   $oCeusImporter = new ceus_importer();
   if($oCeusImporter->connect())
