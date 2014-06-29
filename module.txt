@@ -3,7 +3,11 @@ Module im Einsatz:
 Locale: Deutsch anlegen & default
 Chaos Tools Suite
 Services
-CKEditor
+(CKEditor)
 jQuery Update
 Fieldable vocabularies
 Entity API
+Relation
+Relation Select
+Views
+Subform

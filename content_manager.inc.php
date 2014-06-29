@@ -1,14 +1,54 @@
 <?php
-
-/* 
+  include_once __DIR__ . '/simple_html_dom.php';
+  include_once dirname(__FILE__).'/stukowin.install';
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-class content_manager
-{
 /**
+ * 
+ *
+ */
+class content_manager {
+    
+  /**
+   * Returns LVA-Content-Node with all fields required for display
+   * 
+   * @param integer $iNodeID Drupal-Node-ID
+   * @return \stdClass
+   */
+  private function get_return_node($iNodeID)
+  {
+    $oNode = node_load($iNodeID);
+    $oReturnNode = new stdClass();
+    $oReturnNode->title = $oNode->title;
+    $aFields = _stukowin_installed_fields();
+    foreach($aFields as $sKey=>$aValue)
+    {
+      if(!empty($oNode->{$sKey}['und'][0]['value'])) $oReturnNode->{$sKey} = $oNode->{$sKey}['und'][0]['value'];
+    }
+    // Relations: Must and wouldbenice, only if index=1 (forward) index=0 is backward, we do not deliver this back
+    if(!empty($oNode->voraussetzung['und']) && is_array($oNode->voraussetzung['und'])) 
+    {
+      foreach($oNode->voraussetzung['und'] as $aRelation)
+      {
+        if(!empty($aRelation['endpoints'][1])) $oReturnNode->voraussetzung[] = trim($aRelation['endpoints'][1],"a..zA..Z?:");
+      }
+    }
+    if(!empty($oNode->empfehlung['und']) && is_array($oNode->empfehlung['und'])) 
+    {
+      foreach($oNode->empfehlung['und'] as $aRelation)
+      {
+        if(!empty($aRelation['endpoints'][1])) $oReturnNode->empfehlung[] = trim($aRelation['endpoints'][1],"a..zA..Z?:");
+      }
+    }
+    $oReturnNode->id = $iNodeID;
+    return $oReturnNode;
+  }
+  
+  /**
    * Reads Taxonomy into nested array
    * 
    * @param type $vid_or_terms
@@ -34,13 +74,8 @@ class content_manager
           $aNode = taxonomy_select_nodes($term->tid);
           if(!empty($aNode)) 
           {
-            $iNodeID = $aNode[0]; 
-            $oNode = node_load($iNodeID);
-            $oReturnNode = new stdClass();
-            foreach($aFields as $sKey=>$aValue)
-            {
-              if(!empty($oNode->{$sKey}['und'][0]['value'])) $oReturnNode->{$sKey} = $oNode->{$sKey}['und'][0]['value'];
-            }
+            $iNodeID = $aNode[0];
+            $oReturnNode = $this->get_return_node($iNodeID);
             $term->ects = $oReturnNode->ects;
             $term->lva = $oReturnNode;
             $term->id = $iNodeID;
@@ -70,15 +105,7 @@ class content_manager
    */
   public function json_service_lva($iNodeID)
   {
-    $oNode = node_load($iNodeID);
-    $oReturnNode = new stdClass();
-    $aFields = _stukowin_installed_fields();
-    
-    foreach($aFields as $sKey=>$aValue)
-    {
-      if(!empty($oNode->{$sKey}['und'][0]['value'])) $oReturnNode->{$sKey} = $oNode->{$sKey}['und'][0]['value'];
-    }
-    $oReturnNode->id = $iNodeID;
+    $oReturnNode = $this->get_return_node($iNodeID);
     drupal_json_output($oReturnNode);die();
   }
   

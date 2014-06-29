@@ -9,7 +9,6 @@
 set_time_limit(600);
 
 include_once dirname(__FILE__). '/ceus_importer.inc.php';
-include_once dirname(__FILE__). '/content_manager.inc.php';
 
 /**
  * Implements hook_help().
@@ -96,18 +95,6 @@ function stukowin_retreive()
 
 }
 
-function ideal_curriculum()
-{
-  $form = array();
-  $form['stukowin_itsv_test'] = array(
-   '#type' => 'textfield',
-    '#title' => t('Hier kommt der WahnsinnsITSV'),
-    '#size' => 40,
-    '#maxlength' => 255,      
-  );
-  return system_settings_form($form);
-}
-
 
 /**
  * JSON-Service for Curricula
@@ -160,13 +147,6 @@ function stukowin_menu()
     'access arguments' => array('administer stukowin settings'),
     'type' => MENU_NORMAL_ITEM,
   );
-  $items['admin/settings/stukowin/ideal_settings'] = array(
-    'title' => 'Ideal Curriculum',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('ideal_curriculum'),
-    'access arguments' => array('administer stukowin settings'),
-    'type' => MENU_NORMAL_ITEM,
-  );
   $items['admin/settings/stukowin/importjson'] = array(
     'title' => 'CEUS Data import',
     'page callback' => 'stukowin_retreive',
@@ -203,21 +183,3 @@ function stukowin_menu()
   );  
   return $items;
 }
-
-/** 
-* Implements hook_node_info() to provide our stukowin type. 
-*/ 
-function stukowin_node_info() 
-{ 
-  return array( 
-    'stukowin' => array( 
-      'name' => t('LVA'), 
-      'base' => 'stukowin', 
-      'description' => t('Use this content type to post a LVA.'), 
-      'has_title' => TRUE, 
-      'title_label' => t('Job Title'), 
-      'help' => t('Enter the job title, 
-      job description, and the name of the company that posted the job'), 
-    ), 
-  ); 
-} 

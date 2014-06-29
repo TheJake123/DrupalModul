@@ -17,7 +17,7 @@ class ceus_importer
   private $sCeusUrl;
   
   /**
-   * @var string Username for CEUS APIget as retreived from Module configuration 
+   * @var string Username for CEUS API as retreived from Module configuration 
    */
   private $sUsername;
   
@@ -351,7 +351,6 @@ class ceus_importer
   }
   
   
-  
   /**
    * Main method: get current curriculum data from CEUS
    * 
@@ -366,7 +365,7 @@ class ceus_importer
         $this->check_vocabulary($aCurriculum);
         $aCurrTree[$aCurriculum['id']] = $this->get_curriculum($aCurriculum['id']);
         $this->get_details($aCurrTree[$aCurriculum['id']]['tree'], 0, $aCurriculum['id']);
-//        $this->process_relations();
+        $this->process_relations();
         
       }
       return 'Import successful';

@@ -22,6 +22,8 @@ function stukowin_install()
     'type' => 'stukowin',
     'name' => $t('Stukowin LVA'),
     'base' => 'node_content',
+    'module' => 'node',
+    'locked' => 0,
     'description' => $t('LVA content type for stukowin module.'),
     'title_label' => $t('LVA content type for stukowin module'),
     'custom' => TRUE,
@@ -189,7 +191,19 @@ function _stukowin_installed_fields()
       'field_name' => 'voraussetzungen', 
       'label' => $t('Voraussetzungen'), 
       'type' => 'text_long', 
-    ),       
+    ), 
+    'voraussetzung' => array( 
+      'field_name' => 'voraussetzung', 
+      'label' => $t('Voraussetzung'), 
+      'type' => 'relation_select', 
+      'cardinality' => -1,
+    ), 
+    'empfehlung' => array( 
+      'field_name' => 'empfehlung', 
+      'label' => $t('Empfehlung'), 
+      'type' => 'relation_select', 
+      'cardinality' => -1,
+    ), 
     'term' => array( 
       'field_name' => 'term', 
       'label' => $t('term'), 
@@ -391,6 +405,52 @@ function _stukowin_installed_instances()
         ), 
       ), 
     ), 
+    'voraussetzung' => array( 
+      'field_name' => 'voraussetzung', 
+      'label' => $t('Voraussetzung'), 
+      'type' => 'relation_select', 
+      'widget' => array( 
+        'type' => 'relation_select',
+        'active' => 1,
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('Voraussetzung'), 
+        'type' => 'relation_select', 
+        ), 
+      ), 
+      'settings' => array(
+        'relation_view' => 'relation_select_node:default',
+        'relation_type' => 'voraussetzung',
+      ),
+      'default_value' => array(
+          '',
+      ),
+    ), 
+    'empfehlung' => array( 
+      'field_name' => 'empfehlung', 
+      'label' => $t('Empfehlung'), 
+      'type' => 'relation_select', 
+      'widget' => array( 
+        'type' => 'relation_select', 
+        'active' => 1,
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('Empfehlung'), 
+        'type' => 'relation_select', 
+        ), 
+      ),
+      'settings' => array(
+        'relation_view' => 'relation_select_node:default',
+        'relation_type' => 'voraussetzung',
+      ),
+      'default_value' => array(
+          '',
+      ),
+    ),       
+      
+      
     'term' => array( 
       'field_name' => 'term', 
       'type' => 'taxonomy_term_reference', 
