@@ -32,6 +32,9 @@ function stukowin_install()
   // add the body field to the node type 
   node_add_body_field($content_type); 
   node_type_save($content_type);
+  
+  // create Relation Types for Voraussetzungen and Empfehlungen
+  _stukowin_create_relation_types();
   // Load the instance definition for our content type's body 
   $body_instance = field_info_instance('node', 'body', 'stukowin'); 
   // Configure the body field 
@@ -482,6 +485,45 @@ function _stukowin_installed_instances()
       
   ); 
 } 
+
+/**
+ * Create the relation type for books <=> collection.
+ */
+function _stukowin_create_relation_types() {
+  $aRelation = array(
+    'disabled'=>FALSE, 'api_version'=>1,'relation_type'=>'empfehlung','label'=>'Empfohlen',
+      'reverse_label'=>'Empfohlen für','directional'=>1,'transitive'=>0,'r_unique'=>1,
+      'min_arity'=>2, 'max_arity'=>2, 'source_bundles'=>array('node:stukowin'),'target_bundles'=>array('node:stukowin')
+  );
+  // Empfehlung
+  $relation_type = new stdClass();
+  foreach($aRelation as $sMember=>$sValue)
+  {
+    $relation_type->$sMember = $sValue;
+  }
+  // Relation type create adds default keys.  It also handles casting to array.
+  $relation_type = relation_type_create($relation_type);
+  // Yes, in relation.module 'save' is a distinct step from 'create'.
+  relation_type_save($relation_type);
+  
+  // Voraussetzung
+  $aRelation['label'] = "Voraussetzung";
+  $aRelation['reverse_label'] = 'Vorausgesetzt von';
+  $aRelation['relation_type'] = 'voraussetzung';
+  $relation_type = new stdClass();
+  foreach($aRelation as $sMember=>$sValue)
+  {
+    $relation_type->$sMember = $sValue;
+  }
+  // Relation type create adds default keys.  It also handles casting to array.
+  $relation_type = relation_type_create($relation_type);
+  // Yes, in relation.module 'save' is a distinct step from 'create'.
+  relation_type_save($relation_type);
+  
+}
+
+
+
 /** 
 * Implements hook_uninstall(). 
 */ 

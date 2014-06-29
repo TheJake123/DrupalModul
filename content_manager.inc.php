@@ -144,6 +144,7 @@ class content_manager {
     
     $aTerms = $this->taxonomy_get_nested_tree($iVID);
     header('Access-Control-Allow-Origin: *');
+    // PHP ist doof. json_encode glaubt ein Array ist ein Objekt, mit dem Trick unten versteht es auch PHP
     array_unshift($aTerms, 'blabla');
     array_shift($aTerms);
     drupal_json_output($aTerms);die();
