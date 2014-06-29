@@ -106,6 +106,7 @@ class content_manager {
   public function json_service_lva($iNodeID)
   {
     $oReturnNode = $this->get_return_node($iNodeID);
+    header('Access-Control-Allow-Origin: *');
     drupal_json_output($oReturnNode);die();
   }
   
@@ -127,6 +128,7 @@ class content_manager {
       $aCurricula[] = array('vid'=>$oVocabulary->vid, 'name'=>$oVocabulary->name, 'type'=>$oVocabulary->currtype['und'][0]['value'],
                             'faculty'=>$oVocabulary->faculty['und'][0]['value'],'version'=>$oVocabulary->version['und'][0]['value']);
     } 
+    header('Access-Control-Allow-Origin: *');
     drupal_json_output($aCurricula);die();
   }
   
@@ -138,6 +140,7 @@ class content_manager {
   public function json_service_curriculum($iVID)
   {
     $aTerms = $this->taxonomy_get_nested_tree($iVID);
+    header('Access-Control-Allow-Origin: *');
     drupal_json_output($aTerms);die();
   }
 }
