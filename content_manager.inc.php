@@ -65,6 +65,8 @@ class content_manager {
       $vid_or_terms = taxonomy_get_tree($vid_or_terms);
     }
     $aFields = _stukowin_installed_fields();
+    
+    $return = array();
     foreach ($vid_or_terms as $term) 
     {
       foreach ($term->parents as $term_parent) 
@@ -139,8 +141,11 @@ class content_manager {
    */
   public function json_service_curriculum($iVID)
   {
+    
     $aTerms = $this->taxonomy_get_nested_tree($iVID);
     header('Access-Control-Allow-Origin: *');
+    array_unshift($aTerms, 'blabla');
+    array_shift($aTerms);
     drupal_json_output($aTerms);die();
   }
 }
