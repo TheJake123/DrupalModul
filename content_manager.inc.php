@@ -58,7 +58,7 @@ class content_manager {
    * @param type $depth
    * @return type
    */
-  private function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
+  public function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
 
     if (!is_array($vid_or_terms)) 
     {

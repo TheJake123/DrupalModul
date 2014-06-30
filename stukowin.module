@@ -9,7 +9,8 @@
 set_time_limit(600);
 
 include_once dirname(__FILE__). '/ceus_importer.inc.php';
-
+  include_once dirname(__FILE__). '/pdf_creator.inc.php';
+include_once dirname(__FILE__). '/content_manager.inc.php';
 /**
  * Implements hook_help().
  */
@@ -123,7 +124,15 @@ function stukowin_get_lva($iNodeID)
   $oContentManager = new content_manager();
   return $oContentManager->json_service_lva($iNodeID);
 }
-
+/**
+ * PDF-Service for curriculum
+ */
+function stukowin_get_pdf($iVID)
+{
+  $oPdf = new overviewPDF();
+  return $oPdf->createPDF($iVID);
+  
+}
 /**
  * View for Display of curricula - Desktop HTML Version
  */
@@ -181,5 +190,12 @@ function stukowin_menu()
     'access arguments' => array('access content'),
     'type' => MENU_NORMAL_ITEM,
   );  
+    $items['stukowin/pdf'] = array(
+    'title' => 'Service',
+    'page callback' => 'stukowin_get_pdf',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
