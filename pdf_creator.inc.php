@@ -68,7 +68,7 @@ class overviewPDF extends TCPDF {
 		$this->MultiCell ( 0, 0, 'Version ' . $oCurriculum ['version'], 0, 'C' );
 		$this->printCurriculum ( $oCurriculum );
 		$this->createTOCPage ();
-		$sFilename = $this->getUniqueFileName ();
+		$sFilename = $this->getUniqueFileName ($oCurriculum['type'], $oCurriculum['version']);
 		$this->Output ( $sFilename, 'F' );
 		return 'PDF successfully created at ' . $sFilename;
 	}
