@@ -40,7 +40,8 @@ $(document).ready(function () {
 
 /**
  * Extracts the matching curriculum out of the JSON-data and calls fill_crclm
- * @param {Object} data All curriculums to search
+ * @param {O
+ * bject} data All curriculums to search
 **/
 
 function gc(data) {
@@ -57,7 +58,7 @@ function gc(data) {
 **/
 function fill_crclm(data) {
 	for (var i = 0; i < data.length; i++) {
-		kurse[data[i]["id"]] = data[i];
+		kurse[data[i]["tid"]] = data[i];
 	};
 	for (var key in kurse) {
 		$(".main").append(createDivs(kurse[key], 0));
@@ -180,40 +181,64 @@ function expandAndScrollToElement(element, highlightColor) {
  * @param {Number} level The current recursion level (needed in order to decide if element is top-level or not
  * @return {String} The complete HTML for the given course's <div>
 **/
-function createDivs(kurs, level) {
+function createDivs(kurs, level, parentIsRoot) {
 	var div, hasVoraussetzungen, hasEmpfohlen, typ, rightTds;
-	anzVoraussetzungen = "voraussetzungen" in kurs ? kurs["lva"]["voraussetzungen"].length : 0;
-	anzEmpfohlen = "empfohlen" in kurs ? kurs["lva"]["empfohlen"].length : 0;
-	rightTds = '<td class="center"><p>' + kurs["lva"]["title"] + '</p></td>'
-			+ '<td class="right button voraussetzung' + (anzVoraussetzungen ? "" : " empty") + '" title="' + (anzVoraussetzungen ? anzVoraussetzungen + " verpflichtende Voraussetzung" + (anzVoraussetzungen > 1 ? "en" : "") : "Keine verpflichtenden Voraussetzungen") + '"/>'
-			+ '<td class="right button empfohlen' + (anzEmpfohlen ? "" : " empty") + '" title="' + (anzEmpfohlen ? anzEmpfohlen + " empfohlene Voraussetzung" + (anzEmpfohlen > 1 ? "en" : "") : "Keine empfohlenen Voraussetzungen") + '"/>'
-			+ '<td class="right ects" title="ECTS"><p>' + kurs["lva"]["ects"] + '</p></td>'
-	if (!("children" in kurs)) {
-		div = '<div class="lv hidden" id="' + kurs["id"] + '">'
-			+ '<table class="header"><tr>'
-			+ '<td class="left ects"><p>' + kurs["lva"]["lvtypshort"] + '</p></td>'
-			+ rightTds
-			+ '</tr></table></div>';
-	} else {
-		if (kurs["lva"]["lvatype"] == 1) {
-			typ = "fach";
+	
+	if("lva" in kurs){
+		rightTds = createTds(kurs);
+		if (!("children" in kurs)) {
+			var clazz = parentIsRoot && parentIsRoot === true ? "" : " hidden"
+			div = '<div class="lv'+ clazz + '" id="' + kurs["tid"] + '">'
+				+ '<table class="header"><tr>'
+				+ '<td class="left ects"><p>' + ("lva" in kurs ? kurs["lva"]["lvtypshort"] : "") + '</p></td>'
+				+ rightTds
+				+ '</tr></table></div>';
 		} else {
-			typ = "modul hidden";
+			if (kurs["lva"] && kurs["lva"]["lvatype"] == 1) {
+				typ = "fach";
+			} else if(!kurs["lva"]) {
+				typ = "fach";
+			} else {
+				typ = "modul hidden";
+			}
+			div = '<div class="' + typ + ' reduced" id="' + kurs["tid"] + '">'
+				+ '<table class="header"><tr>'
+				+ '<td class="left button expander" alt="plus" title="Ausklappen"></td>'
+				+ rightTds
+				+ '</tr></table>';
+			if ("children" in kurs) {
+				$.each(kurs["children"], function (key, val) {
+					div += createDivs(val, level + 1);
+				});
+			}
+			div += "</div>";
 		}
-		div = '<div class="' + typ + ' reduced" id="' + kurs["id"] + '">'
-			+ '<table class="header"><tr>'
-			+ '<td class="left button expander" alt="plus" title="Ausklappen"></td>'
-			+ rightTds
-			+ '</tr></table>';
+	}else{
+		div = '<div class="abschnitt"><h1>' + kurs["name"] + '</h1></div>';
 		if ("children" in kurs) {
 			$.each(kurs["children"], function (key, val) {
-				div += createDivs(val, level + 1);
+				div += createDivs(val, level + 1, true);
 			});
 		}
-		div += "</div>";
 	}
+
 	return div;
 }
+
+/**
+ * Convenience function for creating the table cells used in course and module divs.
+ * @param {Object} kurs The course to create the cells for.
+ **/
+function createTds(kurs) {
+	var anzVoraussetzungen = "voraussetzungen" in kurs ? kurs["lva"]["voraussetzungen"].length : 0;
+	var anzEmpfohlen = "empfohlen" in kurs ? kurs["lva"]["empfohlen"].length : 0;
+	var rightTds = '<td class="center"><p>' + ("lva" in kurs ? kurs["lva"]["title"] : kurs["name"]) + '</p></td>'
+			+ '<td class="right button voraussetzung' + (anzVoraussetzungen ? "" : " empty") + '" title="' + (anzVoraussetzungen ? anzVoraussetzungen + " verpflichtende Voraussetzung" + (anzVoraussetzungen > 1 ? "en" : "") : "Keine verpflichtenden Voraussetzungen") + '"/>'
+			+ '<td class="right button empfohlen' + (anzEmpfohlen ? "" : " empty") + '" title="' + (anzEmpfohlen ? anzEmpfohlen + " empfohlene Voraussetzung" + (anzEmpfohlen > 1 ? "en" : "") : "Keine empfohlenen Voraussetzungen") + '"/>'
+			+ '<td class="right ects" title="ECTS"><p>' + ("lva" in kurs ? kurs["lva"]["ects"] : "")+ '</p></td>';
+	return rightTds;
+}
+
 /**
  * Utility to check if an element is fully visible
  * @param {Object} elem The element to check
