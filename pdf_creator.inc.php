@@ -8,16 +8,13 @@ class overviewPDF extends TCPDF {
 		 * JKU Bild nicht erlaubt... if ($this->PageNo () === 1) { $fWidth = $this->getPageDimensions ()['wk']; $fHeight = $fWidth * 149 / 1253; $this->SetMargins ( PDF_MARGIN_LEFT, $fHeight ); $this->Image ( __DIR__ . '\Images\Header.jpg', 0, 0, $fWidth, $fHeight ); }
 		 */
 	}
-	Function Footer() {
+	public function Footer() {
 		$this->setFont ( 'times', '', 12 );
 		$this->setY ( - 15 );
 		$this->Line ( $this->getMargins ()['left'], $this->GetY (), $this->getPageDimensions ()['wk'] - $this->getMargins ()['right'], $this->GetY () );
 		$this->Cell ( 0, 0, $this->getAliasRightShift () . $this->getAliasNumPage () . '/' . $this->getAliasNbPages (), 0, 0, 'R' );
 	}
-	public function checkPageBreak($h = 0, $y = '', $addpage = true) {
-		parent::checkPageBreak ( $h, $y, $addpage );
-	}
-	public function getNextIndex($iLevel) {
+	private function getNextIndex($iLevel) {
 		if (! array_key_exists ( $iLevel, $this->aIndices )) {
 			for($i = 0; $i <= $iLevel; $i ++) {
 				if (! array_key_exists ( $i, $this->aIndices ))
@@ -30,7 +27,7 @@ class overviewPDF extends TCPDF {
 		}
 		return ++ $this->aIndices [$iLevel];
 	}
-	public static function getHTMLHeight($sHTML) {
+	private static function getHTMLHeight($sHTML) {
 		$oPdf = new overviewPDF ();
 		$oPdf->setFont ( 'times', '', 12 );
 		$oPdf->setCellPaddings ( 0, 0, 0, 0 );
@@ -38,13 +35,13 @@ class overviewPDF extends TCPDF {
 		$oPdf->writeHTML ( $sHTML );
 		return $oPdf->getTotalY ();
 	}
-	function getTotalY() {
+	private function getTotalY() {
 		return ($this->PageNo () - 1) * ($this->getPageHeight () - $this->getMargins ()['top'] - $this->getMargins ()['bottom']) + $this->getY ();
 	}
 	/**
 	 * Creates the PDF document and sends it to the client
 	 */
-	function createPDF($iVID) {
+	public function createPDF($iVID) {
 		// create new PDF document
 		$this->setFont ( 'times', '', 12 );
 		$this->setCellPaddings ( 0, 0, 0, 0 );
@@ -52,7 +49,7 @@ class overviewPDF extends TCPDF {
 		// set document information
 		$this->SetCreator ( PDF_CREATOR );
 		$this->SetAuthor ( 'StukoWIN' );
-		$this->SetTitle ( 'Curriculum ' . 'Curriculum Wirtschaftsinformatik ' . $oCurriculum['version'] );
+		$this->SetTitle ( 'Curriculum ' . 'Curriculum Wirtschaftsinformatik ' . $oCurriculum ['version'] );
 		$this->SetSubject ( 'Curriculum Wirtschaftsinformatik' );
 		$this->SetKeywords ( 'Curriculum, Übersicht, Wirtschaftsinformatik' );
 		$this->AddPage ();
@@ -60,19 +57,20 @@ class overviewPDF extends TCPDF {
 		$this->MultiCell ( 0, 0, "" );
 		$this->MultiCell ( 0, 0, $this->unhtmlentities ( "LVA &Uuml;bersicht" ), 0, 'C' );
 		$this->Ln ();
-		$this->MultiCell ( 0, 0, $oCurriculum['type'], 0, 'C' );
+		$this->MultiCell ( 0, 0, $oCurriculum ['type'], 0, 'C' );
 		$this->Ln ();
 		$this->MultiCell ( 0, 0, 'Wirtschaftsinformatik', 0, 'C' );
 		$this->Ln ();
 		$this->SetFontSize ( 20 );
-		$this->MultiCell ( 0, 0, $oCurriculum['faculty'], 0, 'C' );
+		$this->MultiCell ( 0, 0, $oCurriculum ['faculty'], 0, 'C' );
 		$this->SetFontSize ( 12 );
 		$this->Ln ();
-		$this->MultiCell ( 0, 0, 'Version ' . $oCurriculum['version'], 0, 'C' );
+		$this->MultiCell ( 0, 0, 'Version ' . $oCurriculum ['version'], 0, 'C' );
 		$this->printCurriculum ( $oCurriculum );
 		$this->createTOCPage ();
-		$this->Output ( dirname ( __FILE__ ) . '/LVA-Übersicht Wirtschaftsinformatik ' . $oCurriculum['type'] . ' ' . $oCurriculum['version'] . '.pdf', 'F' );
-		return "fertig";
+		$sFilename = $this->getUniqueFileName ();
+		$this->Output ( $sFilename, 'F' );
+		return 'PDF successfully created at ' . $sFilename;
 	}
 	/**
 	 * Adds a Table of Contents Page to the PDF document
@@ -80,13 +78,33 @@ class overviewPDF extends TCPDF {
 	 * @param unknown $pdf
 	 *        	The PDF document to add to
 	 */
-	function createTOCPage() {
+	private function createTOCPage() {
 		$this->addTOCPage ();
 		$this->SetFont ( 'times', 'B', 15 );
 		$this->MultiCell ( 0, 0, 'Inhalt', 0, 'L', 0, 1, '', '', true, 0 );
 		$this->Ln ();
 		$this->addTOC ( 2, 'times', '.', 'Inhalt', 'B' );
 		$this->endTOCPage ();
+	}
+	/**
+	 * Determines if a file with the standard filename already exists.
+	 * If one exists, it appends a number and increases it until the name is not already taken.
+	 *
+	 * @param string $sCurrType
+	 *        	The type of the curriculum (Bachelorstudium, Masterstudium)
+	 * @param string $sCurrVersion
+	 *        	The verision of the curriculum (e.g. 2013W)
+	 */
+	private function getUniqueFilename($sCurrType, $sCurrVersion) {
+		$sCoreName = dirname ( __FILE__ ) . '/LVA-Übersicht Wirtschaftsinformatik ' . $oCurriculum ['type'] . ' ' . $oCurriculum ['version'];
+		$sFilename = $sCoreName . '.pdf';
+		var_dump($sFilename);
+		if (file_exists ( $sFilename )) {
+			for($i = 1; file_exists ( $sFilename ); $i ++) {
+				$sFilename = $sCoreName . '(' . $i . ').pdf';
+			}
+		}
+		return $sFilename;
 	}
 	/**
 	 * Prints a curriculum object and all its sub-objects to a PDF document
@@ -96,11 +114,11 @@ class overviewPDF extends TCPDF {
 	 * @param unknown $oCurriculum
 	 *        	The curriculum object to print
 	 */
-	function printCurriculum($oCurriculum) {
+	private function printCurriculum($oCurriculum) {
 		$this->AddPage ();
-		$aCourses = $this->getCourses ( $oCurriculum['vid'] );
+		$aCourses = $this->getCourses ( $oCurriculum ['vid'] );
 		$this->SetFontSize ( 20 );
-		$this->printHeading ( strtoupper ( $oCurriculum['type'] ), 0, false, 'C' );
+		$this->printHeading ( strtoupper ( $oCurriculum ['type'] ), 0, false, 'C' );
 		$this->SetFont ( 'times', '', 12 );
 		$sHTML = <<<EOT
 		<p>Es sind folgende F&auml;cher zu absolvieren:<p>
@@ -127,7 +145,7 @@ EOT;
 	 * @param unknown $oFach
 	 *        	The course object to print
 	 */
-	function printFach($oFach) {
+	private function printFach($oFach) {
 		// Generate HTML code for the overview table
 		$sHTML = <<<EOT
 		<p>Das Fach {$oFach->lva->title} gliedert sich in folgende Module/Lehrveranstaltungen:<p>
@@ -165,7 +183,7 @@ EOT;
 		}
 		$this->Ln ();
 	}
-	function generateTableRecHelper($oCourse) {
+	private function generateTableRecHelper($oCourse) {
 		$sHTML = '';
 		switch ($oCourse->lva->lvatype) {
 			case '1' :
@@ -184,7 +202,7 @@ EOT;
 				$sHTML .= $this->generateTableRecHelper ( $oChild );
 		return $sHTML;
 	}
-	function printZieleInhalte($oCourse) {
+	private function printZieleInhalte($oCourse) {
 		if ($oCourse->lva->ziele) {
 			$this->SetFont ( 'times', 'B', 12 );
 			$this->MultiCell ( 0, 0, 'Lehrziele', '', 'L', false, 1, '', '', true, 0, false, false );
@@ -214,9 +232,9 @@ EOT;
 	 * @param string $sAlign
 	 *        	Alignment of the heading. For allowed values see @see TCPDF::Multicell()
 	 */
-	function printHeading($sText, $iLevel, $bShowIndex = true, $sAlign = 'L', $bAddBookmark = true) {
+	private function printHeading($sText, $iLevel, $bShowIndex = true, $sAlign = 'L', $bAddBookmark = true) {
 		$iIndex = $this->getNextIndex ( $iLevel );
-		$sText = $this->unhtmlentities($sText);
+		$sText = $this->unhtmlentities ( $sText );
 		switch ($iLevel) {
 			case 0 :
 				$this->SetFont ( 'times', 'B', 20 );
@@ -241,7 +259,7 @@ EOT;
 	 *
 	 * @return array The array of all curriculum items
 	 */
-	static function getCurriculum($iVID) {
+	private static function getCurriculum($iVID) {
 		$oVocabulary = taxonomy_vocabulary_load ( $iVID, 0 );
 		$oCurriculum = array (
 				'vid' => $oVocabulary->vid,
@@ -259,7 +277,7 @@ EOT;
 	 *        	The id of the curriculum to get the courses from
 	 * @return array $aCourses The array of all courses in the given curriculum
 	 */
-	static function getCourses($currId) {
+	private static function getCourses($currId) {
 		return (new content_manager ())->taxonomy_get_nested_tree ( $currId );
 	}
 	
@@ -269,7 +287,7 @@ EOT;
 	 * @param unknown $oCourse
 	 *        	The course to assert the attributes in
 	 */
-	static function assertAttributes($oCourse) {
+	private static function assertAttributes($oCourse) {
 		static $aRequiredFields = array (
 				'title',
 				'ects',

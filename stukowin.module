@@ -82,7 +82,7 @@ function stukowin_admin()
 function stukowin_pdf_menu($form, &$form_state) 
 {
 	foreach((new content_manager())->getCurricula(array('curriculum')) as $oCurriculum){
-		$aNames[] = t($oCurriculum['name']);
+		$aNames[$oCurriculum['vid']] = t($oCurriculum['name']);
 	}
   $form = array();
   $form['curriculum_select'] = array(
@@ -100,7 +100,8 @@ function stukowin_pdf_menu($form, &$form_state)
 }
 
 function stukowin_pdf_menu_submit($form, &$form_state) {
-  drupal_set_message($form['curriculum_select']['#value']);
+	//drupal_set_message(file_exists(dirname ( __FILE__ ) . '/stukowin.instal') ? 'ja' : 'nein');
+ 	drupal_set_message(stukowin_get_pdf($form_state['values']['curriculum_select']));
 }
 
 
