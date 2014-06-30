@@ -184,6 +184,9 @@ function stukowin_menu()
   return $items;
 }
 
+/**
+ * adds hook for the ckeditor plugin
+ */
 function stukowin_ckeditor_plugin() {
   return array(
         'plugin_name' => array(
@@ -192,10 +195,10 @@ function stukowin_ckeditor_plugin() {
             // Plugin description - it will be displayed in the plugins management section of the profile settings.
             'desc' => t('Plugin description'),
             // The full path to the CKEditor plugin directory, trailing slash included.
-            'path' => drupal_get_path('module', 'stukowin') . '/abbr/',
+            'path' => drupal_get_path('module', 'stukowin') . '/stuktowin_curriculum/',
             // Plugin buttons definition (optional).
             'buttons' => array(
-              'Abbr' => array('label' => 'Insert Abbreviation', 'icon' => 'icons/abbr.png')
+              'Abbr' => array('label' => 'Insert Taxonomy', 'icon' => 'icons/stukowin_curriculum.png')
             )
         )
     );

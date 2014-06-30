@@ -6,32 +6,32 @@
  */
 
 // Register the plugin within the editor.
-CKEDITOR.plugins.add( 'abbr', {
+CKEDITOR.plugins.add( 'stukowin_curriculum', {
 
 	// Register the icons.
-	icons: 'abbr',
+	icons: 'stukowin_curriculum',
 
 	// The plugin initialization logic goes inside this method.
 	init: function( editor ) {
 
 		// Define an editor command that opens our dialog.
-		editor.addCommand( 'abbr', new CKEDITOR.dialogCommand( 'abbrDialog' ) );
+		editor.addCommand( 'stukowin_curriculum', new CKEDITOR.dialogCommand( 'stukowin_curriculum_Dialog' ) );
 
 		// Create a toolbar button that executes the above command.
-		editor.ui.addButton( 'Abbr', {
+		editor.ui.addButton( 'stukowin_curriculum', {
 
 			// The text part of the button (if available) and tooptip.
-			label: 'Insert Abbreviation',
+			label: 'Insert Taxonomy',
 
 			// The command to execute on click.
-			command: 'abbr',
+			command: 'stukowin_curriculum_Dialog',
 
 			// The button placement in the toolbar (toolbar group name).
 			toolbar: 'insert'
 		});
 
 		// Register our dialog file. this.path is the plugin folder path.
-		CKEDITOR.dialog.add( 'abbrDialog', this.path + 'dialogs/abbr.js' );
+		CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', this.path + 'dialogs/stukowin_curriculum.js' );
 	}
 });
 
