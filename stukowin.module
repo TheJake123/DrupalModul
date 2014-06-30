@@ -183,3 +183,20 @@ function stukowin_menu()
   );  
   return $items;
 }
+
+function stukowin_ckeditor_plugin() {
+  return array(
+        'plugin_name' => array(
+            // Plugin name.
+            'name' => 'abbr',
+            // Plugin description - it will be displayed in the plugins management section of the profile settings.
+            'desc' => t('Plugin description'),
+            // The full path to the CKEditor plugin directory, trailing slash included.
+            'path' => drupal_get_path('module', 'stukowin') . '/abbr/',
+            // Plugin buttons definition (optional).
+            'buttons' => array(
+              'Abbr' => array('label' => 'Insert Abbreviation', 'icon' => 'icons/abbr.png')
+            )
+        )
+    );
+}
