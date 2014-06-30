@@ -77,6 +77,35 @@ function stukowin_admin()
 }
 
 /**
+ * Hook for pdf adding
+ */
+function stukowin_pdf_menu($form, &$form_state) 
+{
+	foreach((new content_manager())->getCurricula(array('curriculum')) as $oCurriculum){
+		$aNames[] = t($oCurriculum['name']);
+	}
+  $form = array();
+  $form['curriculum_select'] = array(
+   '#type' => 'select',
+    '#title' => t('Select Curriculum'),
+    '#description' => t("Curriculum to PDF"),
+    '#required' => TRUE,   
+    '#options' => $aNames,
+  );
+  $form['submit'] = array(
+  '#type'=>'submit',
+  	'#value' => t('Create PDF'),
+  	);
+  return $form;
+}
+
+function stukowin_pdf_menu_submit($form, &$form_state) {
+  drupal_set_message($form['curriculum_select']['#value']);
+}
+
+
+
+/**
  * Hook for Menu link "CEUS Data import"
  */
 function stukowin_retreive() 
@@ -196,6 +225,13 @@ function stukowin_menu()
     'access callback' => 'user_access',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
+  );
+  $items['admin/settings/stukowin/pdf'] = array(
+    'title' => 'Create PDF',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stukowin_pdf_menu'),
+    'access arguments' => array('create PDF'),
+    'type' => MENU_NORMAL_ITEM,
   );
   return $items;
 }

@@ -1,4 +1,4 @@
-<?php
+ <?php
   include_once __DIR__ . '/simple_html_dom.php';
   include_once dirname(__FILE__).'/stukowin.install';
 /*
@@ -110,26 +110,41 @@ class content_manager {
   }
   
   /**
-   * JSON-Service: Returns list of all taxonomies with weight < 10 (all curricula related taxonomies)
+   * JSON-Service: Returns list of all taxonomies with weight < 0 (all curricula related taxonomies)
    */
   public function json_service_curriculist()
   {
-    $query = new EntityFieldQuery();
-    $query
-      ->entityCondition('entity_type', 'taxonomy_vocabulary', '=')
-      ->propertyCondition('machine_name', 'curriculum_%', 'LIKE')
-      ->propertyCondition('weight', '0', '<')
-    ;
-    $aVocabulary = $query->execute();
-    foreach($aVocabulary['taxonomy_vocabulary'] as $iVID => $aVID)
-    {
-      $oVocabulary = taxonomy_vocabulary_load($iVID, 0); 
-      $aCurricula[] = array('vid'=>$oVocabulary->vid, 'name'=>$oVocabulary->name, 'type'=>$oVocabulary->currtype['und'][0]['value'],
-                            'faculty'=>$oVocabulary->faculty['und'][0]['value'],'version'=>$oVocabulary->version['und'][0]['value']);
-    } 
+   	$aCurricula = getCurricula(array('curriculum'));
     drupal_json_output($aCurricula);die();
   }
   
+  
+  
+  public function getCurricula($aTypes, $sLang='de')
+  {
+  
+  	if($sLang === 'de')
+  		$sLang = 'und';
+  	
+  	
+  	foreach($aTypes as $sType){
+  		
+	  	$query = new EntityFieldQuery();
+	    $query
+	      ->entityCondition('entity_type', 'taxonomy_vocabulary', '=')
+	      ->propertyCondition('machine_name', $sType.'_%', 'LIKE')
+	      ->propertyCondition('weight', '0', '<')
+	    ;
+	    $aVocabulary = $query->execute();
+	    foreach($aVocabulary['taxonomy_vocabulary'] as $iVID => $aVID)
+	    {
+	      $oVocabulary = taxonomy_vocabulary_load($iVID, 0); 
+	      $aCurricula[] = array('vid'=>$oVocabulary->vid, 'name'=>$oVocabulary->name, 'type'=>$oVocabulary->currtype['und'][0]['value'],
+	                            'faculty'=>$oVocabulary->faculty['und'][0]['value'],'version'=>$oVocabulary->version['und'][0]['value']);
+	    } 
+  	}
+  	return $aCurricula;
+  }
   /**
    * JSON Service for Curricula Tree
    * TODO: Taxonomieauswahl - Übergabe eigener service
