@@ -10,7 +10,6 @@ set_time_limit(600);
 
 include_once dirname(__FILE__). '/ceus_importer.inc.php';
 include_once dirname(__FILE__). '/content_manager.inc.php';
-include_once dirname(__FILE__). '/pdf_creator.inc.php';
 
 /**
  * Implements hook_help().
@@ -84,10 +83,9 @@ function stukowin_retreive()
 {
   include_once dirname(__FILE__).'/stukowin.install';
   // Call Module Installer - so you don't have to install the module for every change
-// stukowin_uninstall(); 
-// die("des woas");
   //  Call Module Uninstaller to de-register the content type
-// stukowin_install();die('fäddisch');
+// stukowin_uninstall(); 
+// stukowin_install();die('fÃ¤ddisch');
   $oCeusImporter = new ceus_importer();
   if($oCeusImporter->connect())
   {
@@ -95,21 +93,6 @@ function stukowin_retreive()
   }
   else return $oCeusImporter->get_error();
 
-}
-
-function ideal_curriculum()
-{
-    $form = array();
-  $form['stukowin_ceus_api_url'] = array(
-   '#type' => 'textfield',
-    '#title' => t('URL to CEUS API'),
-    '#default_value' => variable_get('stukowin_ceus_api_url', 'https://lss.jku.at/studienhandbuch/api/0.1/'),
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#description' => t("The URL to CEUS API"),
-    '#required' => TRUE,      
-  );
-  return system_settings_form($form);
 }
 
 
@@ -149,15 +132,6 @@ function stukowin_curricula()
   drupal_add_css(drupal_get_path('module', 'stukowin') .'/css/curriculum_style.css');
   drupal_add_js(drupal_get_path('module', 'stukowin') .'/js/graph.js');
   return '<div id="main" class="main"></div>';
-}
-
-/**
- * PDF-Service for Curricula
- */
-function stukowin_get_PDF($iNodeID)
-{
-  $oPdf = new overviewPDF();
-  $oPdf->createPDF($iNodeID);
 }
 
 /**
@@ -207,30 +181,5 @@ function stukowin_menu()
     'access arguments' => array('access content'),
     'type' => MENU_NORMAL_ITEM,
   );  
-   $items['stukowin/pdf'] = array(
-    'title' => 'PDF',
-    'page callback' => 'stukowin_get_PDF',
-    'access callback' => 'user_access',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  ); 
   return $items;
 }
-
-/** 
-* Implements hook_node_info() to provide our stukowin type. 
-*/ 
-function stukowin_node_info() 
-{ 
-  return array( 
-    'stukowin' => array( 
-      'name' => t('LVA'), 
-      'base' => 'stukowin', 
-      'description' => t('Use this content type to post a LVA.'), 
-      'has_title' => TRUE, 
-      'title_label' => t('Job Title'), 
-      'help' => t('Enter the job title, 
-      job description, and the name of the company that posted the job'), 
-    ), 
-  ); 
-} 
