@@ -191,9 +191,9 @@ function stukowin_ckeditor_plugin() {
   return array(
         'plugin_name' => array(
             // Plugin name.
-            'name' => 'abbr',
+            'name' => 'stukowin_curriculum',
             // Plugin description - it will be displayed in the plugins management section of the profile settings.
-            'desc' => t('Plugin description'),
+            'desc' => t('Insert taxonomy'),
             // The full path to the CKEditor plugin directory, trailing slash included.
             'path' => drupal_get_path('module', 'stukowin') . '/stuktowin_curriculum/',
             // Plugin buttons definition (optional).
