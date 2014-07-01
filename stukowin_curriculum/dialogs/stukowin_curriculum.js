@@ -34,6 +34,8 @@ CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
                                 id: 'taxonomy',
                                 label: 'Select the taxonomy you want to insert:',
                                 items: items,
+                                multiple: true,
+                                size: items.length,
                                 onChange: function(api) {
                                     // this = CKEDITOR.ui.dialog.select
                                     alert('Current value: ' + this.getValue());
@@ -52,21 +54,24 @@ CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
 			// http://docs.ckeditor.com/#!/api/CKEDITOR.dialog
 			var dialog = this;
 
+                        // create link attribute for the css file
+                        var css = editor.document.createElement('link');
+                        css.setAttribute('rel', 'stylesheet');
+                        css.setAttribute('type', 'text/css');
+                        css.setAttribute('href', 'sites/all/modules/stukowin/css/curriculum_style.css');
+                        editor.insertElement(css);
+                        
 			// Creates a new <div> element.
 			var div = editor.document.createElement( 'div' );
-                        
-			// Set element attribute and text, by getting the defined field values.
 			div.setAttribute( 'vid', dialog.getValueOf( 'currdialog', 'taxonomy' ) );
-			div.setAttribute( 'class', 'curriculum_display');
+			div.setAttribute( 'id', 'curriculum_display');
                         alert(div.vid);
 			editor.insertElement( div );
+                        
+                        // create script 
                         var script = editor.document.createElement('script');
                         script.setAttribute( 'src', 'sites/all/modules/stukowin/js/graph.js');
                         editor.insertElement( script );
-                        var css = editor.document.createElement('link');
-                        css.setAttrbute('rel', 'stylesheet');
-                        css.setAttrbute('type', 'text/css');
-                        css.setAttrbute('href', 'sites/all/modules/stukowin/css/curriculum_style.css');
 		}
 	};
 });
