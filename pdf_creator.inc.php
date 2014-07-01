@@ -68,7 +68,7 @@ class overviewPDF extends TCPDF {
 		$this->MultiCell ( 0, 0, 'Version ' . $oCurriculum ['version'], 0, 'C' );
 		$this->printCurriculum ( $oCurriculum );
 		$this->createTOCPage ();
-		$sFilename = $this->getUniqueFileName ($oCurriculum['type'], $oCurriculum['version']);
+		$sFilename = $this->getUniqueFileName ( $oCurriculum ['type'], $oCurriculum ['version'] );
 		$this->Output ( $sFilename, 'F' );
 		return 'PDF successfully created at ' . $sFilename;
 	}
@@ -96,9 +96,9 @@ class overviewPDF extends TCPDF {
 	 *        	The verision of the curriculum (e.g. 2013W)
 	 */
 	private function getUniqueFilename($sCurrType, $sCurrVersion) {
-		$sCoreName = dirname ( __FILE__ ) . '/LVA-Übersicht Wirtschaftsinformatik ' . $oCurriculum ['type'] . ' ' . $oCurriculum ['version'];
+		$sCoreName = dirname ( __FILE__ ) . '/LVA-Übersicht Wirtschaftsinformatik ' . $sCurrType . ' ' . $sCurrVersion;
 		$sFilename = $sCoreName . '.pdf';
-		var_dump($sFilename);
+		var_dump ( $sFilename );
 		if (file_exists ( $sFilename )) {
 			for($i = 1; file_exists ( $sFilename ); $i ++) {
 				$sFilename = $sCoreName . '(' . $i . ').pdf';
@@ -187,14 +187,14 @@ EOT;
 		$sHTML = '';
 		switch ($oCourse->lva->lvatype) {
 			case '1' :
-				$sHTML .= '<tr nobr="true"><td></td><td><B>' . $oCourse->lva->typename . ' ' . $oCourse->lva->title . '</B></td><td></td><td></td></tr>';
+				$sHTML .= '<tr nobr="true" style="word-break: break-all;word-wrap:break-word;"><td></td><td><B>' . $oCourse->lva->typename . ' ' . $oCourse->lva->title . '</B></td><td></td><td></td></tr>';
 				break;
 			case '2' :
-				$sHTML .= '<tr nobr="true"><td></td><td><I>' . $oCourse->lva->typename . ' ' . $oCourse->lva->title . '</I></td><td></td><td></td></tr>';
+				$sHTML .= '<tr nobr="true" style="word-break: break-all;word-wrap:break-word;"><td></td><td><I>' . $oCourse->lva->typename . ' ' . $oCourse->lva->title . '</I></td><td></td><td></td></tr>';
 				break;
 			case '3' :
 			default :
-				$sHTML .= '<tr nobr="true"><td align="center">' . $oCourse->lva->lvtypshort . '</td><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->wst . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
+				$sHTML .= '<tr nobr="true" style="word-break: break-all;word-wrap:break-word;"><td align="center">' . $oCourse->lva->lvtypshort . '</td><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->wst . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
 				break;
 		}
 		if (property_exists ( $oCourse, 'children' ))
