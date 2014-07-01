@@ -3,8 +3,16 @@ var kurse = {}, toplevel = [];
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
 **/
-$(document).ready(function () {
-	$.ajax({
+jQuery(document).ready(function () {
+        var head  = jQuery('head')[0];
+        var link  = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'sites/all/modules/stukowin/js/graph.js';
+        link.media = 'all';
+        head.appendChild(link);
+    
+	jQuery.ajax({
 		url: "http://drupal.dafalias.com/stukowin/crclmlst",
 		dataType: 'json',
 		success: function (result) {
@@ -15,23 +23,23 @@ $(document).ready(function () {
 			alert(request.status);
 		},
 	});
-	//$.getJSON("http://drupal.dafalias.com/stukowin/crclmlst", gc);
-	$(".main").on("click", ".button", function (event) {
-		if ($(this).hasClass("expander")) {
-			expand_reduce($(this).closest("div.fach, div.modul"));
-		} else if ($(this).hasClass("empfohlen") && !($(this).hasClass("empty"))) {
-			showEmpfohlen($(this).closest("div.fach, div.modul, div.lv"));
-			$(this).toggleClass("active");
-		} else if ($(this).hasClass("voraussetzung") && !($(this).hasClass("empty"))) {
-			showVoraussetzungen($(this).closest("div.fach, div.modul, div.lv"));
-			$(this).toggleClass("active");
+	//jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclmlst", gc);
+	jQuery("#curriculum_display").on("click", ".button", function (event) {
+		if (jQuery(this).hasClass("expander")) {
+			expand_reduce(jQuery(this).closest("div.fach, div.modul"));
+		} else if (jQuery(this).hasClass("empfohlen") && !(jQuery(this).hasClass("empty"))) {
+			showEmpfohlen(jQuery(this).closest("div.fach, div.modul, div.lv"));
+			jQuery(this).toggleClass("active");
+		} else if (jQuery(this).hasClass("voraussetzung") && !(jQuery(this).hasClass("empty"))) {
+			showVoraussetzungen(jQuery(this).closest("div.fach, div.modul, div.lv"));
+			jQuery(this).toggleClass("active");
 		}
 	});
-	$(".main").on("click", "a.bedingung", function (event) {
-		if ($(this).hasClass("voraussetzung")) {
-			expandAndScrollToElement($(this).attr("id"), "#fc6554");
-		} else if ($(this).hasClass("empfohlen")) {
-			expandAndScrollToElement($(this).attr("id"), "#8ad758");
+	jQuery("#curriculum_display").on("click", "a.bedingung", function (event) {
+		if (jQuery(this).hasClass("voraussetzung")) {
+			expandAndScrollToElement(jQuery(this).attr("id"), "#fc6554");
+		} else if (jQuery(this).hasClass("empfohlen")) {
+			expandAndScrollToElement(jQuery(this).attr("id"), "#8ad758");
 		}
 		return false;
 	});
@@ -46,8 +54,8 @@ $(document).ready(function () {
 
 function gc(data) {
 	for (var i = 0; i < data.length; i++) {
-		if ($(".main").attr("id") == data[i]["type"]) {
-			$.getJSON("http://drupal.dafalias.com/stukowin/crclm/" + data[i]["vid"], fill_crclm);
+		if (jQuery("#curriculum_display").attr("vid") == data[i]["vid"]) {
+			jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclm/" + data[i]["vid"], fill_crclm);
 		}
 	};
 }
@@ -61,7 +69,7 @@ function fill_crclm(data) {
 		kurse[data[i]["tid"]] = data[i];
 	};
 	for (var key in kurse) {
-		$(".main").append(createDivs(kurse[key], 0));
+		jQuery("#curriculum_display").append(createDivs(kurse[key], 0));
 	};
 	expand_all();
 }
@@ -80,7 +88,7 @@ function showEmpfohlen(element) {
 	if ("empfohlen" in kurse[id]["lva"]) {
 		var list = '<div class="bedingung empfohlen">';
 		list += '<p class="bedingung empfohlen">Für diesen Kurs sind folgende Kurse empfohlen:</p><ul class="bedingung empfohlen">';
-		$.each(kurse[id]["lva"]["empfohlen"], function (key, val) {
+		jQuery.each(kurse[id]["lva"]["empfohlen"], function (key, val) {
 			list += '<li><a href="javascript:void(0)"   class="bedingung empfohlen" id="' + val + '">' + ("lvtypshort" in kurse[val]["lva"] ? kurse[val]["lva"]["lvtypshort"] + " " : "") + kurse[val]["lva"]["title"] + "</a></li>";
 		});
 		list += "</ul>";
@@ -103,7 +111,7 @@ function showVoraussetzungen(element) {
 	if ("vorraussetzung" in kurse[id]["lva"]) { // Falsch geschrieben in Testphase (Fabian der alte Spanier hat ein rollendes R^^)
 		var list = '<div class="bedingung voraussetzung">';
 		list += '<p class="bedingung voraussetzung">Folgende Kurse müssen verpflichtend vor diesem Kurs durchgeführt werden:</p><ul class="bedingung voraussetzung">';
-		$.each(kurse[id]["lva"]["vorraussetzung"], function (key, val) { // Falsch geschrieben (s.o.)
+		jQuery.each(kurse[id]["lva"]["vorraussetzung"], function (key, val) { // Falsch geschrieben (s.o.)
 			if (val in kurse) {
 				list += '<li><a href="javascript:void(0)" class="bedingung voraussetzung" id="' + val + '">' + ("lvtypshort" in kurse[val] ? kurse[val]["lva"]["lvtypshort"] + " " : "") + kurse[val]["lva"]["title"] + "</a></li>";
 			}
@@ -122,22 +130,22 @@ function expand_reduce(element) {
 	if (typeof element === "undefined" || !(typeof element === "object") || !(element.prop("tagName") == "DIV")) return;
 	var button = element.children("table.header").find("td.left.button.expander");
 	if (button.attr("alt") == "plus") {
-		button.css("background-image", 'url("/Drupal/Curriculum/Icons/Minus.png")');
+		button.css("background-image", 'url("sites/all/modules/stukowin/images/Minus.png")');
 		button.attr("alt", "minus");
 		button.attr("title", "Einklappen");
 	} else {
-		button.css("background-image", 'url("/Drupal/Curriculum/Icons/Plus.png")');
+		button.css("background-image", 'url("sites/all/modules/stukowin/images/Plus.png")');
 		button.attr("alt", "plus");
 		button.attr("title", "Ausklappen");
 	}
 	var children = element.children("div.fach, div.modul, div.lv")
 	if (children.hasClass("hidden")) {
 		children.each(function () {
-			$(this).slideDown("fast");
+			jQuery(this).slideDown("fast");
 		})
 	} else {
 		children.each(function () {
-			$(this).slideUp("fast");
+			jQuery(this).slideUp("fast");
 		});
 	}
 	children.toggleClass("hidden");
@@ -148,8 +156,8 @@ function expand_reduce(element) {
  * Expands all divs that are currently reduced
 **/
 function expand_all() {
-	$(".reduced").each(function () {
-		expand_reduce($(this));
+	jQuery(".reduced").each(function () {
+		expand_reduce(jQuery(this));
 	});
 }
 
@@ -160,17 +168,17 @@ function expand_all() {
 **/
 function expandAndScrollToElement(element, highlightColor) {
 	if (typeof element === "number" || typeof element === "string") {
-		element = $("div#" + element);
+		element = jQuery("div#" + element);
 	}
 	if (typeof element === "undefined") return;
 	if (typeof highlightColor === "undefined") {
 		highlightColor = "#90EE90";
 	}
 	element.parents(".reduced").each(function () {
-		expand_reduce($(this));
+		expand_reduce(jQuery(this));
 	});
 	if (!isFullyVisible(element)) {
-		$("html, body").animate({ scrollTop: element.offset().top }, { duration: 'slow', easing: 'swing' });
+		jQuery("html, body").animate({ scrollTop: element.offset().top }, { duration: 'slow', easing: 'swing' });
 	}
 	element.stop(true, true).effect("highlight", { color: highlightColor }, 3000);
 }
@@ -207,7 +215,7 @@ function createDivs(kurs, level, parentIsRoot) {
 				+ rightTds
 				+ '</tr></table>';
 			if ("children" in kurs) {
-				$.each(kurs["children"], function (key, val) {
+				jQuery.each(kurs["children"], function (key, val) {
 					div += createDivs(val, level + 1);
 				});
 			}
@@ -216,7 +224,7 @@ function createDivs(kurs, level, parentIsRoot) {
 	}else{
 		div = '<div class="abschnitt"><h1>' + kurs["name"] + '</h1></div>';
 		if ("children" in kurs) {
-			$.each(kurs["children"], function (key, val) {
+			jQuery.each(kurs["children"], function (key, val) {
 				div += createDivs(val, level + 1, true);
 			});
 		}
@@ -245,10 +253,10 @@ function createTds(kurs) {
 **/
 function isFullyVisible(elem) {
 	try {
-		var docViewTop = $(window).scrollTop();
-		var docViewBottom = docViewTop + $(window).height();
-		var elemTop = $(elem).offset().top;
-		var elemBottom = elemTop + $(elem).height();
+		var docViewTop = jQuery(window).scrollTop();
+		var docViewBottom = docViewTop + jQuery(window).height();
+		var elemTop = jQuery(elem).offset().top;
+		var elemBottom = elemTop + jQuery(elem).height();
 		return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 	} catch (e) {
 		return false;
