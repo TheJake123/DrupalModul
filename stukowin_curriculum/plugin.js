@@ -15,7 +15,7 @@ CKEDITOR.plugins.add( 'stukowin_curriculum', {
 	init: function( editor ) {
 
 		// Define an editor command that opens our dialog.
-		editor.addCommand( 'stukowin_curriculum', new CKEDITOR.dialogCommand( 'stukowin_curriculum_Dialog' ) );
+		editor.addCommand( 'stukowin_curriculum_Dialog', new CKEDITOR.dialogCommand( 'stukowin_curriculum_Dialog' ) );
 
 		// Create a toolbar button that executes the above command.
 		editor.ui.addButton( 'stukowin_curriculum', {

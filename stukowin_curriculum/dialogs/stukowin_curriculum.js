@@ -4,7 +4,16 @@
  */
 
 // Our dialog definition.
-CKEDITOR.dialog.add( 'stukowin_curriculum', function( editor ) {
+CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
+        var items = new Array();
+        jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclmlst", function (data) {
+            for (var i = 0; i < data.length; i++) {
+                items.push(new Array(data[i]["name"], data[i]["vid"]));
+                
+            }
+        });
+        alert(JSON.stringify(items));
+        
 	return {
 
 		// Basic properties of the dialog window: title, minimum size.
@@ -14,15 +23,19 @@ CKEDITOR.dialog.add( 'stukowin_curriculum', function( editor ) {
                 
                 contents: [
                     {
+                        id: 'currdialog',
                         elements: [
                             {
-                                type: 'text',
+                                type: 'select',
                                 id: 'taxonomy',
-                                label: 'Enter the taxonomy name you want to insert:',
-                                
-                                validate: CKEDITOR.dialog.validate.notEmpty( "Abbreviation field cannot be empty" )
+                                label: 'Select the taxonomy you want to insert:',
+                                items: items,
+                                onChange: function(api) {
+                                    // this = CKEDITOR.ui.dialog.select
+                                    alert('Current value: ' + this.getValue());
+                                },
                             }
-                        ]  
+                        ]
                     }
                     
                 ],
@@ -39,9 +52,9 @@ CKEDITOR.dialog.add( 'stukowin_curriculum', function( editor ) {
 			var div = editor.document.createElement( 'div' );
                         
 			// Set element attribute and text, by getting the defined field values.
-			div.setAttribute( 'id', dialog.getValueOf( 'taxonomy' ) );
-			div.setAttribute( 'class', curriculum);
-
+			div.setAttribute( 'vid', dialog.getValueOf( 'currdialog', 'taxonomy' ) );
+			div.setAttribute( 'class', 'curriculum');
+                        alert(div);
 			editor.insertElement( div );
 		}
 	};
