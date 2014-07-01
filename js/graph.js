@@ -4,6 +4,14 @@ var kurse = {}, toplevel = [];
  * Gets list of all courses from test JSON file and sets up event handlers
 **/
 jQuery(document).ready(function () {
+        var head  = jQuery('head')[0];
+        var link  = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'sites/all/modules/stukowin/js/graph.js';
+        link.media = 'all';
+        head.appendChild(link);
+    
 	jQuery.ajax({
 		url: "http://drupal.dafalias.com/stukowin/crclmlst",
 		dataType: 'json',
@@ -16,7 +24,7 @@ jQuery(document).ready(function () {
 		},
 	});
 	//jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclmlst", gc);
-	jQuery(".main").on("click", ".button", function (event) {
+	jQuery("#curriculum_display").on("click", ".button", function (event) {
 		if (jQuery(this).hasClass("expander")) {
 			expand_reduce(jQuery(this).closest("div.fach, div.modul"));
 		} else if (jQuery(this).hasClass("empfohlen") && !(jQuery(this).hasClass("empty"))) {
@@ -27,7 +35,7 @@ jQuery(document).ready(function () {
 			jQuery(this).toggleClass("active");
 		}
 	});
-	jQuery(".main").on("click", "a.bedingung", function (event) {
+	jQuery("#curriculum_display").on("click", "a.bedingung", function (event) {
 		if (jQuery(this).hasClass("voraussetzung")) {
 			expandAndScrollToElement(jQuery(this).attr("id"), "#fc6554");
 		} else if (jQuery(this).hasClass("empfohlen")) {
@@ -46,7 +54,7 @@ jQuery(document).ready(function () {
 
 function gc(data) {
 	for (var i = 0; i < data.length; i++) {
-		if (jQuery(".main").attr("id") == data[i]["type"]) {
+		if (jQuery("#curriculum_display").attr("vid") == data[i]["vid"]) {
 			jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclm/" + data[i]["vid"], fill_crclm);
 		}
 	};
@@ -61,7 +69,7 @@ function fill_crclm(data) {
 		kurse[data[i]["tid"]] = data[i];
 	};
 	for (var key in kurse) {
-		jQuery(".main").append(createDivs(kurse[key], 0));
+		jQuery("#curriculum_display").append(createDivs(kurse[key], 0));
 	};
 	expand_all();
 }
@@ -122,11 +130,11 @@ function expand_reduce(element) {
 	if (typeof element === "undefined" || !(typeof element === "object") || !(element.prop("tagName") == "DIV")) return;
 	var button = element.children("table.header").find("td.left.button.expander");
 	if (button.attr("alt") == "plus") {
-		button.css("background-image", 'url("/Drupal/Curriculum/Icons/Minus.png")');
+		button.css("background-image", 'url("sites/all/modules/stukowin/images/Minus.png")');
 		button.attr("alt", "minus");
 		button.attr("title", "Einklappen");
 	} else {
-		button.css("background-image", 'url("/Drupal/Curriculum/Icons/Plus.png")');
+		button.css("background-image", 'url("sites/all/modules/stukowin/images/Plus.png")');
 		button.attr("alt", "plus");
 		button.attr("title", "Ausklappen");
 	}
