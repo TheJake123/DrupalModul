@@ -57,12 +57,16 @@ CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
                         
 			// Set element attribute and text, by getting the defined field values.
 			div.setAttribute( 'vid', dialog.getValueOf( 'currdialog', 'taxonomy' ) );
-			div.setAttribute( 'class', 'curriculum');
+			div.setAttribute( 'class', 'curriculum_display');
                         alert(div.vid);
 			editor.insertElement( div );
                         var script = editor.document.createElement('script');
                         script.setAttribute( 'src', 'sites/all/modules/stukowin/js/graph.js');
                         editor.insertElement( script );
+                        var css = editor.document.createElement('link');
+                        css.setAttrbute('rel', 'stylesheet');
+                        css.setAttrbute('type', 'text/css');
+                        css.setAttrbute('href', 'sites/all/modules/stukowin/css/curriculum_style.css');
 		}
 	};
 });

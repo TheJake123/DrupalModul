@@ -16,7 +16,7 @@ jQuery(document).ready(function () {
 		},
 	});
 	//jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclmlst", gc);
-	jQuery(".main").on("click", ".button", function (event) {
+	jQuery(".curriculum_display").on("click", ".button", function (event) {
 		if (jQuery(this).hasClass("expander")) {
 			expand_reduce(jQuery(this).closest("div.fach, div.modul"));
 		} else if (jQuery(this).hasClass("empfohlen") && !(jQuery(this).hasClass("empty"))) {
@@ -27,7 +27,7 @@ jQuery(document).ready(function () {
 			jQuery(this).toggleClass("active");
 		}
 	});
-	jQuery(".main").on("click", "a.bedingung", function (event) {
+	jQuery(".curriculum_display").on("click", "a.bedingung", function (event) {
 		if (jQuery(this).hasClass("voraussetzung")) {
 			expandAndScrollToElement(jQuery(this).attr("id"), "#fc6554");
 		} else if (jQuery(this).hasClass("empfohlen")) {
@@ -46,7 +46,7 @@ jQuery(document).ready(function () {
 
 function gc(data) {
 	for (var i = 0; i < data.length; i++) {
-		if (jQuery(".main").attr("id") == data[i]["type"]) {
+		if (jQuery(".curriculum_display").attr("vid") == data[i]["vid"]) {
 			jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclm/" + data[i]["vid"], fill_crclm);
 		}
 	};
@@ -61,7 +61,7 @@ function fill_crclm(data) {
 		kurse[data[i]["tid"]] = data[i];
 	};
 	for (var key in kurse) {
-		jQuery(".main").append(createDivs(kurse[key], 0));
+		jQuery(".curriculum_display").append(createDivs(kurse[key], 0));
 	};
 	expand_all();
 }
