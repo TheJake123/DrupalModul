@@ -446,7 +446,7 @@ function _stukowin_installed_instances()
       ),
       'settings' => array(
         'relation_view' => 'relation_select_node:default',
-        'relation_type' => 'voraussetzung',
+        'relation_type' => 'empfehlung',
       ),
       'default_value' => array(
           '',

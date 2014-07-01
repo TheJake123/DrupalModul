@@ -188,6 +188,7 @@ class ceus_importer
     $oNode = node_submit($oNode);
 
     node_save($oNode);
+    return $oNode->nid;
   }
 
   /**
@@ -222,7 +223,7 @@ class ceus_importer
    * @param string $sTitle LVA title
    * @return mixed term-ID or false
    */
-  private function find_termid_by_field($sFieldtype, $sFieldcontent)
+  private function find_nodeid_by_field($sFieldtype, $sFieldcontent)
   {
     $oQuery = new EntityFieldQuery();
     if($sFieldtype == "code")
@@ -248,7 +249,7 @@ class ceus_importer
       $aArray = array_keys($aEntities['node']);
       $aArray = array_shift($aArray);
       $oNode = node_load($aArray);
-      return $oNode->term['und'][0]['tid'];
+      return $oNode->nid;
     }
     else return false;
   }
@@ -279,7 +280,7 @@ class ceus_importer
     $aIDs = array();
     foreach($aTitles as $i=>$sTitle) 
     {
-      $iLVA = $this->find_termid_by_field ('title',$sTitle);
+      $iLVA = $this->find_nodeid_by_field ('title',$sTitle);
       $aIDs[$i] = $iLVA;
     }
     // Step 3: extract all a href and parse for <span id="code">
@@ -288,7 +289,7 @@ class ceus_importer
       if(empty($aIDs[$i]))
       {
         $sCode = $this->parse_link_term_code($aLinks[$i]);
-        $aIDs[$i] = $this->find_termid_by_field('code', $sCode);
+        $aIDs[$i] = $this->find_nodeid_by_field('code', $sCode);
       }
     }
     return $aIDs;
@@ -297,9 +298,61 @@ class ceus_importer
   
   private function process_relations()
   {
+    $aSuggested = array();
+    $aRequired = array();
     foreach($this->aRelations as $iID=>$sRelationfield)
     {
-      $aBlub[$iID] = $this->get_term_ids($sRelationfield);
+      if(strtolower(substr($sRelationfield,0,9))== 'empfohlen') $aSuggested[$iID] = $this->get_term_ids($sRelationfield);
+      else $aRequired[$iID] = $this->get_term_ids($sRelationfield);      
+    }
+    foreach($aRequired as $iNodeID=>$aReqNodeID)
+    {
+      $aReqs = array();
+      $aRid = array();
+      echo('<pre>');
+      print_r($aReqNodeID);
+      echo('</pre>');
+      foreach($aReqNodeID as $iReqNodeID)
+      {
+        $aEndpoints = array(array('entity_type' => 'node', 'entity_id' => $iNodeID),
+                            array('entity_type' => 'node', 'entity_id' => $iReqNodeID));
+                        echo('<pre>');
+                        print_r($aEndpoints);
+                        echo('</pre>');
+        $oRelation = relation_create('voraussetzung',$aEndpoints);
+        #$aRid[] = relation_save($oRelation);
+        
+      }
+      if(!empty($aRid)) 
+      {
+        $oNode = node_load($iNodeID);
+        $oNode->voraussetzung['und']= $aRid;
+        node_save($oNode);
+      }
+    }
+    foreach($aSuggested as $iNodeID=>$aReqNodeID)
+    {
+      $aReqs = array();
+      $aRid = array();
+      echo('<pre>');
+      print_r($aReqNodeID);
+      echo('</pre>');
+      foreach($aReqNodeID as $iReqNodeID)
+      {
+        $aEndpoints = array(array('entity_type' => 'node', 'entity_id' => $iNodeID),
+                            array('entity_type' => 'node', 'entity_id' => $iReqNodeID));
+        echo('<pre>');
+                        print_r($aEndpoints);
+                        echo('</pre>');
+        $oRelation = relation_create('empfehlung',$aEndpoints);
+        #$iRid = relation_save($oRelation);
+      }
+      if(!empty($aRid)) 
+      {
+        $oNode = node_load($iNodeID);
+        $oNode->voraussetzung['und']= $aRid;
+        node_save($oNode);
+      }
     }
   }
   
@@ -332,7 +385,6 @@ class ceus_importer
         {
           $oTerm->tid = $aCurrTerms[$aDetail['de']['id']]->tid;
         }
-        if(!empty($aDetail['de']['voraussetzungen']) && $this->has_relation($aDetail['de']['voraussetzungen'])) $this->aRelations[$aDetail['de']['id']] = $aDetail['de']['voraussetzungen'];
         $sLvtyp = empty($aDetail['de']['lvtypshort']) ? '' : " ({$aDetail['de']['lvtypshort']})";
         $oTerm->name = $aDetail['de']['typename'].': '.$aDetail['de']['title'] . $sLvtyp;
         $oTerm->description = $aDetail['de']['id'];
@@ -340,7 +392,8 @@ class ceus_importer
         $oTerm->parent = $iParentID;
         $oTerm->weight = $iWeight;
         taxonomy_term_save($oTerm);
-        $this->save_node($aDetail, $oTerm->tid);       
+        $iNodeID = $this->save_node($aDetail, $oTerm->tid);       
+        if(!empty($aDetail['de']['voraussetzungen']) && $this->has_relation($aDetail['de']['voraussetzungen'])) $this->aRelations[$iNodeID] = $aDetail['de']['voraussetzungen'];
         $iWeight++;
           
         $this->get_details($aBranch['subtree'], $oTerm->tid, $iCurriculumID);
@@ -365,7 +418,7 @@ class ceus_importer
         $this->check_vocabulary($aCurriculum);
         $aCurrTree[$aCurriculum['id']] = $this->get_curriculum($aCurriculum['id']);
         $this->get_details($aCurrTree[$aCurriculum['id']]['tree'], 0, $aCurriculum['id']);
-        $this->process_relations();
+       # $this->process_relations();
         
       }
       return 'Import successful';
