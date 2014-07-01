@@ -6,13 +6,17 @@
 // Our dialog definition.
 CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
         var items = new Array();
-        jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclmlst", function (data) {
-            for (var i = 0; i < data.length; i++) {
-                items.push(new Array(data[i]["name"], data[i]["vid"]));
-                
-            }
-        });
-        alert(JSON.stringify(items));
+		jQuery.ajax({ url: 'http://drupal.dafalias.com/stukowin/crclmlst', 
+			async: false,
+			dataType: 'json',
+			success: function(data) {
+				for (var i = 0; i < data.length; i++) {
+					items.push(new Array(data[i]["name"], data[i]["vid"]));
+				}
+			}
+		});
+
+        //alert(JSON.stringify(items));
         
 	return {
 
@@ -54,8 +58,11 @@ CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
 			// Set element attribute and text, by getting the defined field values.
 			div.setAttribute( 'vid', dialog.getValueOf( 'currdialog', 'taxonomy' ) );
 			div.setAttribute( 'class', 'curriculum');
-                        alert(div);
+                        alert(div.vid);
 			editor.insertElement( div );
+                        var script = editor.document.createElement('script');
+                        script.setAttribute( 'src', 'sites/all/modules/stukowin/js/graph.js');
+                        editor.insertElement( script );
 		}
 	};
 });
