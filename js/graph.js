@@ -8,9 +8,9 @@ jQuery(document).ready(function () {
 	var link  = document.createElement('link');
 	link.rel  = 'stylesheet';
 	link.type = 'text/css';
-	link.href = 'sites/all/modules/stukowin/css.curriculum_style.css';
+	link.href = 'sites/all/modules/stukowin/css/curriculum_style.css';
 	link.media = 'all';
-	//head.appendChild(link);
+	head.appendChild(link);
 	
 	var type = jQuery("#curriculum_display").data("currtype");
 	var currList = jQuery("#curriculum_display").data("curriculums").split(" ");
