@@ -4,16 +4,21 @@ var kurse = {}, toplevel = [];
  * Gets list of all courses from test JSON file and sets up event handlers
 **/
 jQuery(document).ready(function () {
-        var head  = jQuery('head')[0];
-        var link  = document.createElement('link');
-        link.rel  = 'stylesheet';
-        link.type = 'text/css';
-        link.href = 'sites/all/modules/stukowin/css/curriculum.css';
-        link.media = 'all';
-        head.appendChild(link);
-    
+	var head  = jQuery('head')[0];
+	var link  = document.createElement('link');
+	link.rel  = 'stylesheet';
+	link.type = 'text/css';
+	link.href = 'sites/all/modules/stukowin/css.curriculum_style.css';
+	link.media = 'all';
+	//head.appendChild(link);
+	
+	var type = jQuery("#curriculum_display").data("currtype");
+	var currList = jQuery("#curriculum_display").data("curriculums").split(" ");
+	var reqUrl = "http://sir.profflasche.at:8081/drupal/?q=stukowin/crclmlst";
+	reqUrl = buildRequest(reqUrl, type, currList);
+	
 	jQuery.ajax({
-		url: "http://drupal.dafalias.com/stukowin/crclmlst",
+		url: reqUrl,
 		dataType: 'json',
 		success: function (result) {
 			gc(result);
@@ -21,9 +26,9 @@ jQuery(document).ready(function () {
 		error: function (request, textStatus, errorThrown) {
 			alert(textStatus + ": " + errorThrown);
 			alert(request.status);
-		},
+		}
 	});
-	//jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclmlst", gc);
+
 	jQuery("#curriculum_display").on("click", ".button", function (event) {
 		if (jQuery(this).hasClass("expander")) {
 			expand_reduce(jQuery(this).closest("div.fach, div.modul"));
@@ -53,11 +58,23 @@ jQuery(document).ready(function () {
 **/
 
 function gc(data) {
+	jQuery("#curriculum_display");
+	var select = document.createElement("select");
+	select.id = "curr_select";
 	for (var i = 0; i < data.length; i++) {
-		if (jQuery("#curriculum_display").attr("vid") == data[i]["vid"]) {
-			jQuery.getJSON("http://drupal.dafalias.com/stukowin/crclm/" + data[i]["vid"], fill_crclm);
-		}
+		var option = document.createElement("option");
+		option.value = data[i]["vid"];
+		option.textContent = data[i]["name"];
+		select.appendChild(option);
 	};
+	select.onchange=function(){
+		var selectElem = document.getElementById("curr_select");
+		var currId = selectElem.options[selectElem.selectedIndex].value;
+		jQuery.getJSON("http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/" + currId, fill_crclm);
+		clearDiv();
+	};
+	jQuery("#curriculum_display").append(select);
+	jQuery.getJSON("http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/" + data[0]["vid"], fill_crclm);
 }
 
 /**
@@ -261,4 +278,24 @@ function isFullyVisible(elem) {
 	} catch (e) {
 		return false;
 	}
+}
+
+function buildRequest(baseUrl, type, curriculums) {
+	var url = baseUrl;
+	if(baseUrl.indexOf("?") >= 0){
+		baseUrl += "&";
+	}else{
+		baseUrl += "?";
+	}
+	baseUrl += "currtype=";
+	baseUrl += type;
+	for(var i = 0; i < curriculums.length; i++){
+		baseUrl += "&taxtypes[]=";
+		baseUrl += curriculums[i];
+	}
+	return baseUrl;
+}
+
+function clearDiv() {
+	jQuery("#curriculum_display > div").remove();
 }
