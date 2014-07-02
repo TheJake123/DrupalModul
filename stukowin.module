@@ -265,7 +265,7 @@ function stukowin_taxonomy_menu($form, &$form_state) {
  * @param unknown $form_state        	
  */
 function stukowin_taxonomy_menu_submit($form, &$form_state) {
-	$sTaxonomyType = $form_state ['values'] ['type_select'] ? 'itsv' : 'specialisation';
+	$sTaxonomyType = $form_state ['values'] ['type_select'] ? 'specialisation' : 'itsv';
 	$oContentManager = new content_manager ();
 	$oSourceCurr = $oContentManager->getCurriculum ( $form_state ['values'] ['curriculum_select'] );
 	
