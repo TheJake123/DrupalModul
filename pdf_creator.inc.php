@@ -99,6 +99,8 @@ class overviewPDF extends TCPDF {
 	 *        	The verision of the curriculum (e.g. 2013W)
 	 */
 	private function getUniqueFilename($sCurrType, $sCurrVersion) {
+		if (! file_exists ( DRUPAL_ROOT . '/sites/default/files/images/pdf/archive/' ))
+			mkdir ( DRUPAL_ROOT . '/sites/default/files/images/pdf/archive/', 0777, true );
 		$sCoreName = DRUPAL_ROOT . '/sites/default/files/images/pdf/Archive/LVA-Übersicht Wirtschaftsinformatik ' . $sCurrType . ' ' . $sCurrVersion;
 		$sFilename = $sCoreName . '.pdf';
 		if (file_exists ( $sFilename )) {
@@ -119,8 +121,6 @@ class overviewPDF extends TCPDF {
 	private function printCurriculum($oCurriculum) {
 		$this->AddPage ();
 		$aCourses = $this->getCourses ( $oCurriculum ['vid'] );
-		$this->MultiCell ( 0, 0, var_export ( $aCourses, true ) );
-		
 		$this->SetFontSize ( 20 );
 		$this->printHeading ( strtoupper ( $oCurriculum ['type'] ), 0, false, 'C' );
 		$this->SetFont ( 'times', '', 12 );
