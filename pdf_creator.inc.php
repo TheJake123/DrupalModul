@@ -45,7 +45,7 @@ class overviewPDF extends TCPDF {
 		// create new PDF document
 		$this->setFont ( 'times', '', 12 );
 		$this->setCellPaddings ( 0, 0, 0, 0 );
-		$oCurriculum = overviewPDF::getCurriculum ( $iVID );
+		$oCurriculum = (new content_manager ())->getCurriculum ( $iVID );
 		// set document information
 		$this->SetCreator ( PDF_CREATOR );
 		$this->SetAuthor ( 'StukoWIN' );
@@ -253,22 +253,6 @@ EOT;
 			$this->Bookmark ( ($bShowIndex ? $iIndex . ') ' : '') . $sText, $iLevel );
 		$this->MultiCell ( 0, 0, ($bShowIndex ? $iIndex . ') ' : '') . $sText, '', $sAlign, false, 1, '', '', true, 0, false, false );
 		$this->Ln ();
-	}
-	/**
-	 * Gets all curricula in the database
-	 *
-	 * @return array The array of all curriculum items
-	 */
-	private static function getCurriculum($iVID) {
-		$oVocabulary = taxonomy_vocabulary_load ( $iVID, 0 );
-		$oCurriculum = array (
-				'vid' => $oVocabulary->vid,
-				'name' => $oVocabulary->name,
-				'type' => $oVocabulary->currtype ['und'] [0] ['value'],
-				'faculty' => $oVocabulary->faculty ['und'] [0] ['value'],
-				'version' => $oVocabulary->version ['und'] [0] ['value'] 
-		);
-		return $oCurriculum;
 	}
 	/**
 	 * Gets all courses for a given curriculum id
