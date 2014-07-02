@@ -268,20 +268,20 @@ class ceus_importer
     $aTitlesLI = array();
     foreach($aA as $oElement)
     {
-      $aTitlesA[$oElement->plaintext] = $oElement->plaintext;
+      $aTitlesA[$oElement->plaintext] = trim($oElement->plaintext);
       $aLinks[$oElement->plaintext] = $oElement->href;
     }
     foreach($aLI as $oElement)
     {
-      $aTitlesLI[$oElement->plaintext] = $oElement->plaintext;
+      $aTitlesLI[$oElement->plaintext] = trim($oElement->plaintext);
     }
     $aTitles = array_merge($aTitlesA,$aTitlesLI);
     // Step 2: try to get lva id by title
     $aIDs = array();
     foreach($aTitles as $i=>$sTitle) 
     {
-      $iLVA = $this->find_nodeid_by_field ('title',$sTitle);
-      $aIDs[$i] = $iLVA;
+      $iNodeID = $this->find_nodeid_by_field ('title',$sTitle);
+      if(!empty($iNodeID)) $aIDs[trim($i)] = $iNodeID;
     }
     // Step 3: extract all a href and parse for <span id="code">
     foreach($aTitlesA as $i=>$sTitle) 
@@ -289,44 +289,78 @@ class ceus_importer
       if(empty($aIDs[$i]))
       {
         $sCode = $this->parse_link_term_code($aLinks[$i]);
-        $aIDs[$i] = $this->find_nodeid_by_field('code', $sCode);
+        $iNodeID = $this->find_nodeid_by_field('code', $sCode);
+        if(!empty($iNodeID)) $aIDs[trim($i)] = $iNodeID;
       }
     }
     return $aIDs;
   }
   
+  /**
+   * Test method to extract all values from voraussetzungen and process them without having to reload
+   * all data from CEUS server
+   */
+  private function test_make_relations()
+  {
+    $oQuery = new EntityFieldQuery();
+      $aEntities = $oQuery->entityCondition('entity_type', 'node')
+      ->propertyCondition('type', 'stukowin')
+      ->fieldCondition('voraussetzungen', 'value', 'NULL', '!=')
+      ->propertyOrderBy('nid')
+      ->execute();
+    if (!empty($aEntities['node'])) 
+    {
+      $aArray = array_keys($aEntities['node']);
+      $aNodes = node_load_multiple($aArray);
+      $this->aRelations = array();
+      foreach($aNodes as $iNodeID=>$oNode)
+      {
+        if(substr($oNode->voraussetzungen['und'][0]['value'],0,5) != 'keine')
+        {
+          $aVoraussetzungen = $oNode->voraussetzungen['und'][0]['value'];
+          if(!empty($aVoraussetzungen)) $this->aRelations[$iNodeID] = $aVoraussetzungen;
+        }
+      }
+    }
+    $this->process_relations();
+  }
   
+  /**
+   * Parses the voraussetzungen field an generates Relations for required and suggested courses
+   * and stores them in the node
+   */
   private function process_relations()
   {
     $aSuggested = array();
     $aRequired = array();
     foreach($this->aRelations as $iID=>$sRelationfield)
     {
-      if(strtolower(substr($sRelationfield,0,9))== 'empfohlen') $aSuggested[$iID] = $this->get_term_ids($sRelationfield);
-      else $aRequired[$iID] = $this->get_term_ids($sRelationfield);      
+      if(strtolower(substr($sRelationfield,0,9))== 'empfohlen') 
+      {
+        $aNodeIDs = $this->get_term_ids($sRelationfield);
+        if(!empty($aNodeIDs)) $aSuggested[$iID] = $aNodeIDs;
+      }
+      else 
+      {
+        $aNodeIDs = $this->get_term_ids($sRelationfield);
+        if(!empty($aNodeIDs)) $aRequired[$iID] = $aNodeIDs;
+      }
     }
     foreach($aRequired as $iNodeID=>$aReqNodeID)
     {
       $aReqs = array();
       $aRid = array();
-      echo('<pre>');
-      print_r($aReqNodeID);
-      echo('</pre>');
       foreach($aReqNodeID as $iReqNodeID)
       {
         $aEndpoints = array(array('entity_type' => 'node', 'entity_id' => $iNodeID),
                             array('entity_type' => 'node', 'entity_id' => $iReqNodeID));
-                        echo('<pre>');
-                        print_r($aEndpoints);
-                        echo('</pre>');
         $oRelation = relation_create('voraussetzung',$aEndpoints);
-        #$aRid[] = relation_save($oRelation);
-        
+        $aRid[] = relation_save($oRelation);        
       }
       if(!empty($aRid)) 
       {
         $oNode = node_load($iNodeID);
-        $oNode->voraussetzung['und']= $aRid;
+        $oNode->voraussetzung['und'][0]['value']= $aRid;
         node_save($oNode);
       }
     }
@@ -334,23 +368,17 @@ class ceus_importer
     {
       $aReqs = array();
       $aRid = array();
-      echo('<pre>');
-      print_r($aReqNodeID);
-      echo('</pre>');
       foreach($aReqNodeID as $iReqNodeID)
       {
         $aEndpoints = array(array('entity_type' => 'node', 'entity_id' => $iNodeID),
                             array('entity_type' => 'node', 'entity_id' => $iReqNodeID));
-        echo('<pre>');
-                        print_r($aEndpoints);
-                        echo('</pre>');
         $oRelation = relation_create('empfehlung',$aEndpoints);
-        #$iRid = relation_save($oRelation);
+        $iRid[] = relation_save($oRelation);
       }
       if(!empty($aRid)) 
       {
         $oNode = node_load($iNodeID);
-        $oNode->voraussetzung['und']= $aRid;
+        $oNode->empfehlung['und'][0]['value']= $aRid;
         node_save($oNode);
       }
     }
@@ -398,7 +426,7 @@ class ceus_importer
           
         $this->get_details($aBranch['subtree'], $oTerm->tid, $iCurriculumID);
       }
-      return "bla";
+      return true;
     }
     else return false;
   }
@@ -418,7 +446,7 @@ class ceus_importer
         $this->check_vocabulary($aCurriculum);
         $aCurrTree[$aCurriculum['id']] = $this->get_curriculum($aCurriculum['id']);
         $this->get_details($aCurrTree[$aCurriculum['id']]['tree'], 0, $aCurriculum['id']);
-       # $this->process_relations();
+        $this->process_relations();
         
       }
       return 'Import successful';
