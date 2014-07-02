@@ -156,7 +156,7 @@ class content_manager {
 			for($i = 0; $i < count ( $aExistingNames ); $i ++) {
 				if ($aExistingNames [$i] == $sMachineName) {
 					$i = - 1;
-					$sMachineName = $sCoreName . '_' . $a;
+					$sMachineName = $sCoreName . (substr ( $sCoreName, - 1 ) == '_' ? '' : '_') . $a;
 					$a ++;
 				}
 			}

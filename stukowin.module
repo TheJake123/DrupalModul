@@ -238,7 +238,7 @@ function stukowin_taxonomy_menu($form, &$form_state) {
 	$form ['num_struc'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'Number of root elements' ),
-			'#description' => t ( 'Number of root elemets such as "1. Semester, 2. Semester" for ITSV to add automatically' ),
+			'#description' => t ( 'Number of root elemets (such as "1. Semester, 2. Semester etc." for ITSV) to add automatically' ),
 			'#required' => FALSE,
 			'#element_validate' => array (
 					'element_validate_integer_positive' 
@@ -282,7 +282,7 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
 			$sText = '. Abschnitt';
 		else
 			$sText = '. Semester';
-		for($i = 1; $i < $form_state ['values'] ['num_struc']; $i ++) {
+		for($i = 1; $i <= $form_state ['values'] ['num_struc']; $i ++) {
 			$oTerm = new stdClass ();
 			$oTerm->name = $i . $sText;
 			$oTerm->vid = $oVocabulary->vid;
