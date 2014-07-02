@@ -88,7 +88,7 @@ function fill_crclm(data) {
 	for (var key in kurse) {
 		jQuery("#curriculum_display").append(createDivs(kurse[key], 0));
 	};
-	expand_all();
+	//expand_all();
 }
 
 /**
@@ -212,10 +212,10 @@ function createDivs(kurs, level, parentIsRoot) {
 	if("lva" in kurs){
 		rightTds = createTds(kurs);
 		if (!("children" in kurs)) {
-			var clazz = parentIsRoot && parentIsRoot === true ? "" : " hidden"
-			div = '<div class="lv'+ clazz + '" id="' + kurs["tid"] + '">'
+			//var clazz = parentIsRoot && parentIsRoot === true ? "" : " hidden"
+			div = '<div class="lv'+ /*clazz +*/ '" id="' + kurs["tid"] + '">'
 				+ '<table class="header"><tr>'
-				+ '<td class="left ects"><p>' + ("lva" in kurs ? kurs["lva"]["lvtypshort"] : "") + '</p></td>'
+				+ '<td class="left ects"><p class="center" >' + ("lva" in kurs ? kurs["lva"]["lvtypshort"] : "") + '</p></td>'
 				+ rightTds
 				+ '</tr></table></div>';
 		} else {
@@ -224,11 +224,11 @@ function createDivs(kurs, level, parentIsRoot) {
 			} else if(!kurs["lva"]) {
 				typ = "fach";
 			} else {
-				typ = "modul hidden";
+				typ = "modul";
 			}
-			div = '<div class="' + typ + ' reduced" id="' + kurs["tid"] + '">'
+			 div = '<div class="' + typ + '" id="' + kurs["tid"] + '">'
 				+ '<table class="header"><tr>'
-				+ '<td class="left button expander" alt="plus" title="Ausklappen"></td>'
+				+ '<td class="left button expander" alt="minus" title="Ausklappen"></td>'
 				+ rightTds
 				+ '</tr></table>';
 			if ("children" in kurs) {
@@ -257,10 +257,10 @@ function createDivs(kurs, level, parentIsRoot) {
 function createTds(kurs) {
 	var anzVoraussetzungen = "voraussetzungen" in kurs ? kurs["lva"]["voraussetzungen"].length : 0;
 	var anzEmpfohlen = "empfohlen" in kurs ? kurs["lva"]["empfohlen"].length : 0;
-	var rightTds = '<td class="center"><p>' + ("lva" in kurs ? kurs["lva"]["title"] : kurs["name"]) + '</p></td>'
+	var rightTds = '<td class="center"><p class="center">' + ("lva" in kurs ? kurs["lva"]["title"] : kurs["name"]) + '</p></td>'
 			+ '<td class="right button voraussetzung' + (anzVoraussetzungen ? "" : " empty") + '" title="' + (anzVoraussetzungen ? anzVoraussetzungen + " verpflichtende Voraussetzung" + (anzVoraussetzungen > 1 ? "en" : "") : "Keine verpflichtenden Voraussetzungen") + '"/>'
 			+ '<td class="right button empfohlen' + (anzEmpfohlen ? "" : " empty") + '" title="' + (anzEmpfohlen ? anzEmpfohlen + " empfohlene Voraussetzung" + (anzEmpfohlen > 1 ? "en" : "") : "Keine empfohlenen Voraussetzungen") + '"/>'
-			+ '<td class="right ects" title="ECTS"><p>' + ("lva" in kurs ? kurs["lva"]["ects"] : "")+ '</p></td>';
+			+ '<td class="right ects" title="ECTS"><p class="center">' + ("lva" in kurs ? kurs["lva"]["ects"] : "")+ '</p></td>';
 	return rightTds;
 }
 
