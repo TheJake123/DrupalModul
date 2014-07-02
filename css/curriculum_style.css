@@ -81,7 +81,7 @@ td.left, td.right {
 }
 
 	td.left.button.expander {
-		background-image: url("/Drupal/Curriculum/Icons/Plus.png");        
+		background-image: url("../images/Plus.png");        
 		background-repeat: no-repeat;
 	}
 
@@ -90,27 +90,27 @@ td.right {
 }
 
 	td.right.button.empfohlen {
-		background-image: url("/Drupal/Curriculum/Icons/Empfohlen.png");
+		background-image: url("../images/Empfohlen.png");
 	}
 
 
 		td.right.button.empfohlen.empty {
-			background-image: url("/Drupal/Curriculum/Icons/Empfohlen_empty.png");
+			background-image: url("../images/Empfohlen_empty.png");
 		}
          td.right.button.empfohlen.active{
-	        	background-image: url("/Drupal/Curriculum/Icons/Empfohlen_active.png");
+	        	background-image: url("../images/Empfohlen_active.png");
             }
 
 
 	td.right.button.voraussetzung {
-		background-image: url("/Drupal/Curriculum/Icons/Voraussetzung.png");
+		background-image: url("../images/Voraussetzung.png");
 	}
 
 		td.right.button.voraussetzung.empty {
-			background-image: url("/Drupal/Curriculum/Icons/Voraussetzung_empty.png");
+			background-image: url("../images/Voraussetzung_empty.png");
 		}
             td.right.button.voraussetzung.active{
-                background-image: url("/Drupal/Curriculum/Icons/Voraussetzung_active.png");
+                background-image: url("../images/Voraussetzung_active.png");
 		}
 
 			td.right.button.empty:hover {
@@ -132,7 +132,6 @@ td.button {
 	}
 
 td.ects {
-	background-image: url("/Drupal/Curriculum/Icons/Grau.png");
 	background-size: 3em 3em;
 	background-repeat: no-repeat;
 	text-align: center;
