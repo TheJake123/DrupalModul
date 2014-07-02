@@ -81,19 +81,23 @@ function stukowin_admin() {
  * Hook for pdf adding
  */
 function stukowin_pdf_menu($form, &$form_state) {
+	$aNames = array ();
 	foreach ( (new content_manager ())->getCurricula ( '', array (
 			'curriculum' 
 	) ) as $oCurriculum ) {
 		$aNames [$oCurriculum ['vid']] = t ( $oCurriculum ['name'] );
 	}
+	if (empty ( $aNames ))
+		drupal_set_message ( 'There seems to be no curriculum currently available', 'warning' );
 	$form = array ();
 	$form ['curriculum_select'] = array (
 			'#type' => 'select',
 			'#title' => t ( 'Select Curriculum' ),
-			'#description' => t ( "Curriculum to PDF" ),
+			'#description' => t ( "The taxonomy to create the PDF from" ),
 			'#required' => TRUE,
 			'#options' => $aNames 
 	);
+	
 	$form ['submit'] = array (
 			'#type' => 'submit',
 			'#value' => t ( 'Create PDF' ) 
@@ -124,7 +128,7 @@ function stukowin_retreive() {
 
 /**
  * Warning before starting the import
- * 
+ *
  * @param unknown $form        	
  * @param unknown $form_state        	
  * @return multitype:string NULL
@@ -206,11 +210,14 @@ function stukowin_curricula() {
  * Hook for creating a new ITSV or specialisation taxonomy
  */
 function stukowin_taxonomy_menu($form, &$form_state) {
+	$aNames = array ();
 	foreach ( (new content_manager ())->getCurricula ( '', array (
 			'curriculum' 
 	) ) as $oCurriculum ) {
 		$aNames [$oCurriculum ['vid']] = t ( $oCurriculum ['name'] );
 	}
+	if (empty ( $aNames ))
+		drupal_set_message ( 'There seems to be no curriculum currently available', 'warning' );
 	$form = array ();
 	$form ['curriculum_select'] = array (
 			'#type' => 'select',
