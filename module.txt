@@ -1,6 +1,6 @@
 Module im Einsatz:
 
-Locale: Deutsch anlegen & default   https://www.drupal.org/node/21145
+Locale: Deutsch anlegen & default   https://www.drupal.org/node/21145  (KEIN MODUL!)
 Chaos Tools Suite   http://ftp.drupal.org/files/projects/ctools-7.x-1.4.tar.gz
 Services   http://ftp.drupal.org/files/projects/services-7.x-3.7.tar.gz
 (CKEditor)    http://ftp.drupal.org/files/projects/ckeditor-7.x-1.14.tar.gz
@@ -12,3 +12,23 @@ Relation Select   http://ftp.drupal.org/files/projects/relation_select-7.x-1.x-d
 Views    http://ftp.drupal.org/files/projects/views-7.x-3.8.tar.gz
 Subform    http://ftp.drupal.org/files/projects/subform-7.x-1.0-alpha2.tar.gz
 Taxonomy Manager    http://ftp.drupal.org/files/projects/taxonomy_manager-7.x-1.0.tar.gz
+
+weitere Module (siehe auch Entscheidungsdoku)
+
+Nice Menus  http://ftp.drupal.org/files/projects/nice_menus-7.x-2.5.tar.gz
+Menu Icons  http://ftp.drupal.org/files/projects/menu_icons-7.x-3.0-beta4.tar.gz  (BETA)
+Mobile Switch http://ftp.drupal.org/files/projects/mobile_switch-7.x-2.0-beta1.tar.gz  (BETA)
+Libraries http://ftp.drupal.org/files/projects/libraries-7.x-2.2.tar.gz
+Mobile Detect PHP Klasse  https://github.com/serbanghita/Mobile-Detect/archive/2.8.2.zip
+ELFinder  http://ftp.drupal.org/files/projects/elfinder-7.x-0.8.tar.gz
++ ELFinder Libs.  http://sourceforge.net/projects/elfinder/files/
+TinyMCE   LINK FEHLT
+WSYISYG API http://ftp.drupal.org/files/projects/wysiwyg-7.x-2.2.tar.gz
+Date  http://ftp.drupal.org/files/projects/date-7.x-2.7.tar.gz
+Scheduler http://ftp.drupal.org/files/projects/scheduler-7.x-1.2.tar.gz
+Backup & Migrate  http://ftp.drupal.org/files/projects/backup_migrate-7.x-3.0.tar.gz
+
+Templates:
+
+Bootstrap http://ftp.drupal.org/files/projects/bootstrap-7.x-3.0.tar.gz
+Andromeda http://ftp.drupal.org/files/projects/andromeda-7.x-2.x-dev.tar.gz
