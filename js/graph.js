@@ -8,7 +8,7 @@ jQuery(document).ready(function () {
         var link  = document.createElement('link');
         link.rel  = 'stylesheet';
         link.type = 'text/css';
-        link.href = 'sites/all/modules/stukowin/js/graph.js';
+        link.href = 'sites/all/modules/stukowin/css/curriculum.css';
         link.media = 'all';
         head.appendChild(link);
     

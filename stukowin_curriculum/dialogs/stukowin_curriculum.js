@@ -71,25 +71,28 @@ CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
                         
 			// Set element attribute and text, by getting the defined field
 			// values.
-			var divClass = dialog.getValueOf( 'currdialog', 'currtype' );
+			var currType = dialog.getValueOf( 'currdialog', 'currtype' );
 			var taxonomyTypeSet = false;
+			var curriculums = "";
 			if (dialog.getValueOf( 'currdialog', 'normal' )) {
-				divClass += ' curriculum';
+				curriculums += 'curriculum ';
 				taxonomyTypeSet = true;
 			}
 			if (dialog.getValueOf( 'currdialog', 'itsv' )) {
-				divClass += ' itsv';
+				curriculums += 'itsv ';
 				taxonomyTypeSet = true;
 			}
 			if (dialog.getValueOf( 'currdialog', 'specialisation' )) {
-				divClass += ' specialisation';
+				curriculums += 'specialisation';
 				taxonomyTypeSet = true;
 			}
 			if (!taxonomyTypeSet) {
 				alert ('Error: Please select at least one taxonomy type to display');
 				return;
 			}
-			div.setAttribute( 'class', divClass);
+			div.setAttribute('data-currtype', currType);
+			div.setAttribute('data-curriculums', curriculums);
+			div.setAttribute('id', "curriculum_display");
 			editor.insertElement( div );
 			
 			// Creates the <script> element.
