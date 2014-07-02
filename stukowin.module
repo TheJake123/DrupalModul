@@ -9,7 +9,6 @@
 set_time_limit(600);
 
 include_once dirname(__FILE__). '/ceus_importer.inc.php';
-include_once dirname(__FILE__). '/content_manager.inc.php';
 
 /**
  * Implements hook_help().
@@ -77,6 +76,36 @@ function stukowin_admin()
 }
 
 /**
+ * Hook for pdf adding
+ */
+function stukowin_pdf_menu($form, &$form_state) 
+{
+	foreach((new content_manager())->getCurricula(array('curriculum')) as $oCurriculum){
+		$aNames[$oCurriculum['vid']] = t($oCurriculum['name']);
+	}
+  $form = array();
+  $form['curriculum_select'] = array(
+   '#type' => 'select',
+    '#title' => t('Select Curriculum'),
+    '#description' => t("Curriculum to PDF"),
+    '#required' => TRUE,   
+    '#options' => $aNames,
+  );
+  $form['submit'] = array(
+  '#type'=>'submit',
+  	'#value' => t('Create PDF'),
+  	);
+  return $form;
+}
+
+function stukowin_pdf_menu_submit($form, &$form_state) {
+	//drupal_set_message(file_exists(dirname ( __FILE__ ) . '/stukowin.instal') ? 'ja' : 'nein');
+ 	drupal_set_message(stukowin_get_pdf($form_state['values']['curriculum_select']));
+}
+
+
+
+/**
  * Hook for Menu link "CEUS Data import"
  */
 function stukowin_retreive() 
@@ -123,7 +152,15 @@ function stukowin_get_lva($iNodeID)
   $oContentManager = new content_manager();
   return $oContentManager->json_service_lva($iNodeID);
 }
-
+/**
+ * PDF-Service for curriculum
+ */
+function stukowin_get_pdf($iVID)
+{
+  $oPdf = new overviewPDF();
+  return $oPdf->createPDF($iVID);
+  
+}
 /**
  * View for Display of curricula - Desktop HTML Version
  */
@@ -181,6 +218,20 @@ function stukowin_menu()
     'access arguments' => array('access content'),
     'type' => MENU_NORMAL_ITEM,
   );  
+    $items['stukowin/pdf'] = array(
+    'title' => 'Service',
+    'page callback' => 'stukowin_get_pdf',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/settings/stukowin/pdf'] = array(
+    'title' => 'Create PDF',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stukowin_pdf_menu'),
+    'access arguments' => array('create PDF'),
+    'type' => MENU_NORMAL_ITEM,
+  );
   return $items;
 }
 
