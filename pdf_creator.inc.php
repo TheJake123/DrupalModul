@@ -119,6 +119,8 @@ class overviewPDF extends TCPDF {
 	private function printCurriculum($oCurriculum) {
 		$this->AddPage ();
 		$aCourses = $this->getCourses ( $oCurriculum ['vid'] );
+		$this->MultiCell ( 0, 0, var_export ( $aCourses, true ) );
+		
 		$this->SetFontSize ( 20 );
 		$this->printHeading ( strtoupper ( $oCurriculum ['type'] ), 0, false, 'C' );
 		$this->SetFont ( 'times', '', 12 );
@@ -131,12 +133,27 @@ class overviewPDF extends TCPDF {
 			</tr>
 EOT;
 		foreach ( $aCourses as $oCourse ) {
-			$sHTML .= '<tr nobr="true"><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
+			if (property_exists ( $oCourse, 'lva' ))
+				$sHTML .= '<tr nobr="true"><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
+			else
+				$sHTML .= '<tr nobr="true"><td><I>' . $oCourse->name . '</I></td><td align="center"></td></tr>';
 		}
 		$sHTML .= '</table>';
 		$this->writeHTML ( $this->unhtmlentities ( $sHTML ) );
 		foreach ( $aCourses as $oCourse ) {
-			$this->printFach ( $oCourse );
+			$this->printTopLevel ( $oCourse );
+		}
+	}
+	private function printTopLevel($oTopLevel) 
+
+	{
+		if (property_exists ( $oTopLevel, 'lva' )) {
+			$this->printFach ( $oTopLevel );
+		} else if (property_exists ( $oTopLevel, 'children' )) {
+			$this->printHeading ( $oTopLevel->name, 0, false );
+			foreach ( $oTopLevel->children as $oChild ) {
+				$this->printFach ( $oChild );
+			}
 		}
 	}
 	/**
@@ -264,11 +281,11 @@ EOT;
 	 * @return array $aCourses The array of all courses in the given curriculum
 	 */
 	private static function getCourses($currId) {
-		$oCourses = (new content_manager ())->taxonomy_get_nested_tree ( $currId );
-		foreach ( $oCourses as $oCourse ) {
+		$aCourses = (new content_manager ())->taxonomy_get_nested_tree ( $currId );
+		foreach ( $aCourses as $oCourse ) {
 			overviewPDF::assertAttributes ( $oCourse );
 		}
-		return $oCourses;
+		return $aCourses;
 	}
 	
 	/**
@@ -289,15 +306,15 @@ EOT;
 				'lvtypshort',
 				'typename' 
 		);
-		if (! property_exists ( $oCourse, 'lva' ))
-			$oCourse->lva = new stdClass ();
-		foreach ( $aRequiredFields as $sRequiredField )
-			if (! property_exists ( $oCourse->lva, $sRequiredField ) || ! $oCourse->lva->$sRequiredField)
-				$oCourse->lva->$sRequiredField = '';
+		if (property_exists ( $oCourse, 'lva' )) {
+			foreach ( $aRequiredFields as $sRequiredField )
+				if (! property_exists ( $oCourse->lva, $sRequiredField ) || ! $oCourse->lva->$sRequiredField)
+					$oCourse->lva->$sRequiredField = '';
+			if (property_exists ( $oCourse->lva, 'title' ))
+				$oCourse->lva->title = (new TCPDF ())->unhtmlentities ( $oCourse->lva->title );
+		}
 		if (property_exists ( $oCourse, 'children' ))
 			foreach ( $oCourse->children as $oChild )
 				overviewPDF::assertAttributes ( $oChild );
-		if (property_exists ( $oCourse->lva, 'title' ))
-			$oCourse->lva->title = (new TCPDF ())->unhtmlentities ( $oCourse->lva->title );
 	}
 }

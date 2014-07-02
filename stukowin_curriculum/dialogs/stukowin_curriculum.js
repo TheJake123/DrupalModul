@@ -9,7 +9,7 @@ CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
 	return {
 
 		// Basic properties of the dialog window: title, minimum size.
-		title: 'Insert a Taxonomy View',
+		title: 'Insert a Curriculum View',
 		minWidth: 400,
 		minHeight: 200,       
         contents: [

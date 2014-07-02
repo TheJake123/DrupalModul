@@ -9,6 +9,5 @@ dependencies[] = views
 dependencies[] = subform
 dependencies[] = taxonomy_manager
 dependencies[] = fieldable_vocabularies
-dependencies[] = jquery_update
 dependencies[] = ctools
 dependencies[] = ckeditor

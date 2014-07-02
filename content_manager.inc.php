@@ -14,16 +14,20 @@ class content_manager {
 	 *
 	 * @param integer $iNodeID
 	 *        	Drupal-Node-ID
+	 * @param string $sLang
+	 *        	Language to return
 	 * @return \stdClass
 	 */
-	private function get_return_node($iNodeID) {
+	private function get_return_node($iNodeID, $sLang = 'de') {
+		if ($sLang = 'de')
+			$sLang = 'und';
 		$oNode = node_load ( $iNodeID );
 		$oReturnNode = new stdClass ();
 		$oReturnNode->title = $oNode->title;
 		$aFields = _stukowin_installed_fields ();
 		foreach ( $aFields as $sKey => $aValue ) {
-			if (! empty ( $oNode->{$sKey} ['und'] [0] ['value'] ))
-				$oReturnNode->{$sKey} = $oNode->{$sKey} ['und'] [0] ['value'];
+			if (! empty ( $oNode->{$sKey} [$sLang] [0] ['value'] ))
+				$oReturnNode->{$sKey} = $oNode->{$sKey} [$sLang] [0] ['value'];
 		}
 		// Relations: Must and wouldbenice, only if index=1 (forward) index=0 is backward, we do not deliver this back
 		if (! empty ( $oNode->voraussetzung ['und'] ) && is_array ( $oNode->voraussetzung ['und'] )) {
