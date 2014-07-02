@@ -72,6 +72,9 @@ class overviewPDF extends TCPDF {
 		$this->Output ( $sFilename, 'F' );
 		return 'PDF successfully created at ' . $sFilename;
 	}
+	public function Error($msg) {
+		throw new Exception ( $msg );
+	}
 	/**
 	 * Adds a Table of Contents Page to the PDF document
 	 *
@@ -96,9 +99,8 @@ class overviewPDF extends TCPDF {
 	 *        	The verision of the curriculum (e.g. 2013W)
 	 */
 	private function getUniqueFilename($sCurrType, $sCurrVersion) {
-		$sCoreName = dirname ( __FILE__ ) . '/LVA-Übersicht Wirtschaftsinformatik ' . $sCurrType . ' ' . $sCurrVersion;
+		$sCoreName = DRUPAL_ROOT . '/sites/default/files/images/pdf/Archive/LVA-Übersicht Wirtschaftsinformatik ' . $sCurrType . ' ' . $sCurrVersion;
 		$sFilename = $sCoreName . '.pdf';
-		var_dump ( $sFilename );
 		if (file_exists ( $sFilename )) {
 			for($i = 1; file_exists ( $sFilename ); $i ++) {
 				$sFilename = $sCoreName . '(' . $i . ').pdf';
@@ -262,7 +264,11 @@ EOT;
 	 * @return array $aCourses The array of all courses in the given curriculum
 	 */
 	private static function getCourses($currId) {
-		return (new content_manager ())->taxonomy_get_nested_tree ( $currId );
+		$oCourses = (new content_manager ())->taxonomy_get_nested_tree ( $currId );
+		foreach ( $oCourses as $oCourse ) {
+			overviewPDF::assertAttributes ( $oCourse );
+		}
+		return $oCourses;
 	}
 	
 	/**

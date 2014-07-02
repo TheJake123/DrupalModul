@@ -102,7 +102,7 @@ function stukowin_pdf_menu($form, &$form_state) {
 }
 /**
  * Creates the PDF document
- * 
+ *
  * @param unknown $form        	
  * @param unknown $form_state        	
  */
@@ -139,12 +139,21 @@ function stukowin_get_crclm_taxonomy($iVID) {
  */
 function stukowin_get_crclm_list() {
 	$oContentManager = new content_manager ();
-	if (! isset ( $_GET ['currtype'] ) || ! isset ( $_GET ['taxtypes'] ))
-		return;
-	$sCurrType = $_GET ['currtype'];
-	$aTaxonomyTypes = $_GET ['taxtypes'];
+	$sCurrType = '';
+	$aTaxonomyTypes = array (
+			'curriculum',
+			'itsv',
+			'specialisation' 
+	);
+	$sLang = 'de';
+	if (isset ( $_GET ['currtype'] ))
+		$sCurrType = $_GET ['currtype'];
+	if (isset ( $_GET ['taxtypes'] ))
+		$aTaxonomyTypes = $_GET ['taxtypes'];
+	if (isset ( $_GET ['lang'] ))
+		$sLang = $_GET ['lang'];
 	header ( 'Access-Control-Allow-Origin: *' );
-	drupal_json_output ( $oContentManager->getCurricula ( $sCurrType, $aTaxonomyTypes ) );
+	drupal_json_output ( $oContentManager->getCurricula ( $sCurrType, $aTaxonomyTypes, $sLang ) );
 	die ();
 }
 
@@ -221,7 +230,7 @@ function stukowin_taxonomy_menu($form, &$form_state) {
 }
 /**
  * Creates a new ITSV or specialisation taxonomy and redirects the user to the taxonomy manager
- * 
+ *
  * @param unknown $form        	
  * @param unknown $form_state        	
  */
@@ -257,7 +266,7 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
 			taxonomy_term_save ( $oTerm );
 		}
 	}
-	drupal_set_message ( 'Taxonomy "' . $form_state ['values'] ['name_input'] . '" successfully created' );
+	drupal_set_message ( 'Taxonomy "' . $form_state ['values'] ['name_input'] . '" successfully created. To publish set its weight to -10' );
 	drupal_goto ( 'admin/structure/taxonomy_manager/double-tree/' . $oSourceCurr ['machine_name'] . '/' . $sMachineName );
 }
 

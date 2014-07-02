@@ -116,16 +116,18 @@ class content_manager {
 			$query = new EntityFieldQuery ();
 			$query->entityCondition ( 'entity_type', 'taxonomy_vocabulary', '=' )->propertyCondition ( 'machine_name', $sTaxonomyType . '_%', 'LIKE' )->propertyCondition ( 'weight', '0', '<' );
 			$aVocabulary = $query->execute ();
-			foreach ( $aVocabulary ['taxonomy_vocabulary'] as $iVID => $aVID ) {
-				$oVocabulary = taxonomy_vocabulary_load ( $iVID, 0 );
-				if (! $sCurrType || $oVocabulary->currtype ['und'] [0] ['value'] == $sCurrType) {
-					$aCurricula [] = array (
-							'vid' => $oVocabulary->vid,
-							'name' => $oVocabulary->name,
-							'type' => $oVocabulary->currtype [$sLang] [0] ['value'],
-							'faculty' => $oVocabulary->faculty [$sLang] [0] ['value'],
-							'version' => $oVocabulary->version [$sLang] [0] ['value'] 
-					);
+			if (isset ( $aVocabulary ['taxonomy_vocabulary'] )) {
+				foreach ( $aVocabulary ['taxonomy_vocabulary'] as $iVID => $aVID ) {
+					$oVocabulary = taxonomy_vocabulary_load ( $iVID, 0 );
+					if (! $sCurrType || $oVocabulary->currtype ['und'] [0] ['value'] == $sCurrType) {
+						$aCurricula [] = array (
+								'vid' => $oVocabulary->vid,
+								'name' => $oVocabulary->name,
+								'type' => $oVocabulary->currtype [$sLang] [0] ['value'],
+								'faculty' => $oVocabulary->faculty [$sLang] [0] ['value'],
+								'version' => $oVocabulary->version [$sLang] [0] ['value'] 
+						);
+					}
 				}
 			}
 		}
