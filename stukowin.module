@@ -115,10 +115,6 @@ function stukowin_pdf_menu_submit($form, &$form_state) {
  */
 function stukowin_retreive() {
 	include_once dirname ( __FILE__ ) . '/stukowin.install';
-	// Call Module Installer - so you don't have to install the module for every change
-	// Call Module Uninstaller to de-register the content type
-	// stukowin_uninstall();
-	// stukowin_install();die('fäddisch');
 	$oCeusImporter = new ceus_importer ();
 	if ($oCeusImporter->connect ()) {
 		return '<pre>' . print_r ( $oCeusImporter->get_curricula (), true ) . '</pre>';
@@ -126,6 +122,33 @@ function stukowin_retreive() {
 		return $oCeusImporter->get_error ();
 }
 
+/**
+ * Warning before starting the import
+ * 
+ * @param unknown $form        	
+ * @param unknown $form_state        	
+ * @return multitype:string NULL
+ */
+function stukowin_pre_retreive($form, &$form_state) {
+	$form = array ();
+	$form ['warning_text'] = array (
+			'#markup' => t ( '<p><strong>Are you sure you want to start the import? (this might take a while)</strong></p>' ) 
+	);
+	$form ['submit'] = array (
+			'#type' => 'submit',
+			'#value' => t ( 'Start import' ) 
+	);
+	return $form;
+}
+/**
+ * Implements hook_submit for stukowin_pre_retrieve
+ *
+ * @param unknown $form        	
+ * @param unknown $form_state        	
+ */
+function stukowin_pre_retreive_submit($form, &$form_state) {
+	stukowin_retreive ();
+}
 /**
  * JSON-Service for Curricula
  */
@@ -275,8 +298,7 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
  */
 function stukowin_menu() {
 	$items = array ();
-	$items ['admin/settings/stukowin/'] = array ();
-	$items ['admin/settings/stukowin/settings'] = array (
+	$items ['admin/config/system/settings'] = array (
 			'title' => 'CEUS API Settings',
 			'page callback' => 'drupal_get_form',
 			'page arguments' => array (
@@ -290,9 +312,12 @@ function stukowin_menu() {
 	);
 	$items ['admin/settings/stukowin/importjson'] = array (
 			'title' => 'CEUS Data import',
-			'page callback' => 'stukowin_retreive',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'stukowin_pre_retreive' 
+			),
 			'access arguments' => array (
-					'administer stukowin settings' 
+					'start ceus import' 
 			),
 			'description' => t ( 'Import curricula data from CEUS' ),
 			'type' => MENU_NORMAL_ITEM 
