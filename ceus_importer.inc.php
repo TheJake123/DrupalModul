@@ -416,7 +416,6 @@ class ceus_importer
         }
         $sLvtyp = empty($aDetail['de']['lvtypshort']) ? '' : " ({$aDetail['de']['lvtypshort']})";
         $oTerm->name = $aDetail['de']['typename'].': '.$aDetail['de']['title'] . $sLvtyp;
-        $oTerm->description = $aDetail['de']['id'];
         $oTerm->vid = $this->aVocabulary[$iCurriculumID];
         $oTerm->parent = $iParentID;
         $oTerm->weight = $iWeight;
@@ -424,7 +423,8 @@ class ceus_importer
         $iNodeID = $this->save_node($aDetail, $oTerm->tid);       
         if(!empty($aDetail['de']['voraussetzungen']) && $this->has_relation($aDetail['de']['voraussetzungen'])) $this->aRelations[$iNodeID] = $aDetail['de']['voraussetzungen'];
         $iWeight++;
-          
+        $oTerm->description = $iNodeID;
+        taxonomy_term_save($oTerm);
         $this->get_details($aBranch['subtree'], $oTerm->tid, $iCurriculumID);
       }
       return true;
