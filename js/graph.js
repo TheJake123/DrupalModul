@@ -75,6 +75,10 @@ jQuery(document)
  */
 
 function gc(data) {
+        if(!data || data == null || data.length <= 0){
+            alert('No curriculum data available');
+            return;
+        }
 	jQuery("#curriculum_display");
 	var select = document.createElement("select");
 	select.id = "curr_select";
@@ -88,11 +92,13 @@ function gc(data) {
 	select.onchange = function() {
 		var selectElem = document.getElementById("curr_select");
 		var currId = selectElem.options[selectElem.selectedIndex].value;
+                selectElem.disabled = "disabled";
 		jQuery.getJSON(
 				"http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
 						+ currId, fill_crclm);
 		clearDiv();
 	};
+        select.disabled = "disabled";
 	jQuery("#curriculum_display").append(select);
 	jQuery.getJSON("http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
 			+ data[0]["vid"], fill_crclm);
@@ -106,6 +112,8 @@ function gc(data) {
  *            data The curriculum data to display
  */
 function fill_crclm(data) {
+        var selectElem = document.getElementById("curr_select");
+        selectElem.removeAttribute("disabled");
 	for (var i = 0; i < data.length; i++) {
 		kurse[data[i]["tid"]] = data[i];
 	}
@@ -412,4 +420,5 @@ function buildRequest(baseUrl, type, curriculums) {
 
 function clearDiv() {
 	jQuery("#curriculum_display > div").remove();
+        kurse = {}, toplevel = [];
 }
