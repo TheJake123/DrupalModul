@@ -315,7 +315,7 @@ function stukowin_menu() {
 					'administer stukowin settings' 
 			),
 			'description' => t ( 'Set CEUS credentials' ),
-			'type' => MENU_NORMAL_ITEM 
+			'type' => MENU_CALLBACK 
 	);
 	$items ['admin/settings/stukowin/importjson'] = array (
 			'title' => 'CEUS Data import',
