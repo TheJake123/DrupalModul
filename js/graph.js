@@ -306,9 +306,9 @@ function createDivs(kurs, level, parentIsRoot) {
 		if (kurs["lva"]["lvatype"] == 3) {
 			div = '<div class="lv' + '" id="' + kurs["tid"] + '">'
 					+ '<table class="header"><tr>'
-					+ '<td class="left ects"><p class="center" >'
+					+ '<td class="left ects">'
 					+ ("lva" in kurs ? kurs["lva"]["lvtypshort"] : "")
-					+ '</p></td>' + rightTds + '</tr></table></div>';
+					+ '</td>' + rightTds + '</tr></table></div>';
 		} else {
 			if (kurs["lva"]["lvatype"] == 1) {
 				typ = "fach";
@@ -354,9 +354,9 @@ function createTds(kurs) {
 			: 0;
 	var anzEmpfohlen = "empfohlen" in kurs ? kurs["lva"]["empfohlen"].length
 			: 0;
-	var rightTds = '<td class="center"><p class="center">'
+	var rightTds = '<td class="center">'
 			+ ("lva" in kurs ? kurs["lva"]["title"] : kurs["name"])
-			+ '</p></td>'
+			+ '</td>'
 			+ '<td class="right button voraussetzung'
 			+ (anzVoraussetzungen ? "" : " empty")
 			+ '" title="'
@@ -371,8 +371,8 @@ function createTds(kurs) {
 			+ (anzEmpfohlen ? anzEmpfohlen + " empfohlene Voraussetzung"
 					+ (anzEmpfohlen > 1 ? "en" : "")
 					: "Keine empfohlenen Voraussetzungen") + '"/>'
-			+ '<td class="right ects" title="ECTS"><p class="center">'
-			+ ("lva" in kurs ? kurs["lva"]["ects"] : "") + '</p></td>';
+			+ '<td class="right ects" title="ECTS">'
+			+ ("lva" in kurs ? kurs["lva"]["ects"] : "") + '</td>';
 	return rightTds;
 }
 

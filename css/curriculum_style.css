@@ -115,7 +115,7 @@ td.center {
 	
 	height: 3em;
 	
-
+        line-height: 3em;
 }
 
 
@@ -284,7 +284,7 @@ td.ects {
 	
 	width: 3em;
 	
-
+        line-height: 3em;
 }
 
 
@@ -315,7 +315,7 @@ p.center {
 	
     position: relative;
 	
-  top: 50%;
+  //top: 50%;
 	
   transform: translateY(-50%);
 	
