@@ -305,7 +305,7 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
  */
 function stukowin_menu() {
 	$items = array ();
-	$items ['admin/config/system/settings'] = array (
+	$items ['admin/stukowin/settings'] = array (
 			'title' => 'CEUS API Settings',
 			'page callback' => 'drupal_get_form',
 			'page arguments' => array (

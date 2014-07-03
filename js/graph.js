@@ -1,4 +1,4 @@
-var kurse = {}, toplevel = [];
+var kurse = {};
 
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
@@ -87,18 +87,23 @@ function gc(data) {
 		option.value = data[i]["vid"];
 		option.textContent = data[i]["name"];
 		select.appendChild(option);
-	}
-	;
+	};
 	select.onchange = function() {
 		var selectElem = document.getElementById("curr_select");
 		var currId = selectElem.options[selectElem.selectedIndex].value;
                 selectElem.disabled = "disabled";
+                
 		jQuery.getJSON(
 				"http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
 						+ currId, fill_crclm);
 		clearDiv();
 	};
-        select.disabled = "disabled";
+    select.disabled = "disabled";
+    var loadingIcon = document.createElement('img');
+    loadingIcon.id = "curr_loading";
+    loadingIcon.src = "sites/all/modules/stukowin/images/ajax-loader.gif";
+    
+    select.parentNode.insertBefore(loadingIcon, select.nextSibling);
 	jQuery("#curriculum_display").append(select);
 	jQuery.getJSON("http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
 			+ data[0]["vid"], fill_crclm);
@@ -111,18 +116,17 @@ function gc(data) {
  * @param {Object}
  *            data The curriculum data to display
  */
-function fill_crclm(data) {
-        var selectElem = document.getElementById("curr_select");
-        selectElem.removeAttribute("disabled");
+function fill_crclm(data) {        
 	for (var i = 0; i < data.length; i++) {
 		kurse[data[i]["tid"]] = data[i];
 	}
-	;
 	for ( var key in kurse) {
 		jQuery("#curriculum_display").append(createDivs(kurse[key], 0));
 	}
-	;
 	reduce_all();
+	var selectElem = document.getElementById("curr_select");
+    selectElem.removeAttribute("disabled");
+	document.getElementById("curr_loading").remove();
 }
 
 /**
