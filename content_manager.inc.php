@@ -22,6 +22,8 @@ class content_manager {
 		if ($sLang = 'de')
 			$sLang = 'und';
 		$oNode = node_load ( $iNodeID );
+		if (! $oNode)
+			return null;
 		$oReturnNode = new stdClass ();
 		$oReturnNode->title = $oNode->title;
 		$aFields = _stukowin_installed_fields ();
@@ -72,10 +74,11 @@ class content_manager {
 					} else {
 						$iNodeID = $term->description;
 					}
-					$oReturnNode = $this->get_return_node ( $iNodeID );	
-					$term->ects = $oReturnNode->ects;
-					$term->lva = $oReturnNode;
-					$term->id = $iNodeID;
+					$oReturnNode = $this->get_return_node ( $iNodeID );
+					if ($oReturnNode) {
+						$term->lva = $oReturnNode;
+						$term->id = $iNodeID;
+					}
 					$return [$term->tid] = $term;
 				} else {
 					$parents_index [$term_parent] [$term->tid] = $term;
