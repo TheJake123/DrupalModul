@@ -3,6 +3,7 @@ name = Stukowin - CEUS
 description = Anbindung an die CEUS-API
 package = JKU
 core = 7.x
+configure = admin/stukowin/settings
 dependencies[] = relation
 dependencies[] = relation_select
 dependencies[] = views
