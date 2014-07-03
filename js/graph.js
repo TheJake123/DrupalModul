@@ -103,7 +103,6 @@ function gc(data) {
 		jQuery.getJSON(
 				"http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
 						+ currId, fill_crclm);
-		clearDiv();
 	};
 	select.disabled = "disabled";
 	var loadingIcon = document.createElement('img');
@@ -123,9 +122,11 @@ function gc(data) {
  *            data The curriculum data to display
  */
 function fill_crclm(data) {
+	kurse = {};
 	for (var i = 0; i < data.length; i++) {
 		kurse[data[i]["tid"]] = data[i];
 	}
+	clearDiv();
 	for ( var key in kurse) {
 		jQuery("#curriculum_display").append(createDivs(kurse[key], 0));
 	}
@@ -429,5 +430,4 @@ function buildRequest(baseUrl, type, curriculums) {
 
 function clearDiv() {
 	jQuery("#curriculum_display > div").remove();
-	kurse = {}, toplevel = [];
 }
