@@ -69,11 +69,13 @@ class content_manager {
 					$aNode = taxonomy_select_nodes ( $term->tid );
 					if (! empty ( $aNode )) {
 						$iNodeID = $aNode [0];
-						$oReturnNode = $this->get_return_node ( $iNodeID );
-						$term->ects = $oReturnNode->ects;
-						$term->lva = $oReturnNode;
-						$term->id = $iNodeID;
+					} else {
+						$iNodeID = $term->description;
 					}
+					$oReturnNode = $this->get_return_node ( $iNodeID );	
+					$term->ects = $oReturnNode->ects;
+					$term->lva = $oReturnNode;
+					$term->id = $iNodeID;
 					$return [$term->tid] = $term;
 				} else {
 					$parents_index [$term_parent] [$term->tid] = $term;
