@@ -121,9 +121,9 @@ function stukowin_retreive() {
 	include_once dirname ( __FILE__ ) . '/stukowin.install';
 	$oCeusImporter = new ceus_importer ();
 	if ($oCeusImporter->connect ()) {
-		return '<pre>' . print_r ( $oCeusImporter->get_curricula (), true ) . '</pre>';
+		drupal_set_message ( $oCeusImporter->get_curricula () );
 	} else
-		return $oCeusImporter->get_error ();
+		drupal_set_message ( $oCeusImporter->get_error (), 'error' );
 }
 
 /**

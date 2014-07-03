@@ -71,14 +71,15 @@ jQuery(document)
 /**
  * Extracts the matching curricula out of the JSON-data and calls fill_crclm
  * 
- * @param {Object} data All curriculums to search
+ * @param {Object}
+ *            data All curriculums to search
  */
 
 function gc(data) {
-        if(!data || data == null || data.length <= 0){
-            alert('No curriculum data available');
-            return;
-        }
+	if (!data || data == null || data.length <= 0) {
+		alert('No curriculum data available');
+		return;
+	}
 	jQuery("#curriculum_display");
 	var select = document.createElement("select");
 	select.id = "curr_select";
@@ -87,24 +88,27 @@ function gc(data) {
 		option.value = data[i]["vid"];
 		option.textContent = data[i]["name"];
 		select.appendChild(option);
-	};
+	}
+	;
 	select.onchange = function() {
 		var selectElem = document.getElementById("curr_select");
 		var currId = selectElem.options[selectElem.selectedIndex].value;
-                selectElem.disabled = "disabled";
-                
+		selectElem.disabled = "disabled";
+		var loadingIcon = document.createElement('img');
+		loadingIcon.id = "curr_loading";
+		loadingIcon.src = "sites/all/modules/stukowin/images/ajax-loader.gif";
+		loadingIcon.offsetWidth = selectElem.offsetWidth;
+		loadingIcon.offsetHeight = selectElem.offsetHeight;
 		jQuery.getJSON(
 				"http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
 						+ currId, fill_crclm);
-		clearDiv();
 	};
-    select.disabled = "disabled";
-    var loadingIcon = document.createElement('img');
-    loadingIcon.id = "curr_loading";
-    loadingIcon.src = "sites/all/modules/stukowin/images/ajax-loader.gif";
-    
-    select.parentNode.insertBefore(loadingIcon, select.nextSibling);
+	select.disabled = "disabled";
+	var loadingIcon = document.createElement('img');
+	loadingIcon.id = "curr_loading";
+	loadingIcon.src = "sites/all/modules/stukowin/images/ajax-loader.gif";
 	jQuery("#curriculum_display").append(select);
+	select.parentNode.insertBefore(loadingIcon, select.nextSibling);
 	jQuery.getJSON("http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
 			+ data[0]["vid"], fill_crclm);
 }
@@ -116,16 +120,17 @@ function gc(data) {
  * @param {Object}
  *            data The curriculum data to display
  */
-function fill_crclm(data) {        
+function fill_crclm(data) {
 	for (var i = 0; i < data.length; i++) {
 		kurse[data[i]["tid"]] = data[i];
 	}
+	clearDiv();
 	for ( var key in kurse) {
 		jQuery("#curriculum_display").append(createDivs(kurse[key], 0));
 	}
 	reduce_all();
 	var selectElem = document.getElementById("curr_select");
-    selectElem.removeAttribute("disabled");
+	selectElem.removeAttribute("disabled");
 	document.getElementById("curr_loading").remove();
 }
 
@@ -317,8 +322,7 @@ function createDivs(kurs, level, parentIsRoot) {
 		rightTds = createTds(kurs);
 		if (kurs["lva"]["lvatype"] == 3) {
 			div = '<div class="lv' + '" id="' + kurs["tid"] + '">'
-					+ '<table class="header"><tr>'
-					+ '<td class="left ects">'
+					+ '<table class="header"><tr>' + '<td class="left ects">'
 					+ ("lva" in kurs ? kurs["lva"]["lvtypshort"] : "")
 					+ '</td>' + rightTds + '</tr></table></div>';
 		} else {
@@ -424,5 +428,5 @@ function buildRequest(baseUrl, type, curriculums) {
 
 function clearDiv() {
 	jQuery("#curriculum_display > div").remove();
-        kurse = {}, toplevel = [];
+	kurse = {}, toplevel = [];
 }
