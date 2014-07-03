@@ -140,7 +140,7 @@ class ceus_importer
    * @param array $tid Term-ID of Taxonomy item
    */
   private function save_node($aDetail, $tid)
-  {
+  { 
     $aNode = taxonomy_select_nodes($tid);
     if(!empty($oNode)) $iNodeID = $aNode[0]; 
     else $iNodeID = null;
