@@ -140,18 +140,19 @@ class ceus_importer
    * @param array $tid Term-ID of Taxonomy item
    */
   private function save_node($aDetail, $tid)
-  {
-    $aOldNode = taxonomy_select_nodes($tid);
-    if(!empty($aOldNode)) $iNodeID = $aOldNode[0]; 
+  { 
+    $aNode = taxonomy_select_nodes($tid);
+    if(!empty($oNode)) $iNodeID = $aNode[0]; 
     else $iNodeID = null;
-    $oOldNode = node_load($iNodeID);
+    $oNode = node_load($iNodeID);
     // If same changedate, do nothing
-    if(!empty($iNodeID) && ($aDetail['de']['changedate'] == $oOldNode->changedate['und'][0]['value'])) 
+    if(!empty($iNodeID) && ($aDetail['de']['changedate'] == $oNode->changedate['und'][0]['value'])) 
     {
       return true;
     }
     global $user;
-    $oNode = new stdClass(); 
+    // If LVA is new, new node is created
+    if(empty($oNode)) $oNode = new stdClass(); 
     $oNode->type = 'stukowin';
     node_object_prepare($oNode);
     // Fields of CEUS-DB to be copied
@@ -461,7 +462,7 @@ class ceus_importer
    */
   private function check_vocabulary($aCurriculum)
   {
-    $oVocabulary = taxonomy_vocabulary_load(variable_get('ceus_importer_'.$aCurriculum['id'].'_vocabulary', 0)); 
+    $oVocabulary = taxonomy_vocabulary_load(variable_get('ceus_importer_'.$aCurriculum['typeshort'].'_'.$aCurriculum['version'].'_vocabulary', 0)); 
     if (!$oVocabulary) 
     { 
       $aEdit = array( 
@@ -477,7 +478,7 @@ class ceus_importer
       $oVocabulary->{'version'}['und'][0]['value'] = $aCurriculum['version'];
       $oVocabulary->{'currtype'}['und'][0]['value'] = $aCurriculum['type'];
       taxonomy_vocabulary_save($oVocabulary); 
-      variable_set('ceus_importer_'.$aCurriculum['id'].'_vocabulary', $oVocabulary->vid);
+      variable_set('ceus_importer_'.$aCurriculum['typeshort'].'_'.$aCurriculum['version'].'_vocabulary', $oVocabulary->vid);
     } 
     $this->aVocabulary[$aCurriculum['id']] = $oVocabulary->vid;
   }
