@@ -155,6 +155,7 @@ function showEmpfohlen(element) {
 	if (element.children("table.header").find("td.button.empfohlen.active").length) {
 		return;
 	}
+        alert(element.attr('class') + element.attr('id'))
 	var id = element.attr("id");
 	if ("empfehlung" in kurse[id]["lva"]) {
 		var list = '<div class="bedingung empfohlen">';
@@ -326,6 +327,7 @@ function createDivs(kurs, level, parentIsRoot) {
 	var div, typ, rightTds;
 
 	if ("lva" in kurs && kurs["lva"]) {
+            kurse[kurs['tid']] = kurs;
 		rightTds = createTds(kurs);
 		if (kurs["lva"]["lvatype"] == 3) {
 			div = '<div class="lv' + '" id="' + kurs["tid"] + '">'
@@ -374,12 +376,12 @@ function createDivs(kurs, level, parentIsRoot) {
  *            kurs The course to create the cells for.
  */
 function createTds(kurs) {
-	var anzVoraussetzungen = "voraussetzung" in kurs ? kurs["lva"]["voraussetzung"].length
+	var anzVoraussetzungen = "voraussetzung" in kurs["lva"] ? kurs["lva"]["voraussetzung"].length
 			: 0;
-	var anzEmpfohlen = "empfehlung" in kurs ? kurs["lva"]["empfehlung"].length
+	var anzEmpfohlen = "empfehlung" in kurs["lva"] ? kurs["lva"]["empfehlung"].length
 			: 0;
 	var rightTds = '<td class="center">'
-			+ ("lva" in kurs ? kurs["lva"]["title"] : kurs["name"])
+			+ ("lva" in kurs ? '<a href="' + drupal_root + 'node/' + kurs['id'] + '">' + kurs["lva"]["title"] + '</a>' : kurs["name"])   + '</td>'
 			+ '</td>'
 			+ '<td class="right button voraussetzung'
 			+ (anzVoraussetzungen ? "" : " empty")
