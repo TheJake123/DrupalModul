@@ -60,11 +60,9 @@ jQuery(document)
 							"a.bedingung",
 							function(event) {
 								if (jQuery(this).hasClass("voraussetzung")) {
-									expandAndScrollToElement(jQuery(this).attr(
-											"id"), "#fc6554");
+									expandAndScrollToElement(jQuery(this).data("goto"), "#fc6554");
 								} else if (jQuery(this).hasClass("empfohlen")) {
-									expandAndScrollToElement(jQuery(this).attr(
-											"id"), "#8ad758");
+									expandAndScrollToElement(jQuery(this).data("goto"), "#8ad758");
 								}
 								return false;
 							});
@@ -164,7 +162,7 @@ function showEmpfohlen(element) {
 				.each(
 						kurse[id]["lva"]["empfehlung"],
 						function(key, val) {
-							list += '<li><a href="javascript:void(0)"   class="bedingung empfohlen" id="'
+							list += '<li><a href="javascript:void(0)"   class="bedingung empfohlen" data-goto="'
 									+ val
 									+ '">'
 									+ ("lvtypshort" in kurse[val]["lva"] ? kurse[val]["lva"]["lvtypshort"]
@@ -207,7 +205,7 @@ function showVoraussetzungen(element) {
 							// geschrieben
 							// (s.o.)
 							if (val in kurse) {
-								list += '<li><a href="javascript:void(0)" class="bedingung voraussetzung" id="'
+								list += '<li><a href="javascript:void(0)" class="bedingung voraussetzung" data-goto="'
 										+ val
 										+ '">'
 										+ ("lvtypshort" in kurse[val] ? kurse[val]["lva"]["lvtypshort"]
