@@ -9,7 +9,9 @@ var mydir= path.split('/').slice(0, -1).join('/')+'/';  // remove last filename 
 jQuery(document)
 		.ready(
 				function() {
-                                    if (documents.getElementByiD('curriculum_display')!=null){
+                                    if (document.getElementById('curriculum_display')==null){
+                                        return;
+                                    }
 					var head = jQuery('head')[0];
 					var link = document.createElement('link');
 					link.rel = 'stylesheet';
@@ -70,7 +72,7 @@ jQuery(document)
 								return false;
 							});
 
-				}});
+				});
 
 /**
  * Extracts the matching curricula out of the JSON-data and calls fill_crclm
