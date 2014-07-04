@@ -3,17 +3,33 @@ include_once dirname ( __FILE__ ) . '/tcpdf/tcpdf.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 class overviewPDF extends TCPDF {
 	private $aIndices = array ();
+	/**
+	 * Generates Header of each page
+	 *
+	 */
 	public function Header() {
 		/*
 		 * JKU Bild nicht erlaubt... if ($this->PageNo () === 1) { $fWidth = $this->getPageDimensions ()['wk']; $fHeight = $fWidth * 149 / 1253; $this->SetMargins ( PDF_MARGIN_LEFT, $fHeight ); $this->Image ( __DIR__ . '\Images\Header.jpg', 0, 0, $fWidth, $fHeight ); }
 		 */
 	}
+	/**
+	 * Generates Footer of each page
+	 *
+	 */
 	public function Footer() {
 		$this->setFont ( 'times', '', 12 );
 		$this->setY ( - 15 );
 		$this->Line ( $this->getMargins ()['left'], $this->GetY (), $this->getPageDimensions ()['wk'] - $this->getMargins ()['right'], $this->GetY () );
 		$this->Cell ( 0, 0, $this->getAliasRightShift () . $this->getAliasNumPage () . '/' . $this->getAliasNbPages (), 0, 0, 'R' );
 	}
+	
+	/**
+	 * Gets index of desired the level
+     *
+	 * @param integer $iLevel
+	 *			level from which the index is wanted
+	 * @return index
+	 */
 	private function getNextIndex($iLevel) {
 		if (! array_key_exists ( $iLevel, $this->aIndices )) {
 			for($i = 0; $i <= $iLevel; $i ++) {
@@ -27,6 +43,14 @@ class overviewPDF extends TCPDF {
 		}
 		return ++ $this->aIndices [$iLevel];
 	}
+	
+	/**
+	 * Gets the height of the HTML document
+     *
+	 * @param unknown $oPdf
+	 *			Current PDF
+	 * @return height
+	 */
 	private static function getHTMLHeight($sHTML) {
 		$oPdf = new overviewPDF ();
 		$oPdf->setFont ( 'times', '', 12 );
@@ -35,11 +59,23 @@ class overviewPDF extends TCPDF {
 		$oPdf->writeHTML ( $sHTML );
 		return $oPdf->getTotalY ();
 	}
+	
+	/**
+	 * Gets tthe total height
+     *
+	 * @return total height
+	 */
 	private function getTotalY() {
 		return ($this->PageNo () - 1) * ($this->getPageHeight () - $this->getMargins ()['top'] - $this->getMargins ()['bottom']) + $this->getY ();
 	}
+	
 	/**
 	 * Creates the PDF document and sends it to the client
+     *
+	 * @param integer $iVID
+	 *			Drupal-ID of desired Curriculum
+	 * @param string $sFilename
+	 *			destination of saved PDF
 	 */
 	public function createPDF($iVID) {
 		// create new PDF document
@@ -78,7 +114,7 @@ class overviewPDF extends TCPDF {
 	/**
 	 * Adds a Table of Contents Page to the PDF document
 	 *
-	 * @param unknown $pdf
+	 * @param unknown $this
 	 *        	The PDF document to add to
 	 */
 	private function createTOCPage() {
@@ -97,6 +133,8 @@ class overviewPDF extends TCPDF {
 	 *        	The type of the curriculum (Bachelorstudium, Masterstudium)
 	 * @param string $sCurrVersion
 	 *        	The verision of the curriculum (e.g. 2013W)
+	 * @return string $sFilename
+	 *			name of the unique filename found
 	 */
 	private function getUniqueFilename($sCurrType, $sCurrVersion) {
 		if (! file_exists ( DRUPAL_ROOT . '/sites/default/files/images/pdf/archive/' ))
@@ -113,8 +151,6 @@ class overviewPDF extends TCPDF {
 	/**
 	 * Prints a curriculum object and all its sub-objects to a PDF document
 	 *
-	 * @param unknown $pdf
-	 *        	The PDF document to print to
 	 * @param unknown $oCurriculum
 	 *        	The curriculum object to print
 	 */
@@ -144,6 +180,12 @@ EOT;
 			$this->printTopLevel ( $oCourse );
 		}
 	}
+	/**
+	 * Checks if element is a structur element or not 
+	 *
+	 * @param unknown $oTopLevel
+	 *        	The object to check
+	 */
 	private function printTopLevel($oTopLevel) 
 
 	{
@@ -159,8 +201,6 @@ EOT;
 	/**
 	 * Prints a course object (Fach) and all its sub-objects to a PDF document
 	 *
-	 * @param myPDF $oPdf
-	 *        	The PDF document to print to
 	 * @param unknown $oFach
 	 *        	The course object to print
 	 */
@@ -240,8 +280,6 @@ EOT;
 	/**
 	 * Prints a heading to the PDF document and adds a bookmark for it
 	 *
-	 * @param myPDF $oPdf
-	 *        	The PDF document to print to
 	 * @param unknown $sText
 	 *        	The heading text
 	 * @param unknown $iLevel
@@ -250,6 +288,8 @@ EOT;
 	 *        	true if the index should be shown in the heading
 	 * @param string $sAlign
 	 *        	Alignment of the heading. For allowed values see @see TCPDF::Multicell()
+	 * @param boolean $bAddBookmark
+	 *			true if heading should be in index / bookmarked
 	 */
 	private function printHeading($sText, $iLevel, $bShowIndex = true, $sAlign = 'L', $bAddBookmark = true) {
 		$iIndex = $this->getNextIndex ( $iLevel );

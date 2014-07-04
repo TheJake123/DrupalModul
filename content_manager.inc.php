@@ -16,7 +16,8 @@ class content_manager {
 	 *        	Drupal-Node-ID
 	 * @param string $sLang
 	 *        	Language to return
-	 * @return \stdClass
+	 * @return object $oReturnNode
+	 * 			Selected ReturnNode
 	 */
 	private function get_return_node($iNodeID, $sLang = 'de') {
 		if ($sLang = 'de')
@@ -56,7 +57,7 @@ class content_manager {
 	 * @param type $parent        	
 	 * @param type $parents_index        	
 	 * @param type $depth        	
-	 * @return type
+	 * @return type $return
 	 */
 	public function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
 		if (! is_array ( $vid_or_terms )) {
@@ -95,6 +96,7 @@ class content_manager {
 	}
 	
 	/**
+	 * Returns LVA as JSON object
 	 *
 	 * @param integer $iNodeID
 	 *        	Drupal-ID of desired node
@@ -115,6 +117,8 @@ class content_manager {
 	 *        	The types to get. Valid values are {'curriculum','itsv','schwerpunkt'}
 	 * @param string $sLang
 	 *        	= 'de' The language to get the curricula in (optional)
+	 * @return array $aCurricula
+	 *			= array of selected curricula
 	 */
 	public function getCurricula($sCurrType = '', $aTaxonomyTypes = array('curriculum'), $sLang = 'de') {
 		if ($sLang === 'de')
@@ -148,7 +152,7 @@ class content_manager {
 	 *
 	 * @param string $sCoreName
 	 *        	The initial name
-	 * @return string A unique machine name
+	 * @return string $sMachineName unique machine name
 	 */
 	public function getUniqueMachineName($sCoreName) {
 		$sMachineName = $sCoreName;
@@ -176,7 +180,7 @@ class content_manager {
 	/**
 	 * Gets the curriculum with $iVID from the database
 	 *
-	 * @return array The curriculum object
+	 * @return $oCurriculum array of the curriculum object
 	 */
 	public function getCurriculum($iVID) {
 		$oVocabulary = taxonomy_vocabulary_load ( $iVID, 0 );
@@ -191,9 +195,10 @@ class content_manager {
 		return $oCurriculum;
 	}
 	/**
-	 * JSON Service for Curricula Tree
-	 * TODO: Taxonomieauswahl - Übergabe eigener service
-	 * TODO: COntent in den Tree
+	 * Returns Curriculum as JSON object
+	 * 
+	 * @param integer $iVID
+	 *				Drupal-ID of desired curriculum
 	 */
 	public function json_service_curriculum($iVID) {
 		$aTerms = $this->taxonomy_get_nested_tree ( $iVID );
