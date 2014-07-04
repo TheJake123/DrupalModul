@@ -93,13 +93,7 @@ CKEDITOR.dialog.add( 'stukowin_curriculum_Dialog', function( editor ) {
 			div.setAttribute('data-currtype', currType);
 			div.setAttribute('data-curriculums', curriculums);
 			div.setAttribute('id', "curriculum_display");
-			editor.insertElement( div );
-			
-			// Creates the <script> element.
-			var script = editor.document.createElement('script');
-            script.setAttribute( 'src', 'sites/all/modules/stukowin/js/graph.js');
-            editor.insertElement( script );
-                        
+			editor.insertElement( div );                        
 		}
 	};
 });
