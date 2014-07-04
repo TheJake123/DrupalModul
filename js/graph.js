@@ -153,12 +153,12 @@ function showEmpfohlen(element) {
 		return;
 	}
 	var id = element.attr("id");
-	if ("empfohlen" in kurse[id]["lva"]) {
+	if ("empfehlung" in kurse[id]["lva"]) {
 		var list = '<div class="bedingung empfohlen">';
 		list += '<p class="bedingung empfohlen">Für diesen Kurs sind folgende Kurse empfohlen:</p><ul class="bedingung empfohlen">';
 		jQuery
 				.each(
-						kurse[id]["lva"]["empfohlen"],
+						kurse[id]["lva"]["empfehlung"],
 						function(key, val) {
 							list += '<li><a href="javascript:void(0)"   class="bedingung empfohlen" id="'
 									+ val
@@ -190,7 +190,7 @@ function showVoraussetzungen(element) {
 		return;
 	}
 	var id = element.attr("id");
-	if ("vorraussetzung" in kurse[id]["lva"]) { // Falsch geschrieben in
+	if ("voraussetzung" in kurse[id]["lva"]) { // Falsch geschrieben in
 		// Testphase (Fabian der alte
 		// Spanier hat ein rollendes
 		// R^^)
@@ -198,7 +198,7 @@ function showVoraussetzungen(element) {
 		list += '<p class="bedingung voraussetzung">Folgende Kurse müssen verpflichtend vor diesem Kurs durchgeführt werden:</p><ul class="bedingung voraussetzung">';
 		jQuery
 				.each(
-						kurse[id]["lva"]["vorraussetzung"],
+						kurse[id]["lva"]["voraussetzung"],
 						function(key, val) { // Falsch
 							// geschrieben
 							// (s.o.)
@@ -320,7 +320,7 @@ function expandAndScrollToElement(element, highlightColor) {
  * @return {String} The complete HTML for the given course's <div>
  */
 function createDivs(kurs, level, parentIsRoot) {
-	var div, hasVoraussetzungen, hasEmpfohlen, typ, rightTds;
+	var div, typ, rightTds;
 
 	if ("lva" in kurs && kurs["lva"]) {
 		rightTds = createTds(kurs);
@@ -371,9 +371,9 @@ function createDivs(kurs, level, parentIsRoot) {
  *            kurs The course to create the cells for.
  */
 function createTds(kurs) {
-	var anzVoraussetzungen = "voraussetzungen" in kurs ? kurs["lva"]["voraussetzungen"].length
+	var anzVoraussetzungen = "voraussetzung" in kurs ? kurs["lva"]["voraussetzung"].length
 			: 0;
-	var anzEmpfohlen = "empfohlen" in kurs ? kurs["lva"]["empfohlen"].length
+	var anzEmpfohlen = "empfehlung" in kurs ? kurs["lva"]["empfehlung"].length
 			: 0;
 	var rightTds = '<td class="center">'
 			+ ("lva" in kurs ? kurs["lva"]["title"] : kurs["name"])
