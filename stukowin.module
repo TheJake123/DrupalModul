@@ -143,6 +143,10 @@ function stukowin_pre_retreive($form, &$form_state) {
 	);
 	return $form;
 }
+function stukowin_init() {
+	$settings = array('drupal_root' => DRUPAL_ROOT);
+	drupal_add_js(array('stukowin' => $settings), 'setting');
+}
 /**
  * Implements hook_submit for stukowin_pre_retrieve
  *
