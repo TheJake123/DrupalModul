@@ -11,13 +11,7 @@ jQuery(document)
                         return;
                     }
                     drupal_root = Drupal.settings.basePath;
-					var head = jQuery('head')[0];
-					var link = document.createElement('link');
-					link.rel = 'stylesheet';
-					link.type = 'text/css';
-					link.href = drupal_root + 'sites/all/modules/stukowin/css/curriculum_style.css';
-					link.media = 'all';
-					head.appendChild(link);
+					addResources();
 
 					var type = jQuery("#curriculum_display").data("currtype");
 					var currList = jQuery("#curriculum_display").data(
@@ -436,4 +430,21 @@ function buildRequest(baseUrl, type, curriculums) {
 
 function clearDiv() {
 	jQuery("#curriculum_display > div").not('#loading_div').remove();
+}
+
+/**
+* Convenience function that adds missing stylesheets and jquery effect libraries.
+*/
+function addResources() {
+	var head = jQuery('head')[0];
+	var link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.type = 'text/css';
+	link.href = drupal_root + 'sites/all/modules/stukowin/css/curriculum_style.css';
+	link.media = 'all';
+	head.appendChild(link);
+	var highlightScript = document.createElement('script');
+	highlightScript.type = "text/javascript";
+	highlightScript.src = drupal_root +  "sites/all/modules/jquery_update/replace/ui/ui/minified/jquery.ui.effect-highlight.min.js";
+	head.appendChild(highlightScript);
 }
