@@ -1,5 +1,5 @@
 var kurse = {};
-
+var drupal_root = "";
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
  */
@@ -10,7 +10,7 @@ jQuery(document)
                     if (document.getElementById('curriculum_display')==null){
                         return;
                     }
-                    var drupal_root = window.location.host + Drupal.settings.basePath;
+                    drupal_root = Drupal.settings.basePath;
 					var head = jQuery('head')[0];
 					var link = document.createElement('link');
 					link.rel = 'stylesheet';
@@ -22,9 +22,7 @@ jQuery(document)
 					var type = jQuery("#curriculum_display").data("currtype");
 					var currList = jQuery("#curriculum_display").data(
 							"curriculums").split(" ");
-					var reqUrl = "http://sir.profflasche.at:8081/drupal/?q=stukowin/crclmlst";
-					reqUrl = buildRequest(drupal_root, type, currList);
-
+					var reqUrl = buildRequest(drupal_root, type, currList);
 					jQuery.ajax({
 						url : reqUrl,
 						dataType : 'json',
@@ -85,7 +83,6 @@ function gc(data) {
 		alert('No curriculum data available');
 		return;
 	}
-	jQuery("#curriculum_display");
 	var select = document.createElement("select");
 	select.id = "curr_select";
 	for (var i = 0; i < data.length; i++) {
@@ -102,18 +99,20 @@ function gc(data) {
 		var loadingIcon = document.createElement('img');
 		loadingIcon.id = "curr_loading";
 		loadingIcon.src = drupal_root + "sites/all/modules/stukowin/images/ajax-loader.gif";
-		loadingIcon.style.width = selectElem.offsetWidth;
-		loadingIcon.style.height = selectElem.offsetHeight;
+                select.style.display = 'none';
 		selectElem.parentNode.insertBefore(loadingIcon, selectElem.nextSibling);
-		jQuery.getJSON(
-				"http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
-						+ currId, fill_crclm);
+		jQuery.getJSON(drupal_root + "?q=stukowin/crclm/" + currId, fill_crclm);
 	};
+        
 	select.disabled = "disabled";
 	var loadingIcon = document.createElement('img');
 	loadingIcon.id = "curr_loading";
 	loadingIcon.src = drupal_root + "sites/all/modules/stukowin/images/ajax-loader.gif";
-	jQuery("#curriculum_display").append(select);
+        var div = document.createElement('div');
+        div.setAttribute('id', 'loading_div');
+	jQuery("#curriculum_display").append(div);
+        div.appendChild(select);
+        select.style.display = 'none';
 	select.parentNode.insertBefore(loadingIcon, select.nextSibling);
 	jQuery.getJSON(drupal_root + "?q=stukowin/crclm/"
 			+ data[0]["vid"], fill_crclm);
@@ -138,6 +137,7 @@ function fill_crclm(data) {
 	reduce_all();
 	var selectElem = document.getElementById("curr_select");
 	selectElem.removeAttribute("disabled");
+        selectElem.style.display = 'block';
 	document.getElementById("curr_loading").remove();
 }
 
@@ -420,20 +420,20 @@ function isFullyVisible(elem) {
 
 function buildRequest(baseUrl, type, curriculums) {
 	var url = baseUrl  + "?q=stukowin/crclmlst";
-	if (baseUrl.indexOf("?") >= 0) {
-		baseUrl += "&";
+	if (url.indexOf("?") >= 0) {
+		url += "&";
 	} else {
-		baseUrl += "?";
+		url += "?";
 	}
-	baseUrl += "currtype=";
-	baseUrl += type;
+	url += "currtype=";
+	url += type;
 	for (var i = 0; i < curriculums.length; i++) {
-		baseUrl += "&taxtypes[]=";
-		baseUrl += curriculums[i];
+		url += "&taxtypes[]=";
+		url += curriculums[i];
 	}
-	return baseUrl;
+	return url;
 }
 
 function clearDiv() {
-	jQuery("#curriculum_display > div").remove();
+	jQuery("#curriculum_display > div").not('#loading_div').remove();
 }

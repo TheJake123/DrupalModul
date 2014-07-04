@@ -329,3 +329,8 @@ div#curriculum_display table.header tr td {
 div#curriculum_display table.header tr {
     background:inherit;
 }
+
+#curr_select, #curr_loading {
+    line-height: 3em;
+    margin-bottom: 10px;
+}
