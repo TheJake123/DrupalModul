@@ -10,9 +10,13 @@ var kurse = {};
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
  */
+
 jQuery(document)
 		.ready(
 				function() {
+                                    if (document.getElementById('curriculum_display')==null){
+                                        return;
+                                    }
 					var head = jQuery('head')[0];
 					var link = document.createElement('link');
 					link.rel = 'stylesheet';
