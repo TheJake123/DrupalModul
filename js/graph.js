@@ -342,7 +342,7 @@ function createDivs(kurs, level, parentIsRoot) {
 					+ kurs["tid"]
 					+ '">'
 					+ '<table class="header"><tr>'
-					+ '<td class="' . expander . '" alt="minus" title="Ausklappen"></td>'
+					+ '<td class="' + expander + '" alt="minus" title="Ausklappen"></td>'
 					+ rightTds + '</tr></table>';
 			if ("children" in kurs) {
 				jQuery.each(kurs["children"], function(key, val) {
