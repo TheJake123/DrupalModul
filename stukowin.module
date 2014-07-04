@@ -10,7 +10,6 @@ set_time_limit ( 600 );
 
 include_once dirname ( __FILE__ ) . '/ceus_importer.inc.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
-include_once dirname ( __FILE__ ) . '/pdf_creator.inc.php';
 
 /**
  * Implements hook_help().
@@ -143,10 +142,7 @@ function stukowin_pre_retreive($form, &$form_state) {
 	);
 	return $form;
 }
-function stukowin_init() {
-	$settings = array('drupal_root' => DRUPAL_ROOT);
-	drupal_add_js(array('stukowin' => $settings), 'setting');
-}
+
 /**
  * Implements hook_submit for stukowin_pre_retrieve
  *

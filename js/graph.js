@@ -1,12 +1,5 @@
 var kurse = {};
-(function ($) {
-	  Drupal.behaviors.stukowin = {
-	    attach: function (context, settings) {
-	      alert('testing');
-	      alert(Drupal.settings.stukowin.drupal_root);
-	    }
-	  };
-	}(jQuery));
+
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
  */
@@ -14,14 +7,15 @@ var kurse = {};
 jQuery(document)
 		.ready(
 				function() {
-                                    if (document.getElementById('curriculum_display')==null){
-                                        return;
-                                    }
+                    if (document.getElementById('curriculum_display')==null){
+                        return;
+                    }
+                    var drupal_root = window.location.host + Drupal.settings.basePath;
 					var head = jQuery('head')[0];
 					var link = document.createElement('link');
 					link.rel = 'stylesheet';
 					link.type = 'text/css';
-					link.href = mydir + '../css/curriculum_style.css';
+					link.href = drupal_root + 'sites/all/modules/stukowin/css/curriculum_style.css';
 					link.media = 'all';
 					head.appendChild(link);
 
@@ -29,7 +23,7 @@ jQuery(document)
 					var currList = jQuery("#curriculum_display").data(
 							"curriculums").split(" ");
 					var reqUrl = "http://sir.profflasche.at:8081/drupal/?q=stukowin/crclmlst";
-					reqUrl = buildRequest(mydir, type, currList);
+					reqUrl = buildRequest(drupal_root, type, currList);
 
 					jQuery.ajax({
 						url : reqUrl,
@@ -107,9 +101,9 @@ function gc(data) {
 		selectElem.disabled = "disabled";
 		var loadingIcon = document.createElement('img');
 		loadingIcon.id = "curr_loading";
-		loadingIcon.src = "sites/all/modules/stukowin/images/ajax-loader.gif";
-		loadingIcon.offsetWidth = selectElem.offsetWidth;
-		loadingIcon.offsetHeight = selectElem.offsetHeight;
+		loadingIcon.src = drupal_root + "sites/all/modules/stukowin/images/ajax-loader.gif";
+		loadingIcon.style.width = selectElem.offsetWidth;
+		loadingIcon.style.height = selectElem.offsetHeight;
 		selectElem.parentNode.insertBefore(loadingIcon, selectElem.nextSibling);
 		jQuery.getJSON(
 				"http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
@@ -118,10 +112,10 @@ function gc(data) {
 	select.disabled = "disabled";
 	var loadingIcon = document.createElement('img');
 	loadingIcon.id = "curr_loading";
-	loadingIcon.src = "sites/all/modules/stukowin/images/ajax-loader.gif";
+	loadingIcon.src = drupal_root + "sites/all/modules/stukowin/images/ajax-loader.gif";
 	jQuery("#curriculum_display").append(select);
 	select.parentNode.insertBefore(loadingIcon, select.nextSibling);
-	jQuery.getJSON("http://sir.profflasche.at:8081/drupal/?q=stukowin/crclm/"
+	jQuery.getJSON(drupal_root + "?q=stukowin/crclm/"
 			+ data[0]["vid"], fill_crclm);
 }
 
@@ -243,12 +237,12 @@ function expand_reduce(element) {
 			"td.left.button.expander");
 	if (button.attr("alt") == "plus") {
 		button.css("background-image",
-				'url("sites/all/modules/stukowin/images/Minus.png")');
+				'url("' + drupal_root + 'sites/all/modules/stukowin/images/Minus.png")');
 		button.attr("alt", "minus");
 		button.attr("title", "Einklappen");
 	} else {
 		button.css("background-image",
-				'url("sites/all/modules/stukowin/images/Plus.png")');
+				'url("' + drupal_root + 'sites/all/modules/stukowin/images/Plus.png")');
 		button.attr("alt", "plus");
 		button.attr("title", "Ausklappen");
 	}
@@ -425,7 +419,7 @@ function isFullyVisible(elem) {
 }
 
 function buildRequest(baseUrl, type, curriculums) {
-	var url = baseUrl  + "/../../../../../stukowin/crclmlst";
+	var url = baseUrl  + "?q=stukowin/crclmlst";
 	if (baseUrl.indexOf("?") >= 0) {
 		baseUrl += "&";
 	} else {
