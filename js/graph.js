@@ -1,4 +1,6 @@
 var kurse = {};
+alert(Drupal.settings.stukowin.stukowinUrl);
+alert(Drupal.settings.stukowin.cssUrl);
 
 /**
  * Gets list of all courses from test JSON file and sets up event handlers

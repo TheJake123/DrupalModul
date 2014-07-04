@@ -32,7 +32,14 @@ function stukowin_help($path, $arg) {
 			break;
 	}
 }
-
+function stukowin_init() {
+	$settings = array(
+			'stukowinUrl' => DRUPAL_ROOT,
+			'cssUrl' => dirname ( __FILE__ ),
+	);
+	drupal_add_js(array('stukowin' => $settings), 'setting');
+	drupal_add_js(drupal_get_path('module', 'stukowin') . '/js/graph.js', 'file');
+}
 /**
  * Hook for admin menu
  */
