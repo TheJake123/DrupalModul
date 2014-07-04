@@ -5,14 +5,16 @@ var mydir= path.split('/').slice(0, -1).join('/')+'/';  // remove last filename 
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
  */
+
 jQuery(document)
 		.ready(
 				function() {
+                                    if (documents.getElementByiD('curriculum_display')!=null){
 					var head = jQuery('head')[0];
 					var link = document.createElement('link');
 					link.rel = 'stylesheet';
 					link.type = 'text/css';
-					link.href = mydir + '/../css/curriculum_style.css';
+					link.href = mydir + '../css/curriculum_style.css';
 					link.media = 'all';
 					head.appendChild(link);
 
@@ -68,7 +70,7 @@ jQuery(document)
 								return false;
 							});
 
-				});
+				}});
 
 /**
  * Extracts the matching curricula out of the JSON-data and calls fill_crclm
