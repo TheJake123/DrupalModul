@@ -1,7 +1,7 @@
 var kurse = {};
-alert(Drupal.settings.stukowin.stukowinUrl);
-alert(Drupal.settings.stukowin.cssUrl);
-
+var scripts= document.getElementsByTagName('script');
+var path= scripts[scripts.length-1].src.split('?')[0];      // remove any ?query
+var mydir= path.split('/').slice(0, -1).join('/')+'/';  // remove last filename part of path
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
  */
@@ -20,7 +20,7 @@ jQuery(document)
 					var currList = jQuery("#curriculum_display").data(
 							"curriculums").split(" ");
 					var reqUrl = "http://sir.profflasche.at:8081/drupal/?q=stukowin/crclmlst";
-					reqUrl = buildRequest(reqUrl, type, currList);
+					reqUrl = buildRequest(mydir, type, currList);
 
 					jQuery.ajax({
 						url : reqUrl,
@@ -335,13 +335,14 @@ function createDivs(kurs, level, parentIsRoot) {
 			} else if (kurs["lva"]["lvatype"] == 2) {
 				typ = "modul";
 			}
+			var expander = "children" in kurs ? "left button expander" : "left";
 			div = '<div class="'
 					+ typ
 					+ '" id="'
 					+ kurs["tid"]
 					+ '">'
 					+ '<table class="header"><tr>'
-					+ '<td class="left button expander" alt="minus" title="Ausklappen"></td>'
+					+ '<td class="' . expander . '" alt="minus" title="Ausklappen"></td>'
 					+ rightTds + '</tr></table>';
 			if ("children" in kurs) {
 				jQuery.each(kurs["children"], function(key, val) {
@@ -415,7 +416,7 @@ function isFullyVisible(elem) {
 }
 
 function buildRequest(baseUrl, type, curriculums) {
-	var url = baseUrl;
+	var url = baseUrl  + "/../../../../../stukowin/crclmlst";
 	if (baseUrl.indexOf("?") >= 0) {
 		baseUrl += "&";
 	} else {
