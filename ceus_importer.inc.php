@@ -128,7 +128,13 @@ class ceus_importer
     {
       $sReturn = file_get_contents($this->sCeusUrl.'/'.$this->aFiles['DETAIL'].'?id='.$iID.'&authtoken='.$this->sAuthtoken."&lang=$sLang");
       if(!$aReturn = $this->check_return_value($sReturn)) return false;
+      foreach ($aReturn as $key => $val)
+      {
+          if(is_string($val))
+            $aReturn[$key] = decode_entities($val);
+      }
       $aDetail[$sLang] = $aReturn;
+      
     }
     return $aDetail;
   }

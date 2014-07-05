@@ -12,7 +12,7 @@ jQuery(document)
                     }
                     drupal_root = Drupal.settings.basePath;
 					addResources();
-
+                                        addLegende();
 					var type = jQuery("#curriculum_display").data("currtype");
 					var currList = jQuery("#curriculum_display").data(
 							"curriculums").split(" ");
@@ -28,7 +28,6 @@ jQuery(document)
 							alert(request.status);
 						}
 					});
-
 					jQuery("#curriculum_display").on(
 							"click",
 							".button",
@@ -120,7 +119,7 @@ function gc(data) {
 function fill_crclm(data) {
 	kurse = {};
 	for (var i = 0; i < data.length; i++) {
-		kurse[data[i]["tid"]] = data[i];
+		kurse[data[i]["description"]] = data[i];
 	}
 	clearDiv();
 	for ( var key in kurse) {
@@ -130,7 +129,7 @@ function fill_crclm(data) {
 	var selectElem = document.getElementById("curr_select");
 	selectElem.removeAttribute("disabled");
         selectElem.style.display = 'block';
-	document.getElementById("curr_loading").remove();
+	jQuery('#curr_loading').remove();
 }
 
 /**
@@ -319,10 +318,10 @@ function createDivs(kurs, level, parentIsRoot) {
 	var div, typ, rightTds;
 
 	if ("lva" in kurs && kurs["lva"]) {
-            kurse[kurs['tid']] = kurs;
+            kurse[kurs['description']] = kurs;
 		rightTds = createTds(kurs);
 		if (kurs["lva"]["lvatype"] == 3) {
-			div = '<div class="lv' + '" id="' + kurs["tid"] + '">'
+			div = '<div class="lv' + '" id="' + kurs["description"] + '">'
 					+ '<table class="header"><tr>' + '<td class="left ects">'
 					+ ("lva" in kurs ? kurs["lva"]["lvtypshort"] : "")
 					+ '</td>' + rightTds + '</tr></table></div>';
@@ -336,7 +335,7 @@ function createDivs(kurs, level, parentIsRoot) {
 			div = '<div class="'
 					+ typ
 					+ '" id="'
-					+ kurs["tid"]
+					+ kurs["description"]
 					+ '">'
 					+ '<table class="header"><tr>'
 					+ '<td class="' + expander + '" alt="minus" title="Ausklappen"></td>'
@@ -429,7 +428,7 @@ function buildRequest(baseUrl, type, curriculums) {
 }
 
 function clearDiv() {
-	jQuery("#curriculum_display > div").not('#loading_div').remove();
+	jQuery("#curriculum_display > div").not('#loading_div', '#curriculum_legende').remove();
 }
 
 /**
@@ -447,4 +446,71 @@ function addResources() {
 	highlightScript.type = "text/javascript";
 	highlightScript.src = drupal_root +  "sites/all/modules/jquery_update/replace/ui/ui/minified/jquery.ui.effect-highlight.min.js";
 	head.appendChild(highlightScript);
+}
+
+function  addLegende() {
+    var display = document.getElementById("curriculum_display");
+    var curr_div = document.createElement('div');
+    curr_div.setAttribute('id', 'curriculum_legende')
+    jQuery(display).append(curr_div);
+    var table = document.createElement('table');
+    table.id = "Legende";
+    curr_div.appendChild(table);
+
+    var row1 = table.insertRow(0);
+    var cell11 = row1.insertCell(0);
+    var cell12 = row1.insertCell(-1);
+    var cell13 = row1.insertCell(-1);
+    var cell14 = row1.insertCell(-1);
+
+    var row2 = table.insertRow(-1);
+    var cell21 = row2.insertCell(0);
+    var cell22 = row2.insertCell(-1);
+    var cell23 = row2.insertCell(-1);
+    var cell24 = row2.insertCell(-1);
+
+    var row3 = table.insertRow(-1);
+    var cell31 = row3.insertCell(0);
+    var cell32 = row3.insertCell(-1);
+    var cell33 = row3.insertCell(-1);
+    var cell34 = row3.insertCell(-1);
+
+    var plusIcon = document.createElement('img');
+    plusIcon.id = "plus";
+    plusIcon.src = drupal_root + "sites/all/modules/stukowin/images/Plus.png";
+
+    var minusIcon = document.createElement('img');
+    minusIcon.id = "minus";
+    minusIcon.src = drupal_root + "sites/all/modules/stukowin/images/Minus.png";
+
+    var vorIcon = document.createElement('img');
+    vorIcon.id = "vor";
+    vorIcon.src = drupal_root + "sites/all/modules/stukowin/images/Voraussetzung.png";
+
+    var empfIcon = document.createElement('img');
+    empfIcon.id = "empf";
+    empfIcon.src = drupal_root + "sites/all/modules/stukowin/images/Empfohlen.png";
+
+    var ectsIcon = document.createElement('img');
+    ectsIcon.id = "ects";
+    ectsIcon.src = drupal_root + "sites/all/modules/stukowin/images/ECTS.png";
+
+    var voIcon = document.createElement('img');
+    voIcon.id = "vo";
+    voIcon.src = drupal_root + "sites/all/modules/stukowin/images/V300.png";
+
+    cell11.appendChild(plusIcon);
+    cell12.innerHTML = "Opens the element";
+    cell13.appendChild(empfIcon);
+    cell14.innerHTML = "Shows Empfehlungen of course";
+
+    cell21.appendChild(minusIcon);
+    cell22.innerHTML = "Closes the element";
+    cell23.appendChild(ectsIcon);
+    cell24.innerHTML = "ECTS of course";
+
+    cell31.appendChild(vorIcon);
+    cell32.innerHTML = "Shows Voraussetzungen of course";
+    cell33.appendChild(voIcon);
+    cell34.innerHTML = "Type of course e.g. VO1";
 }
