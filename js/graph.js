@@ -428,7 +428,7 @@ function buildRequest(baseUrl, type, curriculums) {
 }
 
 function clearDiv() {
-	jQuery("#curriculum_display > div").not('#loading_div', '#curriculum_legende').remove();
+	jQuery("#curriculum_display > div").not('#loading_div,#curriculum_legende').remove();
 }
 
 /**
@@ -466,15 +466,14 @@ function  addLegende() {
     var row2 = table.insertRow(-1);
     var cell21 = row2.insertCell(0);
     var cell22 = row2.insertCell(-1);
-    var cell23 = row2.insertCell(-1);
-    var cell24 = row2.insertCell(-1);
-
-    var row3 = table.insertRow(-1);
-    var cell31 = row3.insertCell(0);
-    var cell32 = row3.insertCell(-1);
-    var cell33 = row3.insertCell(-1);
-    var cell34 = row3.insertCell(-1);
-
+    var cell31 = row2.insertCell(-1);
+    var cell32 = row2.insertCell(-1);
+ 
+    var cell23 = row1.insertCell(-1);
+    var cell24 = row1.insertCell(-1);
+    var cell33 = row2.insertCell(-1);
+    var cell34 = row2.insertCell(-1);
+    
     var plusIcon = document.createElement('img');
     plusIcon.id = "plus";
     plusIcon.src = drupal_root + "sites/all/modules/stukowin/images/Plus.png";
