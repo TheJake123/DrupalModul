@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . '/simple_html_dom.php';
-  include_once dirname(__FILE__).'/stukowin.install';
+include_once dirname(__FILE__).'/stukowin.install';
+include_once dirname(__FILE__).'/content_manager.inc.php';
 
 
 /* 
@@ -471,9 +472,12 @@ class ceus_importer
     $oVocabulary = taxonomy_vocabulary_load(variable_get('ceus_importer_'.$aCurriculum['typeshort'].'_'.$aCurriculum['version'].'_vocabulary', 0)); 
     if (!$oVocabulary) 
     { 
+      $sMachineName = $aCurriculum['typeshort'].'_'.$aCurriculum['version'];
+      $oContentManager = new content_manager();
+      $sMachineName = $oContentManager->getUniqueMachineName($sMachineName);
       $aEdit = array( 
       'name' => $aCurriculum['name'] . ', ' . $aCurriculum['type'] . ' ' . $aCurriculum['version'], 
-      'machine_name' => 'curriculum_'.$aCurriculum['id'], 
+      'machine_name' => $sMachineName, 
       'description' => $aCurriculum['name'] . ', ' . $aCurriculum['type'] . ' ' . $aCurriculum['version'], 
       'hierarchy' => 1, 
       'module' => 'ceus_importer', 
