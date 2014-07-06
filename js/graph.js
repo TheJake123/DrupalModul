@@ -5,7 +5,6 @@ var jsonCalls = [];
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
  */
-
 jQuery(document)
 		.ready(
 				function() {
@@ -16,8 +15,9 @@ jQuery(document)
 					var type = jQuery("#curriculum_display").data("currtype");
 					var currList = jQuery("#curriculum_display").data(
 							"curriculums").split(" ");
-					var reqUrl = buildRequest(drupal_root, type, currList);
-					jQuery.getJSON(reqUrl, gc);
+					var reqUrl = buildRequestURL(drupal_root, type, currList);
+					jQuery.getJSON(reqUrl, getCurricula);
+					// Register handler for button click
 					jQuery("#curriculum_display").on(
 							"click",
 							".button",
@@ -38,6 +38,7 @@ jQuery(document)
 									jQuery(this).toggleClass("active");
 								}
 							});
+					// Register handler vor recommendation/requirement click
 					jQuery("#curriculum_display")
 							.on(
 									"click",
@@ -46,7 +47,6 @@ jQuery(document)
 										if (document
 												.getElementById(jQuery(this)
 														.data("goto")) !== null) {
-
 											if (jQuery(this).hasClass(
 													"voraussetzung")) {
 												expandAndScrollToElement(
@@ -60,12 +60,14 @@ jQuery(document)
 																"goto"),
 														"#8ad758");
 											}
-										} else {
+										} else { // Recommendation/requirement
+													// is not included in
+													// display
 											window.location.href = drupal_root
 													+ "node/"
 													+ jQuery(this).data("goto");
 										}
-										return false;
+										return false; // Cancel click
 									});
 				});
 
@@ -73,13 +75,13 @@ jQuery(document)
  * Extracts the matching curricula out of the JSON-data and calls fill_crclm
  * 
  * @param {Object}
- *            data All curriculums to search
+ *            data All curricula to search
  */
 
-function gc(data) {
+function getCurricula(data) {
 	if (!data || data == null || data.length <= 0) {
 		jQuery("#curriculum_display").text(
-				"Leider sind zur Zeit keine Curricula-Daten verf�gbar")
+				"Leider sind zur Zeit keine Curricula-Daten verfügbar")
 		return;
 	}
 	var select = document.createElement("select");
@@ -90,20 +92,17 @@ function gc(data) {
 		option.textContent = data[i]["name"];
 		select.appendChild(option);
 	}
-	;
 	select.onchange = function() {
 		var selectElem = document.getElementById("curr_select");
 		var currId = selectElem.options[selectElem.selectedIndex].value;
 		selectElem.disabled = "disabled";
-		var loadingIcon = document.createElement('img');
-		loadingIcon.id = "curr_loading";
-		loadingIcon.src = drupal_root
-				+ "sites/all/modules/stukowin/images/ajax-loader.gif";
+		var loadingIcon = document.getElementById('curriculum_display');
+		loadingIcon.style.display = 'block';
 		select.style.display = 'none';
 		selectElem.parentNode.insertBefore(loadingIcon, selectElem.nextSibling);
+		// Load selected curriculum
 		jQuery.getJSON(drupal_root + "?q=stukowin/crclm/" + currId, fill_crclm);
 	};
-
 	select.disabled = "disabled";
 	var loadingIcon = document.createElement('img');
 	loadingIcon.id = "curr_loading";
@@ -115,6 +114,7 @@ function gc(data) {
 	div.appendChild(select);
 	select.style.display = 'none';
 	select.parentNode.insertBefore(loadingIcon, select.nextSibling);
+	// Load first curriculum
 	jQuery.getJSON(drupal_root + "?q=stukowin/crclm/" + data[0]["vid"],
 			fill_crclm);
 }
@@ -143,7 +143,7 @@ function fill_crclm(data) {
 	var selectElem = document.getElementById("curr_select");
 	selectElem.removeAttribute("disabled");
 	selectElem.style.display = 'block';
-	jQuery('#curr_loading').remove();
+	document.getElementById("curr_loading").style.display = 'none';
 }
 
 /**
@@ -180,13 +180,6 @@ function showEmpfohlen(element) {
 		list += '</div>';
 		element.append(list);
 	}
-}
-
-function fillMissingDetail(data) {
-	if (data == null || "error" in data)
-		return;
-	kurse[data["id"]] = {}
-	kurse[data["id"]]["lva"] = data;
 }
 
 /**
@@ -283,6 +276,7 @@ function reduce_all() {
 		expand_reduce(jQuery(this));
 	});
 }
+
 /**
  * Expands the curriculum tree down to the given element, scrolls to it and
  * highlights it
@@ -330,7 +324,6 @@ function expandAndScrollToElement(element, highlightColor) {
  */
 function createDivs(kurs, level) {
 	var div, typ, rightTds;
-
 	if ("lva" in kurs && kurs["lva"]) {
 		kurse[kurs['description']] = kurs;
 		rightTds = createTds(kurs);
@@ -370,11 +363,13 @@ function createDivs(kurs, level) {
 }
 
 /**
- * Convenience function for creating the table cells used in course and module
- * divs.
+ * Convenience function for creating the table cells used in all course, module
+ * and subject divs.
  * 
  * @param {Object}
  *            kurs The course to create the cells for.
+ * @return {String} The html code for the
+ *         <td>s in the header
  */
 function createTds(kurs) {
 	var anzVoraussetzungen = "voraussetzung" in kurs["lva"] ? kurs["lva"]["voraussetzung"].length
@@ -422,7 +417,7 @@ function createTds(kurs) {
 }
 
 /**
- * Utility to check if an element is fully visible
+ * Utility function to check if an element is fully visible
  * 
  * @param {Object}
  *            elem The element to check
@@ -440,16 +435,16 @@ function isFullyVisible(elem) {
 }
 
 /**
- * Creates the JSON request for curricula based on the div properties
+ * Creates the JSON request URL for curricula based on the div properties
  * 
  * @param {String}
- *            baseUrl URL for JSON request
+ *            baseUrl Drupal base URL to build the request on
  * @param {String}
  *            type Curriculum type
  * @param {Array}
  *            curriculums Taxonomy types
  */
-function buildRequest(baseUrl, type, curriculums) {
+function buildRequestURL(baseUrl, type, curriculums) {
 	var url = baseUrl + "?q=stukowin/crclmlst";
 	if (url.indexOf("?") >= 0) {
 		url += "&";
@@ -466,7 +461,7 @@ function buildRequest(baseUrl, type, curriculums) {
 }
 
 /**
- * Deletes content of div except of legend
+ * Deletes all content of div except the legend
  */
 function clearDiv() {
 	jQuery("#curriculum_display > div").not('#loading_div,#curriculum_legende')
@@ -491,4 +486,18 @@ function addResources() {
 	highlightScript.src = drupal_root
 			+ "sites/all/modules/jquery_update/replace/ui/ui/minified/jquery.ui.effect-highlight.min.js";
 	head.appendChild(highlightScript);
+}
+
+/**
+ * Utility function to fetch course data for all those courses that are not
+ * included in the display but referenced as recommendation and/or
+ * 
+ * @param {Object}
+ *            element The element to show the recommended courses for
+ */
+function fillMissingDetail(data) {
+	if (data == null || "error" in data)
+		return;
+	kurse[data["id"]] = {}
+	kurse[data["id"]]["lva"] = data;
 }

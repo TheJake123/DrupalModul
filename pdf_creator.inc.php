@@ -1,18 +1,19 @@
 <?php
 include_once dirname ( __FILE__ ) . '/tcpdf/tcpdf.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
+
+/**
+ * Class for automatically generating a PDF document from a curriculum
+ */
 class overviewPDF extends TCPDF {
-	private $aIndices = array ();
 	/**
-	 * Generates Header of each page
+	 *
+	 * @var array Array of indices for continuous indexation of headings
 	 */
-	public function Header() {
-		/*
-		 * JKU Bild nicht erlaubt... if ($this->PageNo () === 1) { $fWidth = $this->getPageDimensions ()['wk']; $fHeight = $fWidth * 149 / 1253; $this->SetMargins ( PDF_MARGIN_LEFT, $fHeight ); $this->Image ( __DIR__ . '\Images\Header.jpg', 0, 0, $fWidth, $fHeight ); }
-		 */
-	}
+	private $aIndices = array ();
+	
 	/**
-	 * Generates Footer of each page
+	 * Generates Footer for each page
 	 */
 	public function Footer() {
 		$this->setFont ( 'times', '', 12 );
@@ -43,11 +44,9 @@ class overviewPDF extends TCPDF {
 	}
 	
 	/**
-	 * Gets the height of the HTML document
+	 * Gets the height that the HTML code would need if printed to the PDF
 	 *
-	 * @param unknown $oPdf
-	 *        	Current PDF
-	 * @return height
+	 * @return float The height of the HTML code
 	 */
 	private static function getHTMLHeight($sHTML) {
 		$oPdf = new overviewPDF ();
@@ -59,33 +58,32 @@ class overviewPDF extends TCPDF {
 	}
 	
 	/**
-	 * Gets tthe total height
+	 * Gets the total y
 	 *
-	 * @return total height
+	 * @return float Total y-position in document (not just on this page)
 	 */
 	private function getTotalY() {
 		return ($this->PageNo () - 1) * ($this->getPageHeight () - $this->getMargins ()['top'] - $this->getMargins ()['bottom']) + $this->getY ();
 	}
 	
 	/**
-	 * Creates the PDF document and sends it to the client
+	 * Creates the PDF document and saves it to the preconfigured path
 	 *
 	 * @param integer $iVID
 	 *        	Drupal-ID of desired Curriculum
-	 * @param string $sFilename
-	 *        	destination of saved PDF
 	 */
 	public function createPDF($iVID) {
 		// create new PDF document
 		$this->setFont ( 'times', '', 12 );
 		$this->setCellPaddings ( 0, 0, 0, 0 );
 		$oCurriculum = (new content_manager ())->getCurriculum ( $iVID );
-		// set document information
+		// set document header information
 		$this->SetCreator ( PDF_CREATOR );
 		$this->SetAuthor ( 'StukoWIN' );
 		$this->SetTitle ( 'Curriculum ' . 'Curriculum Wirtschaftsinformatik ' . $oCurriculum ['version'] );
 		$this->SetSubject ( 'Curriculum Wirtschaftsinformatik' );
 		$this->SetKeywords ( 'Curriculum, �bersicht, Wirtschaftsinformatik' );
+		// set up first page
 		$this->AddPage ();
 		$this->SetFontSize ( 45 );
 		$this->MultiCell ( 0, 0, "" );
@@ -100,20 +98,24 @@ class overviewPDF extends TCPDF {
 		$this->SetFontSize ( 12 );
 		$this->Ln ();
 		$this->MultiCell ( 0, 0, 'Version ' . $oCurriculum ['version'], 0, 'C' );
+		// create document content
 		$this->printCurriculum ( $oCurriculum );
 		$this->createTOCPage ();
-		$sFilename = $this->getUniqueFileName ( $oCurriculum ['type'], $oCurriculum ['version'] );
+		// save document
+		$sFilename = $this->getUniqueFileName ( overviewPDF::convertStringToValidFilename ( $oCurriculum ['type'], $oCurriculum ['version'] ) );
 		$this->Output ( $sFilename, 'F' );
 		return 'PDF successfully created at ' . $sFilename;
 	}
+	
+	/**
+	 * Needed for displaying errors in drupal itself
+	 */
 	public function Error($msg) {
 		throw new Exception ( $msg );
 	}
+	
 	/**
-	 * Adds a Table of Contents Page to the PDF document
-	 *
-	 * @param unknown $this
-	 *        	The PDF document to add to
+	 * Adds a table of contents page to the PDF document
 	 */
 	private function createTOCPage() {
 		$this->addTOCPage ();
@@ -123,6 +125,7 @@ class overviewPDF extends TCPDF {
 		$this->addTOC ( 2, 'times', '.', 'Inhalt', 'B' );
 		$this->endTOCPage ();
 	}
+	
 	/**
 	 * Determines if a file with the standard filename already exists.
 	 * If one exists, it appends a number and increases it until the name is not already taken.
@@ -135,9 +138,18 @@ class overviewPDF extends TCPDF {
 	 *         name of the unique filename found
 	 */
 	private function getUniqueFilename($sCurrType, $sCurrVersion) {
-		if (! file_exists ( variable_get ( 'stukowin_pdf_path' ) ))
+		// Get save path
+		$sPath = variable_get ( 'stukowin_pdf_path', DRUPAL_ROOT . '/sites/default/files/pdf/archive' );
+		$sPath = rtrim ( $sPath, '/\\' );
+		if (! file_exists ( $sPath ))
 			mkdir ( variable_get ( 'stukowin_pdf_path' ), 0777, true );
-		$sCoreName = variable_get ( 'stukowin_pdf_path' ) . '/LVA-Übersicht Wirtschaftsinformatik ' . $sCurrType . ' ' . $sCurrVersion;
+			// Get file name
+		$sCoreName = variable_get ( 'stukowin_pdf_name', 'Uebersicht %currtype% %version%' );
+		$sCoreName = basename ( $sCoreName, '.php' );
+		$sCoreName = str_replace ( '%currtype%', $sCurrType, $sCoreName );
+		$sCoreName = str_replace ( '%version%', $sCurrVersion, $sCoreName );
+		$sCoreName = $sPath . '/' . overViewPDF::convertStringToValidFilename ( $sCoreName );
+		// Make file name unique
 		$sFilename = $sCoreName . '.pdf';
 		if (file_exists ( $sFilename )) {
 			for($i = 1; file_exists ( $sFilename ); $i ++) {
@@ -146,10 +158,11 @@ class overviewPDF extends TCPDF {
 		}
 		return $sFilename;
 	}
+	
 	/**
-	 * Prints a curriculum object and all its sub-objects to a PDF document
+	 * Prints a curriculum object and all its courses to the PDF document
 	 *
-	 * @param unknown $oCurriculum
+	 * @param object $oCurriculum
 	 *        	The curriculum object to print
 	 */
 	private function printCurriculum($oCurriculum) {
@@ -178,15 +191,15 @@ EOT;
 			$this->printTopLevel ( $oCourse );
 		}
 	}
+	
 	/**
-	 * Checks if element is a structur element or not
+	 * Helper function that checks if an object is a structure element (1.
+	 * Semester, 2. Semester etc.) or a course and calls {@link printFach()} if it is a course object
 	 *
-	 * @param unknown $oTopLevel
+	 * @param object $oTopLevel
 	 *        	The object to check
 	 */
-	private function printTopLevel($oTopLevel) 
-
-	{
+	private function printTopLevel($oTopLevel) {
 		if (property_exists ( $oTopLevel, 'lva' )) {
 			$this->printFach ( $oTopLevel );
 		} else if (property_exists ( $oTopLevel, 'children' )) {
@@ -196,10 +209,11 @@ EOT;
 			}
 		}
 	}
+	
 	/**
-	 * Prints a course object (Fach) and all its sub-objects to a PDF document
+	 * Prints a subject, an overview for it and all its sub-courses to the PDF document
 	 *
-	 * @param unknown $oFach
+	 * @param object $oFach
 	 *        	The course object to print
 	 */
 	private function printFach($oFach) {
@@ -219,9 +233,8 @@ EOT;
 			return;
 		}
 		$aChildren = $oFach->children;
-		foreach ( $aChildren as $oChild ) {
+		foreach ( $aChildren as $oChild )
 			$sHTML .= $this->generateTableRecHelper ( $oChild );
-		}
 		$sHTML .= '<tr nobr="true"><td></td><td align="right">Summe</td><td align="center">' . $oFach->lva->wst . '</td><td align="center">' . $oFach->lva->ects . '</td></tr>';
 		$sHTML .= '</table>';
 		$sHTML = $this->unhtmlentities ( $sHTML );
@@ -232,26 +245,36 @@ EOT;
 			$this->checkPageBreak ( $this->getHTMLHeight ( $sHTML ) );
 			$this->writeHTML ( $sHTML );
 		}
-		foreach ( $aChildren as $oChild ) {
+		foreach ( $aChildren as $oChild )
 			if (($oChild->lva->ziele || $oChild->lva->lehrinhalte) && $oChild->lva->lvatype && $oChild->lva->lvatype != '3') {
 				$this->printHeading ( $oChild->lva->typename . ' ' . $oChild->lva->title, 2, true, 'L', false );
 				$this->printZieleInhalte ( $oChild );
 			}
-		}
 		$this->Ln ();
 	}
+	
+	/**
+	 * Helper function for generating a subject overview table that traverses the nested array of courses down to the leaves and creates a table row for each course
+	 *
+	 * @param object $oCourse
+	 *        	The course to generate the table html code for
+	 * @return string The table's html code
+	 */
 	private function generateTableRecHelper($oCourse) {
 		$sHTML = '';
 		switch ($oCourse->lva->lvatype) {
+			// Subject
 			case '1' :
 				$sName = $oCourse->lva->typename . ' ' . $oCourse->lva->title;
 				{
 					$sHTML .= '<tr nobr="true"><td></td><td><B>' . $this->splitBoldTextIntoLines ( $sName, 123 ) . '</B></td><td></td><td></td></tr>';
 				}
 				break;
+			// Module
 			case '2' :
 				$sHTML .= '<tr nobr="true"><td></td><td><I>' . $oCourse->lva->typename . ' ' . $oCourse->lva->title . '</I></td><td></td><td></td></tr>';
 				break;
+			// Course
 			case '3' :
 			default :
 				$sHTML .= '<tr nobr="true"><td align="center">' . $oCourse->lva->lvtypshort . '</td><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->wst . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
@@ -262,16 +285,37 @@ EOT;
 				$sHTML .= $this->generateTableRecHelper ( $oChild );
 		return $sHTML;
 	}
+	
+	/**
+	 * Inserts line breaks into a string if it would exceed a certain width if printed as bold text.
+	 * This method is needed in {@link generateTableRecHelper()} because {@see TCPDF} does not break the words correctly in a table if the text is written in a <<B>> tag. If one word alone is too long, it is not splitted.
+	 *
+	 * @param string $sText
+	 *        	The text to split
+	 * @param $iMaxWidth The
+	 *        	The maximum width a line is allowed to have
+	 * @return string The string with <br> tags inserted whenever necessary
+	 */
 	private function splitBoldTextIntoLines($sText, $iMaxWidth) {
 		$aWords = preg_split ( '/\s+/', $sText );
-		foreach ( $aWords as $sWord )
-			if ($this->getStringWidth ( $sWord, '', 'B' ) > $iMaxWidth)
-				return $sText;
 		if ($this->getStringWidth ( $sText, '', 'B' ) < $iMaxWidth)
 			return $sText;
 		return $this->splitRecHelper ( $aWords, 0, $iMaxWidth );
 	}
+	
+	/**
+	 * Recursive helper function for {@link splitBoldTextIntoLines()}
+	 *
+	 * @param array $aWords
+	 *        	The array of words as split in {@link splitBoldTextIntoLines()}
+	 * @param integer $iCurrIndex
+	 *        	The current index in the array
+	 * @param integer $iMaxWidth
+	 *        	The maximum width a line is allowed to have
+	 */
 	private function splitRecHelper($aWords, $iCurrIndex, $iMaxWidth) {
+		if ($this->getStringWidth ( $aWords [$iCurrIndex], '', 'B' ) > $iMaxWidth)
+			return $aWords [$iCurrIndex] . '<br>' . $this->splitRecHelper ( $aWords, $iCurrIndex + 1, $iMaxWidth );
 		$sRetString = '';
 		for($i = $iCurrIndex; $i < count ( $aWords ); $i ++) {
 			if ($this->getStringWidth ( $sRetString . ' ' . $aWords [$i], '', 'B' ) > $iMaxWidth)
@@ -281,7 +325,16 @@ EOT;
 		}
 		return $sRetString;
 	}
+	
+	/**
+	 * Prints the course goals and content of teaching and their respecitve headings to the PDF document.
+	 * If one of them is not set or empty, their heading is not printed either
+	 *
+	 * @param object $oCourse
+	 *        	The course to print the goals and contents for
+	 */
 	private function printZieleInhalte($oCourse) {
+		// Print goals
 		if ($oCourse->lva->ziele) {
 			$this->SetFont ( 'times', 'B', 12 );
 			$this->MultiCell ( 0, 0, 'Lehrziele', '', 'L', false, 1, '', '', true, 0, false, false );
@@ -289,6 +342,7 @@ EOT;
 			$this->WriteHTML ( $oCourse->lva->ziele );
 			$this->Ln ();
 		}
+		// Print content of teaching
 		if ($oCourse->lva->lehrinhalte) {
 			$this->SetFont ( 'times', 'B', 12 );
 			$this->MultiCell ( 0, 0, 'Lehrinhalte', '', 'L', false, 1, '', '', true, 0, false, false );
@@ -297,17 +351,18 @@ EOT;
 			$this->Ln ();
 		}
 	}
+	
 	/**
-	 * Prints a heading to the PDF document and adds a bookmark for it
+	 * Prints a heading to the PDF document and optionally adds a bookmark for it
 	 *
-	 * @param unknown $sText
+	 * @param string $sText
 	 *        	The heading text
-	 * @param unknown $iLevel
+	 * @param int $iLevel
 	 *        	The level at which the heading should be created and the bookmark set
-	 * @param unknown $bShowIndex
+	 * @param boolean $bShowIndex
 	 *        	true if the index should be shown in the heading
 	 * @param string $sAlign
-	 *        	Alignment of the heading. For allowed values see @see TCPDF::Multicell()
+	 *        	Alignment of the heading. For allowed values see {@link TCPDF::Multicell()}
 	 * @param boolean $bAddBookmark
 	 *        	true if heading should be in index / bookmarked
 	 */
@@ -333,12 +388,13 @@ EOT;
 		$this->MultiCell ( 0, 0, ($bShowIndex ? $iIndex . ') ' : '') . $sText, '', $sAlign, false, 1, '', '', true, 0, false, false );
 		$this->Ln ();
 	}
+	
 	/**
 	 * Gets all courses for a given curriculum id
 	 *
-	 * @param int $currId
+	 * @param integer $currId
 	 *        	The id of the curriculum to get the courses from
-	 * @return array $aCourses The array of all courses in the given curriculum
+	 * @return array The nested array of all courses in the given curriculum
 	 */
 	private static function getCourses($currId) {
 		$aCourses = (new content_manager ())->taxonomy_get_nested_tree ( $currId );
@@ -350,8 +406,9 @@ EOT;
 	
 	/**
 	 * Guarantees the existence of the specified attributes in the course and all its children.
+	 * Needed so that the other methods do not have to check everytime an attribute is accessed.
 	 *
-	 * @param unknown $oCourse
+	 * @param object $oCourse
 	 *        	The course to assert the attributes in
 	 */
 	private static function assertAttributes($oCourse) {
@@ -376,5 +433,20 @@ EOT;
 		if (property_exists ( $oCourse, 'children' ))
 			foreach ( $oCourse->children as $oChild )
 				overviewPDF::assertAttributes ( $oChild );
+	}
+	
+	/**
+	 * Utility method that formats a string into a valid file name
+	 *
+	 * @param string $sString
+	 *        	The file name to validate
+	 * @return string The valid file name created from the input
+	 *        
+	 */
+	private static function convertStringToValidFilename($sString) {
+		if (strpos ( $sString = htmlentities ( $string, ENT_QUOTES, 'UTF-8' ), '&' ) !== false) {
+			$sString = html_entity_decode ( preg_replace ( '~&([a-z]{1,2})(?:acute|caron|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string ), ENT_QUOTES, 'UTF-8' );
+		}
+		return $sString;
 	}
 }

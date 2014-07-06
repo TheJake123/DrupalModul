@@ -1,23 +1,21 @@
 <?php
 include_once __DIR__ . '/simple_html_dom.php';
 include_once dirname ( __FILE__ ) . '/stukowin.install';
-/*
- * To change this license header, choose License Headers in Project Properties. To change this template file, choose Tools | Templates and open the template in the editor.
- */
 
 /**
+ * Class for accessing drupal vocabularies and content nodes
  */
 class content_manager {
 	
 	/**
-	 * Returns LVA-Content-Node with all fields required for display
+	 * Returns course content node with all fields required for display
 	 *
 	 * @param integer $iNodeID
-	 *        	Drupal-Node-ID
+	 *        	Content node id
 	 * @param string $sLang
 	 *        	Language to return
 	 * @return object $oReturnNode
-	 *         Selected ReturnNode
+	 *         Selected course
 	 */
 	private function get_return_node($iNodeID, $sLang = 'de') {
 		if ($sLang = 'de')
@@ -50,14 +48,19 @@ class content_manager {
 	}
 	
 	/**
-	 * Reads Taxonomy into nested array
+	 * Recursive function that reads a vocabulary into a nested array
 	 *
-	 * @param type $vid_or_terms        	
-	 * @param type $max_depth        	
-	 * @param type $parent        	
-	 * @param type $parents_index        	
-	 * @param type $depth        	
-	 * @return type $return
+	 * @param integer|array $vid_or_terms
+	 *        	The vid of the curriculum to get
+	 * @param integer $max_depth
+	 *        	The maximum depth of the nested array
+	 * @param object $parent
+	 *        	The tid of the parent term of the next term
+	 * @param array $parents_index
+	 *        	An array of all parents
+	 * @param integer $depth
+	 *        	The current recursion depth
+	 * @return array The nested array of all courses in the curriculum
 	 */
 	public function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
 		if (! is_array ( $vid_or_terms )) {
@@ -99,7 +102,7 @@ class content_manager {
 	 * Returns LVA as JSON object
 	 *
 	 * @param integer $iNodeID
-	 *        	Drupal-ID of desired node
+	 *        	Content node id of the desired node
 	 */
 	public function json_service_lva($iNodeID) {
 		$oReturnNode = $this->get_return_node ( $iNodeID );
@@ -114,16 +117,16 @@ class content_manager {
 	}
 	
 	/**
-	 * Reads all curricula of types $aTypes and returns them as associative arrays
+	 * Reads all curricula of curriculum type $sCurrType and taxonomy types $aTaxonomyTypes in the language $sLang and returns them as an associative array
 	 *
 	 * @param string $sCurrType
-	 *        	The type of curriculum to get. Valid values are {'Bachelorstudium','Masterstudium'}
+	 *        	The type of curriculum to get. Valid values are "Bachelorstudium" and "Masterstudium"
 	 * @param array $aTaxonomyTypes
-	 *        	The types to get. Valid values are {'curriculum','itsv','schwerpunkt'}
+	 *        	The taxonomy types to get. Valid values are "curriculum", "itsv" and "schwerpunkt"
 	 * @param string $sLang
-	 *        	= 'de' The language to get the curricula in (optional)
+	 *        	= 'de' The language to get the curricula in
 	 * @return array $aCurricula
-	 *         = array of selected curricula
+	 *         Array of selected curricula
 	 */
 	public function getCurricula($sCurrType = '', $aTaxonomyTypes = array('curriculum'), $sLang = 'de') {
 		if ($sLang === 'de')
@@ -153,14 +156,14 @@ class content_manager {
 	}
 	
 	/**
-	 * Asserts that a machine name is unique or adds numbers at the end until it is unique.
+	 * Asserts that a machine name is valid and adds numbers at the end until it is unique.
 	 *
 	 * @param string $sCoreName
 	 *        	The initial name
 	 * @return string $sMachineName unique machine name
 	 */
 	public function getUniqueMachineName($sCoreName) {
-		$sMachineName = $sCoreName;
+		$sMachineName = preg_replace("/[^a-z0-9_]+/i", "", $sCoreName);
 		$aExistingNames = array ();
 		$query = new EntityFieldQuery ();
 		$query->entityCondition ( 'entity_type', 'taxonomy_vocabulary', '=' )->propertyCondition ( 'machine_name', $sCoreName . '%', 'LIKE' );
@@ -183,8 +186,8 @@ class content_manager {
 	}
 	
 	/**
-	 * Gets the curriculum with $iVID from the database
-	 *
+	 * Gets the curriculum with the given vid from the database
+	 * @param integer $iVID The vid of the curriculum vocabulary
 	 * @return $oCurriculum array of the curriculum object
 	 */
 	public function getCurriculum($iVID) {
@@ -199,15 +202,16 @@ class content_manager {
 		);
 		return $oCurriculum;
 	}
+	
 	/**
 	 * Returns Curriculum as JSON object
 	 *
 	 * @param integer $iVID
-	 *        	Drupal-ID of desired curriculum
+	 *        	Content node id of the desired curriculum
 	 */
 	public function json_service_curriculum($iVID) {
 		$aTerms = $this->taxonomy_get_nested_tree ( $iVID );
-		// PHP ist doof. json_encode glaubt ein Array ist ein Objekt, mit dem Trick unten versteht es auch PHP
+		// json_encode glaubt ein Array ist ein Objekt, mit dem Trick unten versteht es auch PHP
 		array_unshift ( $aTerms, 'blabla' );
 		array_shift ( $aTerms );
 		drupal_json_output ( $aTerms );

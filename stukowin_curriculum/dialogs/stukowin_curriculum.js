@@ -1,6 +1,5 @@
 /**
  * The stukowin_curriculum dialog definition.
- * 
  */
 
 // Our dialog definition.
@@ -50,16 +49,13 @@ CKEDITOR.dialog
 						// button, confirming
 						// the dialog.
 						onOk : function() {
-
 							// The context of this function is the dialog object
 							// itself.
 							// http://docs.ckeditor.com/#!/api/CKEDITOR.dialog
 							var dialog = this;
 							var drupal_root = Drupal.settings.basePath;
-
 							// Creates a new <div> element.
 							var div = editor.document.createElement('div');
-
 							// Set element attribute and text, by getting the
 							// defined field
 							// values.
@@ -87,80 +83,105 @@ CKEDITOR.dialog
 							div.setAttribute('data-currtype', currType);
 							div.setAttribute('data-curriculums', curriculums);
 							div.setAttribute('id', "curriculum_display");
-
-							// Creates the explanation for the curriculum display
+							// Creates the explanation for the curriculum
+							// display
 							var curr_div = new CKEDITOR.dom.element('div');
 							curr_div.setAttribute('id', 'curriculum_legende')
-                                                        curr_div.setStyle('padding-left', '1.5em');
+							curr_div.setStyle('padding-left', '1.5em');
 							var table = new CKEDITOR.dom.element('table');
 							table.id = "Legende";
-                                                        
-                                                        var row1 = new CKEDITOR.dom.element('tr');
-                                                        table.append(row1);
-							
+
+							var row1 = new CKEDITOR.dom.element('tr');
+							table.append(row1);
+
 							var cell11 = new CKEDITOR.dom.element('td');
-                                                        row1.append(cell11);
+							row1.append(cell11);
 							var cell12 = new CKEDITOR.dom.element('td');
-                                                        row1.append(cell12);
+							row1.append(cell12);
 							var cell13 = new CKEDITOR.dom.element('td');
-                                                        row1.append(cell13);
+							row1.append(cell13);
 							var cell14 = new CKEDITOR.dom.element('td');
-                                                        row1.append(cell14);
+							row1.append(cell14);
 
 							var row2 = new CKEDITOR.dom.element('tr');
-                                                        table.append(row2);
+							table.append(row2);
 							var cell21 = new CKEDITOR.dom.element('td');
-                                                        row2.append(cell21);
+							row2.append(cell21);
 							var cell22 = new CKEDITOR.dom.element('td');
-                                                        row2.append(cell22);
+							row2.append(cell22);
 							var cell31 = new CKEDITOR.dom.element('td');
-                                                        row2.append(cell31);
+							row2.append(cell31);
 							var cell32 = new CKEDITOR.dom.element('td');
-                                                        row2.append(cell32);
+							row2.append(cell32);
 
 							var cell23 = new CKEDITOR.dom.element('td');
-                                                        row1.append(cell23);
+							row1.append(cell23);
 							var cell24 = new CKEDITOR.dom.element('td');
-                                                        row1.append(cell24);
+							row1.append(cell24);
 							var cell33 = new CKEDITOR.dom.element('td');
-                                                        row2.append(cell33);
+							row2.append(cell33);
 							var cell34 = new CKEDITOR.dom.element('td');
-                                                        row2.append(cell34);
+							row2.append(cell34);
 
 							var plusIcon = new CKEDITOR.dom.element('img');
-							plusIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/Plus.png");
-                                                        plusIcon.setStyle('width', '3em');
-                                                        plusIcon.setStyle('height', '3em');
-                                                        
+							plusIcon
+									.setAttribute(
+											'src',
+											drupal_root
+													+ "sites/all/modules/stukowin/images/Plus.png");
+							plusIcon.setStyle('width', '3em');
+							plusIcon.setStyle('height', '3em');
+
 							var minusIcon = new CKEDITOR.dom.element('img');
-							minusIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/Minus.png");
-                                                        minusIcon.setStyle('width', '3em');
-                                                        minusIcon.setStyle('height', '3em');
-                                                        
+							minusIcon
+									.setAttribute(
+											'src',
+											drupal_root
+													+ "sites/all/modules/stukowin/images/Minus.png");
+							minusIcon.setStyle('width', '3em');
+							minusIcon.setStyle('height', '3em');
+
 							var vorIcon = new CKEDITOR.dom.element('img');
-							vorIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/Voraussetzung.png");
-                                                        vorIcon.setStyle('width', '3em');
-                                                        vorIcon.setStyle('height', '3em');
-                                                        
+							vorIcon
+									.setAttribute(
+											'src',
+											drupal_root
+													+ "sites/all/modules/stukowin/images/Voraussetzung.png");
+							vorIcon.setStyle('width', '3em');
+							vorIcon.setStyle('height', '3em');
+
 							var empfIcon = new CKEDITOR.dom.element('img');
-							empfIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/Empfohlen.png");
-                                                        empfIcon.setStyle('width', '3em');
-                                                        empfIcon.setStyle('height', '3em');
-                                                        
+							empfIcon
+									.setAttribute(
+											'src',
+											drupal_root
+													+ "sites/all/modules/stukowin/images/Empfohlen.png");
+							empfIcon.setStyle('width', '3em');
+							empfIcon.setStyle('height', '3em');
+
 							var ectsIcon = new CKEDITOR.dom.element('img');
-							ectsIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/ECTS.png");
-                                                        ectsIcon.setStyle('width', '3em');
-                                                        ectsIcon.setStyle('height', '3em');
-                                                        
+							ectsIcon
+									.setAttribute(
+											'src',
+											drupal_root
+													+ "sites/all/modules/stukowin/images/ECTS.png");
+							ectsIcon.setStyle('width', '3em');
+							ectsIcon.setStyle('height', '3em');
+
 							var voIcon = new CKEDITOR.dom.element('img');
-							voIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/V300.png");
-                                                        voIcon.setStyle('width', '3em');
-                                                        voIcon.setStyle('height', '3em');
-                                                        
+							voIcon
+									.setAttribute(
+											'src',
+											drupal_root
+													+ "sites/all/modules/stukowin/images/V300.png");
+							voIcon.setStyle('width', '3em');
+							voIcon.setStyle('height', '3em');
+
 							cell11.append(plusIcon);
 							cell12.appendText("Aufklappen");
 							cell13.append(empfIcon);
-							cell14.appendText("Empfohlene Voraussetzungen anzeigen");
+							cell14
+									.appendText("Empfohlene Voraussetzungen anzeigen");
 
 							cell21.append(minusIcon);
 							cell22.appendText("Zuklappen");
@@ -168,7 +189,8 @@ CKEDITOR.dialog
 							cell24.appendText("ECTS");
 
 							cell31.append(vorIcon);
-							cell32.appendText("Verpflichtende Voraussetzungen anzeigen");
+							cell32
+									.appendText("Verpflichtende Voraussetzungen anzeigen");
 							cell33.append(voIcon);
 							cell34.appendText("LVA-Typ");
 							div.append(curr_div);

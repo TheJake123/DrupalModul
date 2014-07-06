@@ -1,11 +1,4 @@
 <?php
-// $id$
-/**
- * @file stukowin.module
- * TODO: Enter file description here.
- */
-
-// Temporary, until Importer is moved to cronjob
 set_time_limit ( 600 );
 
 include_once dirname ( __FILE__ ) . '/ceus_importer.inc.php';
@@ -13,10 +6,12 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 include_once dirname ( __FILE__ ) . '/pdf_creator.inc.php';
 
 /**
+ * Displays help information about the module.
  * Implements hook_help().
  */
 function stukowin_help($path, $arg) {
 	switch ($path) {
+		// Main module help
 		case 'admin/help#stukowin' :
 			return '<p>' . t ( 'This module gets the complete JKU curriculum for Business Informatics from CEUS and displays it' ) . '</p>';
 			break;
@@ -32,18 +27,29 @@ function stukowin_help($path, $arg) {
 			break;
 	}
 }
+
 /**
- * Hook for admin menu
+ * Menu callback for module settings ("admin/stukowin/settings").
+ * This form has the following input fields:
+ * <ul>
+ * <li>URL to CEUS API</li>
+ * <li>Username for CEUS API</li>
+ * <li>Password for CEUS API</li>
+ * <li>Last Update from CEUS API</li>
+ * <li>PDF Path</li>
+ * <li>PDF generic name</li>
+ * </ul>
  */
 function stukowin_admin() {
 	$form = array ();
+	// CEUS API Settings
 	$form ['stukowin_ceus_api'] = array (
 			'#type' => 'fieldset',
 			'#title' => t ( 'CEUS API Settings' ),
 			'#collapsible' => TRUE,
-			'#collapsed' => TRUE 
+			'#collapsed' => FALSE 
 	);
-	$form ['stukowin_ceus_api']['stukowin_ceus_api_url'] = array (
+	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_url'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'URL to CEUS API' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_url', 'https://lss.jku.at/studienhandbuch/api/0.1/' ),
@@ -52,7 +58,7 @@ function stukowin_admin() {
 			'#description' => t ( "The URL to CEUS API" ),
 			'#required' => TRUE 
 	);
-	$form ['stukowin_ceus_api']['stukowin_ceus_api_username'] = array (
+	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_username'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'Username for CEUS API' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_username' ),
@@ -61,7 +67,7 @@ function stukowin_admin() {
 			'#description' => t ( "Username for CEUS API" ),
 			'#required' => TRUE 
 	);
-	$form ['stukowin_ceus_api']['stukowin_ceus_api_userpassword'] = array (
+	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_userpassword'] = array (
 			'#type' => 'password',
 			'#title' => t ( 'Password for CEUS API' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_userpassword' ),
@@ -70,7 +76,7 @@ function stukowin_admin() {
 			'#description' => t ( "Password for CEUS API" ),
 			'#required' => TRUE 
 	);
-	$form ['stukowin_ceus_api']['stukowin_ceus_api_lastupdate'] = array (
+	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_lastupdate'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'Last Update from CEUS API' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_lastupdate' ),
@@ -79,27 +85,38 @@ function stukowin_admin() {
 			'#description' => t ( "Timestamp of last Update in CEUS" ),
 			'#required' => TRUE 
 	);
+	// PDF generation settings
 	$form ['stukowin_pdf'] = array (
 			'#type' => 'fieldset',
 			'#title' => t ( 'PDF Settings' ),
 			'#collapsible' => TRUE,
-			'#collapsed' => TRUE
+			'#collapsed' => TRUE 
 	);
-	$form ['stukowin_pdf']['stukowin_pdf_path'] = array (
+	$form ['stukowin_pdf'] ['stukowin_pdf_path'] = array (
 			'#type' => 'textfield',
-			'#title' => t ( 'Select Path to save Curricula' ),
-			'#default_value' => variable_get ( 'stukowin_pdf_path', DRUPAL_ROOT . '/sites/default/files/images/pdf/Archive/LVA-�bersicht Wirtschaftsinformatik' ),
+			'#title' => t ( 'Path' ),
+			'#default_value' => variable_get ( 'stukowin_pdf_path', DRUPAL_ROOT . '/sites/default/files/pdf/archive' ),
+			'#size' => 40,
+			'#description' => t ( "The Path where the generated PDFs are saved" ),
+			'#required' => FALSE 
+	);
+	$form ['stukowin_pdf'] ['stukowin_pdf_name'] = array (
+			'#type' => 'textfield',
+			'#title' => t ( 'Name' ),
+			'#default_value' => variable_get ( 'stukowin_pdf_name', 'Uebersicht %currtype% %version%' ),
 			'#size' => 20,
-			'#description' => t ( "The Path where the PDF is saved" ),
+			'#description' => t ( 'The name template to use for new PDFs. Insert %version% for the curriculum version (e.g. "2013W") and %currtype% for the curriculum type (e.g "Bachelorstudium")' ),
 			'#required' => FALSE 
 	);
 	return system_settings_form ( $form );
 }
 
 /**
- * Hook for pdf adding
+ * Menu callback for generating PDF documents ("admin/settings/stukowin/pdf").
+ * The user can choose between all currently published curriculum taxonomies. If none are availably, a warning message is displayed.
  */
 function stukowin_pdf_menu($form, &$form_state) {
+	// Load available curricula into array
 	$aNames = array ();
 	foreach ( (new content_manager ())->getCurricula ( '', array (
 			'curriculum' 
@@ -108,6 +125,7 @@ function stukowin_pdf_menu($form, &$form_state) {
 	}
 	if (empty ( $aNames ))
 		drupal_set_message ( 'There seems to be no curriculum currently available', 'warning' );
+		// Build form
 	$form = array ();
 	$form ['curriculum_select'] = array (
 			'#type' => 'select',
@@ -116,41 +134,25 @@ function stukowin_pdf_menu($form, &$form_state) {
 			'#required' => TRUE,
 			'#options' => $aNames 
 	);
-	
 	$form ['submit'] = array (
 			'#type' => 'submit',
 			'#value' => t ( 'Create PDF' ) 
 	);
 	return $form;
 }
+
 /**
- * Creates the PDF document
- *
- * @param unknown $form        	
- * @param unknown $form_state        	
+ * Submit handler for {@link stukowin_pdf_menu()}.
+ * Creates an instance of {@link overViewPDF} and starts the document generation. If successful, displays the full path of the generated document.
  */
 function stukowin_pdf_menu_submit($form, &$form_state) {
-	drupal_set_message ( stukowin_get_pdf ( $form_state ['values'] ['curriculum_select'] ) );
+	$oPdf = new overviewPDF ();
+	drupal_set_message ( $oPdf->createPDF ( $form_state ['values'] ['curriculum_select'] ) );
 }
 
 /**
- * Hook for Menu link "CEUS Data import"
- */
-function stukowin_retreive() {
-	include_once dirname ( __FILE__ ) . '/stukowin.install';
-	$oCeusImporter = new ceus_importer ();
-	if ($oCeusImporter->connect ()) {
-		drupal_set_message ( $oCeusImporter->get_curricula () );
-	} else
-		drupal_set_message ( $oCeusImporter->get_error (), 'error' );
-}
-
-/**
- * Warning before starting the import
- *
- * @param unknown $form        	
- * @param unknown $form_state        	
- * @return multitype:string NULL
+ * Menu callback for import ("admin/settings/stukowin/import").
+ * Used as a warning before starting the import, as the process usually takes a long time to complete.
  */
 function stukowin_pre_retreive($form, &$form_state) {
 	$form = array ();
@@ -165,16 +167,23 @@ function stukowin_pre_retreive($form, &$form_state) {
 }
 
 /**
- * Implements hook_submit for stukowin_pre_retrieve
- *
- * @param unknown $form        	
- * @param unknown $form_state        	
+ * Submit handler for {@link stukowin_pre_retrieve()}.
+ * Starts the import process and displays the outcome to the user.
  */
 function stukowin_pre_retreive_submit($form, &$form_state) {
-	stukowin_retreive ();
+	include_once dirname ( __FILE__ ) . '/stukowin.install';
+	$oCeusImporter = new ceus_importer ();
+	if ($oCeusImporter->connect ()) {
+		drupal_set_message ( $oCeusImporter->get_curricula () );
+	} else
+		drupal_set_message ( $oCeusImporter->get_error (), 'error' );
 }
+
 /**
- * JSON-Service for Curricula
+ * JSON-Service for one the detailed nested array of courses for one curriculum.
+ *
+ * @param integer $iVID
+ *        	The vid of the curriculum to get
  */
 function stukowin_get_crclm_taxonomy($iVID) {
 	$oContentManager = new content_manager ();
@@ -182,10 +191,12 @@ function stukowin_get_crclm_taxonomy($iVID) {
 }
 
 /**
- * JSON-Service for Curricula
+ * JSON-Service for a list of all currently published curricula.
+ * The type of curriculum (e.g. "Bachelorstudium", "Masterstudium"), types of taxonomies (e.g. "curriculum", "itsv" or "specialisation") and the language (e.g. "de") can be given as HTTP GET-parameters.
  */
 function stukowin_get_crclm_list() {
 	$oContentManager = new content_manager ();
+	// Set default values
 	$sCurrType = '';
 	$aTaxonomyTypes = array (
 			'curriculum',
@@ -193,43 +204,34 @@ function stukowin_get_crclm_list() {
 			'specialisation' 
 	);
 	$sLang = 'de';
+	// Get values from request (if given)
 	if (isset ( $_GET ['currtype'] ))
 		$sCurrType = $_GET ['currtype'];
 	if (isset ( $_GET ['taxtypes'] ))
 		$aTaxonomyTypes = $_GET ['taxtypes'];
 	if (isset ( $_GET ['lang'] ))
 		$sLang = $_GET ['lang'];
-	header ( 'Access-Control-Allow-Origin: *' );
 	drupal_json_output ( $oContentManager->getCurricula ( $sCurrType, $aTaxonomyTypes, $sLang ) );
-	die ();
+	die (); // Necessary because drupal would send additional data otherwise
 }
 
 /**
- * JSON-Service for single LVA
+ * JSON-Service for the details of a single course
+ *
+ * @param integer $iNodeID
+ *        	The content node id of the course to get
  */
 function stukowin_get_lva($iNodeID) {
 	$oContentManager = new content_manager ();
 	return $oContentManager->json_service_lva ( $iNodeID );
 }
+
 /**
- * PDF-Service for curriculum
- */
-function stukowin_get_pdf($iVID) {
-	$oPdf = new overviewPDF ();
-	return $oPdf->createPDF ( $iVID );
-}
-/**
- * View for Display of curricula - Desktop HTML Version
- */
-function stukowin_curricula() {
-	drupal_add_css ( drupal_get_path ( 'module', 'stukowin' ) . '/css/curriculum_style.css' );
-	drupal_add_js ( drupal_get_path ( 'module', 'stukowin' ) . '/js/graph.js' );
-	return '<div id="main" class="main"></div>';
-}
-/**
- * Hook for creating a new ITSV or specialisation taxonomy
+ * Menu callback for creating a new ITSV or specialisation vocabulary.
+ * Allows the user to select a source vocabulary, choose which type of vocabulary to create, set a name for the new vocabulary and choose how many structural terms (e.g. "1. Semester", "2. Semester") to automatically insert.
  */
 function stukowin_taxonomy_menu($form, &$form_state) {
+	// Load available curricula into array
 	$aNames = array ();
 	foreach ( (new content_manager ())->getCurricula ( '', array (
 			'curriculum' 
@@ -238,6 +240,7 @@ function stukowin_taxonomy_menu($form, &$form_state) {
 	}
 	if (empty ( $aNames ))
 		drupal_set_message ( 'There seems to be no curriculum currently available', 'warning' );
+		// Build form
 	$form = array ();
 	$form ['curriculum_select'] = array (
 			'#type' => 'select',
@@ -278,19 +281,17 @@ function stukowin_taxonomy_menu($form, &$form_state) {
 	);
 	return $form;
 }
+
 /**
- * Creates a new ITSV or specialisation taxonomy and redirects the user to the taxonomy manager
- *
- * @param unknown $form        	
- * @param unknown $form_state        	
+ * Submit handler for {@see stukowin_taxonomy_menu}.
+ * Creates a new ITSV or specialisation taxonomy and redirects the user to the taxonomy manager.
  */
 function stukowin_taxonomy_menu_submit($form, &$form_state) {
 	$sTaxonomyType = $form_state ['values'] ['type_select'] ? 'specialisation' : 'itsv';
 	$oContentManager = new content_manager ();
 	$oSourceCurr = $oContentManager->getCurriculum ( $form_state ['values'] ['curriculum_select'] );
-	
 	$sMachineName = $oContentManager->getUniqueMachineName ( ($sTaxonomyType . '_') );
-	
+	// Create new vocabulary
 	$aEdit = array (
 			'name' => $form_state ['values'] ['name_input'],
 			'machine_name' => $sMachineName,
@@ -304,6 +305,7 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
 	$oVocabulary->{'version'} ['und'] [0] ['value'] = $oSourceCurr ['version'];
 	$oVocabulary->{'currtype'} ['und'] [0] ['value'] = $oSourceCurr ['type'];
 	taxonomy_vocabulary_save ( $oVocabulary );
+	// Insert structural terms
 	if (! empty ( $form_state ['values'] ['num_struc'] )) {
 		if ($form_state ['values'] ['type_select'])
 			$sText = '. Abschnitt';
@@ -316,15 +318,63 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
 			taxonomy_term_save ( $oTerm );
 		}
 	}
+	// Redirect user to taxonomy manager
 	drupal_set_message ( 'Taxonomy "' . $form_state ['values'] ['name_input'] . '" successfully created. To publish set its weight to -10' );
 	drupal_goto ( 'admin/structure/taxonomy_manager/double-tree/' . $oSourceCurr ['machine_name'] . '/' . $sMachineName );
 }
 
 /**
  * Implements hook_menu().
+ * Registers all menu links with drupal. The following links are registered:
+ * <ul>
+ * <li>CEUS API Settings @ 'admin/stukowin/settings'</li>
+ * <li>CEUS Data import @ 'admin/settings/stukowin/import'</li>
+ * <li>PDF Generation @ 'admin/settings/stukowin/pdf'</li>
+ * <li>ITSV/Specialisation Taxonomy Creation @ 'admin/settings/stukowin/taxonomy'</li>
+ * <li>Curriculum JSON Service @ 'stukowin/crclm'</li>
+ * <li>Curricula List JSON Service @ 'stukowin/crclmlst'</li>
+ * <li>Course Detail JSON Service @ 'stukowin/lva'</li>
+ * </ul>
  */
 function stukowin_menu() {
 	$items = array ();
+	$items ['admin/settings/stukowin/pdf'] = array (
+			'title' => 'Create PDF',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'stukowin_pdf_menu' 
+			),
+			'access arguments' => array (
+					'create PDF' 
+			),
+			'description' => t ( 'Create a PDF from current curricula' ),
+			'type' => MENU_NORMAL_ITEM 
+	);
+	$items ['admin/settings/stukowin/taxonomy'] = array (
+			'title' => 'New Curriculum Taxonomy',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'stukowin_taxonomy_menu' 
+			),
+			'access arguments' => array (
+					'create taxonomy' 
+			),
+			'description' => t ( 'Create a new ITSV or specialisation taxonomy' ),
+			'type' => MENU_NORMAL_ITEM 
+	);
+	
+	$items ['admin/settings/stukowin/import'] = array (
+			'title' => 'CEUS Data import',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'stukowin_pre_retreive' 
+			),
+			'access arguments' => array (
+					'start ceus import' 
+			),
+			'description' => t ( 'Import curricula data from CEUS' ),
+			'type' => MENU_NORMAL_ITEM 
+	);
 	$items ['admin/stukowin/settings'] = array (
 			'title' => 'CEUS API Settings',
 			'page callback' => 'drupal_get_form',
@@ -336,18 +386,6 @@ function stukowin_menu() {
 			),
 			'description' => t ( 'Set CEUS credentials' ),
 			'type' => MENU_CALLBACK 
-	);
-	$items ['admin/settings/stukowin/importjson'] = array (
-			'title' => 'CEUS Data import',
-			'page callback' => 'drupal_get_form',
-			'page arguments' => array (
-					'stukowin_pre_retreive' 
-			),
-			'access arguments' => array (
-					'start ceus import' 
-			),
-			'description' => t ( 'Import curricula data from CEUS' ),
-			'type' => MENU_NORMAL_ITEM 
 	);
 	$items ['stukowin/crclm'] = array (
 			'title' => 'Service',
@@ -376,44 +414,11 @@ function stukowin_menu() {
 			),
 			'type' => MENU_CALLBACK 
 	);
-	$items ['stukowin/curricula'] = array (
-			'title' => 'Curricula',
-			'page callback' => 'stukowin_curricula',
-			'access callback' => 'user_access',
-			'access arguments' => array (
-					'access content' 
-			),
-			'type' => MENU_NORMAL_ITEM 
-	);
-	$items ['admin/settings/stukowin/pdf'] = array (
-			'title' => 'Create PDF',
-			'page callback' => 'drupal_get_form',
-			'page arguments' => array (
-					'stukowin_pdf_menu' 
-			),
-			'access arguments' => array (
-					'create PDF' 
-			),
-			'description' => t ( 'Create a PDF from current curricula' ),
-			'type' => MENU_NORMAL_ITEM 
-	);
-	$items ['admin/settings/stukowin/taxonomy'] = array (
-			'title' => 'New Curriculum Taxonomy',
-			'page callback' => 'drupal_get_form',
-			'page arguments' => array (
-					'stukowin_taxonomy_menu' 
-			),
-			'access arguments' => array (
-					'create taxonomy' 
-			),
-			'description' => t ( 'Create a new ITSV or specialisation taxonomy' ),
-			'type' => MENU_NORMAL_ITEM 
-	);
 	return $items;
 }
 
 /**
- * adds hook for the ckeditor plugin
+ * Adds hook for the ckeditor plugin to insert a curriculum display
  */
 function stukowin_ckeditor_plugin() {
 	return array (
@@ -436,7 +441,7 @@ function stukowin_ckeditor_plugin() {
 }
 
 /**
- * Hook for telling the system to use out template on stukowin custom content type
+ * Hook for telling the system to use our template on stukowin custom content type
  */
 function stukowin_theme_registry_alter(&$theme_registry) {
 	$theme_registry_copy = $theme_registry;
@@ -448,10 +453,9 @@ function stukowin_theme_registry_alter(&$theme_registry) {
 	);
 	foreach ( $hooks as $h ) {
 		// Add the key 'theme paths' if it doesn't exist in this theme's registry
-		if (! isset ( $theme_registry [$h] ['theme paths'] )) {
+		if (! isset ( $theme_registry [$h] ['theme paths'] ))
 			$theme_registry [$h] ['theme paths'] = array ();
-		}
-		// Shift this module's directory to the top of the theme path list
+			// Shift this module's directory to the top of the theme path list
 		if (is_array ( $theme_registry [$h] ['theme paths'] )) {
 			$first_element = array_shift ( $theme_registry [$h] ['theme paths'] );
 			if ($first_element) {
