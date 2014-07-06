@@ -335,12 +335,3 @@ div#curriculum_display table.header tr {
     line-height: 3em;
     margin-bottom: 10px;
 }
-
-#curriculum_legende img {
-    width: 3em;
-    height: 3em;
-}
-
-div#curriculum_legende {
-    padding-left: 1.5em;
-}
