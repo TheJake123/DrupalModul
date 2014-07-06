@@ -15,7 +15,7 @@ jQuery(document)
 					var currList = jQuery("#curriculum_display").data(
 							"curriculums").split(" ");
 					var reqUrl = buildRequest(drupal_root, type, currList);
-					jQuery.getJson(reqUrl, gc);
+					jQuery.getJSON(reqUrl, gc);
 					jQuery("#curriculum_display").on(
 							"click",
 							".button",
@@ -41,8 +41,7 @@ jQuery(document)
 									"click",
 									"a.bedingung",
 									function(event) {
-										if (document
-												.getElementById('curriculum_display') != null) {
+										if (document.getElementById(jQuery(this).data("goto")) !== null) {
 
 											if (jQuery(this).hasClass(
 													"voraussetzung")) {
@@ -76,7 +75,7 @@ jQuery(document)
 function gc(data) {
 	if (!data || data == null || data.length <= 0) {
 		jQuery("#curriculum_display").text(
-				"Leider sind zur Zeit keine Curricula-Daten verfügbar")
+				"Leider sind zur Zeit keine Curricula-Daten verfï¿½gbar")
 		return;
 	}
 	var select = document.createElement("select");
@@ -182,7 +181,8 @@ function showEmpfohlen(element) {
 function fillMissingDetail(data) {
 	if (data == null || "error" in data)
 		return;
-	kurse[data["id"]] = data;
+	kurse[data["id"]] = {}
+        kurse[data["id"]]["lva"] = data;
 }
 
 /**
@@ -324,7 +324,7 @@ function expandAndScrollToElement(element, highlightColor) {
  *            element is top-level or not
  * @return {String} The complete HTML for the given course's <div>
  */
-function createDivs(kurs, level, parentIsRoot) {
+function createDivs(kurs, level) {
 	var div, typ, rightTds;
 
 	if ("lva" in kurs && kurs["lva"]) {
@@ -399,11 +399,11 @@ function createTds(kurs) {
 			+ '<td class="right ects" title="ECTS">'
 			+ ("lva" in kurs ? kurs["lva"]["ects"] : "") + '</td>';
 	for (var i = 0; i < anzEmpfohlen; i++) {
-		jQuery(drupal_root + "?q=stukowin/lva/" + kurs["lva"]["empfehlung"][i],
+		jQuery.getJSON(drupal_root + "?q=stukowin/lva/" + kurs["lva"]["empfehlung"][i],
 				fillMissingDetail)
 	}
 	for (var i = 0; i < anzVoraussetzungen; i++) {
-		jQuery(drupal_root + "?q=stukowin/lva/"
+		jQuery.getJSON(drupal_root + "?q=stukowin/lva/"
 				+ kurs["lva"]["voraussetzung"][i], fillMissingDetail)
 	}
 	return rightTds;
