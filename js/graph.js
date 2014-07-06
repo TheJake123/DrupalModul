@@ -119,7 +119,11 @@ function gc(data) {
 function fill_crclm(data) {
 	kurse = {};
 	for (var i = 0; i < data.length; i++) {
+            if ("lva" in data[i]){
 		kurse[data[i]["description"]] = data[i];
+            } else {
+                kurse[data[i]["name"]] = data[i];
+            }
 	}
 	clearDiv();
 	for ( var key in kurse) {
