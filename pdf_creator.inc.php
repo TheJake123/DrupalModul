@@ -102,7 +102,7 @@ class overviewPDF extends TCPDF {
 		$this->printCurriculum ( $oCurriculum );
 		$this->createTOCPage ();
 		// save document
-		$sFilename = $this->getUniqueFileName ( overviewPDF::convertStringToValidFilename ( $oCurriculum ['type'], $oCurriculum ['version'] ) );
+		$sFilename = $this->getUniqueFileName ( $oCurriculum ['type'], $oCurriculum ['version'] );
 		$this->Output ( $sFilename, 'F' );
 		return 'PDF successfully created at ' . $sFilename;
 	}
@@ -148,6 +148,7 @@ class overviewPDF extends TCPDF {
 		$sCoreName = basename ( $sCoreName, '.php' );
 		$sCoreName = str_replace ( '%currtype%', $sCurrType, $sCoreName );
 		$sCoreName = str_replace ( '%version%', $sCurrVersion, $sCoreName );
+		$sCoreName = overviewPDF::convertStringToValidFilename ( $sCoreName );
 		$sCoreName = $sPath . '/' . overViewPDF::convertStringToValidFilename ( $sCoreName );
 		// Make file name unique
 		$sFilename = $sCoreName . '.pdf';
@@ -294,7 +295,7 @@ EOT;
 	 *        	The text to split
 	 * @param $iMaxWidth The
 	 *        	The maximum width a line is allowed to have
-	 * @return string The string with <br> tags inserted whenever necessary
+	 * @return The string with <br> tags inserted whenever necessary
 	 */
 	private function splitBoldTextIntoLines($sText, $iMaxWidth) {
 		$aWords = preg_split ( '/\s+/', $sText );
@@ -444,8 +445,8 @@ EOT;
 	 *        
 	 */
 	private static function convertStringToValidFilename($sString) {
-		if (strpos ( $sString = htmlentities ( $string, ENT_QUOTES, 'UTF-8' ), '&' ) !== false) {
-			$sString = html_entity_decode ( preg_replace ( '~&([a-z]{1,2})(?:acute|caron|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string ), ENT_QUOTES, 'UTF-8' );
+		if (strpos ( $sString = htmlentities ( $sString, ENT_QUOTES, 'UTF-8' ), '&' ) !== false) {
+			$sString = html_entity_decode ( preg_replace ( '~&([a-z]{1,2})(?:acute|caron|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $sString ), ENT_QUOTES, 'UTF-8' );
 		}
 		return $sString;
 	}

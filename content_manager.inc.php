@@ -163,7 +163,7 @@ class content_manager {
 	 * @return string $sMachineName unique machine name
 	 */
 	public function getUniqueMachineName($sCoreName) {
-		$sMachineName = preg_replace("/[^a-z0-9_]+/i", "", $sCoreName);
+		$sMachineName = preg_replace ( "/[^a-z0-9_]+/i", "", $sCoreName );
 		$aExistingNames = array ();
 		$query = new EntityFieldQuery ();
 		$query->entityCondition ( 'entity_type', 'taxonomy_vocabulary', '=' )->propertyCondition ( 'machine_name', $sCoreName . '%', 'LIKE' );
@@ -187,7 +187,9 @@ class content_manager {
 	
 	/**
 	 * Gets the curriculum with the given vid from the database
-	 * @param integer $iVID The vid of the curriculum vocabulary
+	 * 
+	 * @param integer $iVID
+	 *        	The vid of the curriculum vocabulary
 	 * @return $oCurriculum array of the curriculum object
 	 */
 	public function getCurriculum($iVID) {
