@@ -37,7 +37,13 @@ function stukowin_help($path, $arg) {
  */
 function stukowin_admin() {
 	$form = array ();
-	$form ['stukowin_ceus_api_url'] = array (
+	$form ['stukowin_ceus_api'] = array (
+			'#type' => 'fieldset',
+			'#title' => t ( 'CEUS API Settings' ),
+			'#collapsible' => TRUE,
+			'#collapsed' => TRUE 
+	);
+	$form ['stukowin_ceus_api']['stukowin_ceus_api_url'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'URL to CEUS API' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_url', 'https://lss.jku.at/studienhandbuch/api/0.1/' ),
@@ -46,7 +52,7 @@ function stukowin_admin() {
 			'#description' => t ( "The URL to CEUS API" ),
 			'#required' => TRUE 
 	);
-	$form ['stukowin_ceus_api_username'] = array (
+	$form ['stukowin_ceus_api']['stukowin_ceus_api_username'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'Username for CEUS API' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_username' ),
@@ -55,7 +61,7 @@ function stukowin_admin() {
 			'#description' => t ( "Username for CEUS API" ),
 			'#required' => TRUE 
 	);
-	$form ['stukowin_ceus_api_userpassword'] = array (
+	$form ['stukowin_ceus_api']['stukowin_ceus_api_userpassword'] = array (
 			'#type' => 'password',
 			'#title' => t ( 'Password for CEUS API' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_userpassword' ),
@@ -64,7 +70,7 @@ function stukowin_admin() {
 			'#description' => t ( "Password for CEUS API" ),
 			'#required' => TRUE 
 	);
-	$form ['stukowin_ceus_api_lastupdate'] = array (
+	$form ['stukowin_ceus_api']['stukowin_ceus_api_lastupdate'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'Last Update from CEUS API' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_lastupdate' ),
@@ -73,15 +79,20 @@ function stukowin_admin() {
 			'#description' => t ( "Timestamp of last Update in CEUS" ),
 			'#required' => TRUE 
 	);
-	$form ['stukowin_pdf_path'] = array (
+	$form ['stukowin_pdf'] = array (
+			'#type' => 'fieldset',
+			'#title' => t ( 'PDF Settings' ),
+			'#collapsible' => TRUE,
+			'#collapsed' => TRUE
+	);
+	$form ['stukowin_pdf']['stukowin_pdf_path'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'Select Path to save Curricula' ),
-			'#default_value' =>  variable_get ( 'stukowin_pdf_path', DRUPAL_ROOT . '/sites/default/files/images/pdf/Archive/LVA-Übersicht Wirtschaftsinformatik'),
+			'#default_value' => variable_get ( 'stukowin_pdf_path', DRUPAL_ROOT . '/sites/default/files/images/pdf/Archive/LVA-ï¿½bersicht Wirtschaftsinformatik' ),
 			'#size' => 20,
 			'#description' => t ( "The Path where the PDF is saved" ),
-			'#required' => FALSE,
+			'#required' => FALSE 
 	);
-	
 	return system_settings_form ( $form );
 }
 
@@ -428,24 +439,26 @@ function stukowin_ckeditor_plugin() {
  * Hook for telling the system to use out template on stukowin custom content type
  */
 function stukowin_theme_registry_alter(&$theme_registry) {
-  $theme_registry_copy = $theme_registry;
-  _theme_process_registry($theme_registry_copy, 'phptemplate', 'theme_engine', 'my_custom_theme', drupal_get_path('module', 'stukowin'));
-  $theme_registry += array_diff_key($theme_registry_copy, $theme_registry);
-  // A list of templates the module will provide templates for
-  $hooks = array('page');
-  foreach ($hooks as $h) {
-    // Add the key 'theme paths' if it doesn't exist in this theme's registry
-    if (!isset($theme_registry[$h]['theme paths'])) {
-      $theme_registry[$h]['theme paths'] = array();
-    }
-    //Shift this module's directory to the top of the theme path list
-    if(is_array($theme_registry[$h]['theme paths'])) {
-      $first_element = array_shift($theme_registry[$h]['theme paths']);
-      if ($first_element) {
-        array_unshift($theme_registry[$h]['theme paths'], $first_element, drupal_get_path('module', 'stukowin'));
-      } else {
-        array_unshift($theme_registry[$h]['theme paths'], drupal_get_path('module', 'stukowin'));
-      }
-    }
-  }
+	$theme_registry_copy = $theme_registry;
+	_theme_process_registry ( $theme_registry_copy, 'phptemplate', 'theme_engine', 'my_custom_theme', drupal_get_path ( 'module', 'stukowin' ) );
+	$theme_registry += array_diff_key ( $theme_registry_copy, $theme_registry );
+	// A list of templates the module will provide templates for
+	$hooks = array (
+			'page' 
+	);
+	foreach ( $hooks as $h ) {
+		// Add the key 'theme paths' if it doesn't exist in this theme's registry
+		if (! isset ( $theme_registry [$h] ['theme paths'] )) {
+			$theme_registry [$h] ['theme paths'] = array ();
+		}
+		// Shift this module's directory to the top of the theme path list
+		if (is_array ( $theme_registry [$h] ['theme paths'] )) {
+			$first_element = array_shift ( $theme_registry [$h] ['theme paths'] );
+			if ($first_element) {
+				array_unshift ( $theme_registry [$h] ['theme paths'], $first_element, drupal_get_path ( 'module', 'stukowin' ) );
+			} else {
+				array_unshift ( $theme_registry [$h] ['theme paths'], drupal_get_path ( 'module', 'stukowin' ) );
+			}
+		}
+	}
 }
