@@ -5,7 +5,6 @@ class overviewPDF extends TCPDF {
 	private $aIndices = array ();
 	/**
 	 * Generates Header of each page
-	 *
 	 */
 	public function Header() {
 		/*
@@ -14,7 +13,6 @@ class overviewPDF extends TCPDF {
 	}
 	/**
 	 * Generates Footer of each page
-	 *
 	 */
 	public function Footer() {
 		$this->setFont ( 'times', '', 12 );
@@ -25,9 +23,9 @@ class overviewPDF extends TCPDF {
 	
 	/**
 	 * Gets index of desired the level
-     *
+	 *
 	 * @param integer $iLevel
-	 *			level from which the index is wanted
+	 *        	level from which the index is wanted
 	 * @return index
 	 */
 	private function getNextIndex($iLevel) {
@@ -46,9 +44,9 @@ class overviewPDF extends TCPDF {
 	
 	/**
 	 * Gets the height of the HTML document
-     *
+	 *
 	 * @param unknown $oPdf
-	 *			Current PDF
+	 *        	Current PDF
 	 * @return height
 	 */
 	private static function getHTMLHeight($sHTML) {
@@ -62,7 +60,7 @@ class overviewPDF extends TCPDF {
 	
 	/**
 	 * Gets tthe total height
-     *
+	 *
 	 * @return total height
 	 */
 	private function getTotalY() {
@@ -71,11 +69,11 @@ class overviewPDF extends TCPDF {
 	
 	/**
 	 * Creates the PDF document and sends it to the client
-     *
+	 *
 	 * @param integer $iVID
-	 *			Drupal-ID of desired Curriculum
+	 *        	Drupal-ID of desired Curriculum
 	 * @param string $sFilename
-	 *			destination of saved PDF
+	 *        	destination of saved PDF
 	 */
 	public function createPDF($iVID) {
 		// create new PDF document
@@ -87,7 +85,7 @@ class overviewPDF extends TCPDF {
 		$this->SetAuthor ( 'StukoWIN' );
 		$this->SetTitle ( 'Curriculum ' . 'Curriculum Wirtschaftsinformatik ' . $oCurriculum ['version'] );
 		$this->SetSubject ( 'Curriculum Wirtschaftsinformatik' );
-		$this->SetKeywords ( 'Curriculum, Übersicht, Wirtschaftsinformatik' );
+		$this->SetKeywords ( 'Curriculum, ï¿½bersicht, Wirtschaftsinformatik' );
 		$this->AddPage ();
 		$this->SetFontSize ( 45 );
 		$this->MultiCell ( 0, 0, "" );
@@ -134,12 +132,12 @@ class overviewPDF extends TCPDF {
 	 * @param string $sCurrVersion
 	 *        	The verision of the curriculum (e.g. 2013W)
 	 * @return string $sFilename
-	 *			name of the unique filename found
+	 *         name of the unique filename found
 	 */
 	private function getUniqueFilename($sCurrType, $sCurrVersion) {
-		if (! file_exists ( DRUPAL_ROOT . '/sites/default/files/images/pdf/archive/' ))
-			mkdir ( DRUPAL_ROOT . '/sites/default/files/images/pdf/archive/', 0777, true );
-		$sCoreName = DRUPAL_ROOT . '/sites/default/files/images/pdf/Archive/LVA-Übersicht Wirtschaftsinformatik ' . $sCurrType . ' ' . $sCurrVersion;
+		if (! file_exists ( variable_get ( 'stukowin_pdf_path' ) ))
+			mkdir ( variable_get ( 'stukowin_pdf_path' ), 0777, true );
+		$sCoreName = variable_get ( 'stukowin_pdf_path' ) . '/LVA-Ãœbersicht Wirtschaftsinformatik ' . $sCurrType . ' ' . $sCurrVersion;
 		$sFilename = $sCoreName . '.pdf';
 		if (file_exists ( $sFilename )) {
 			for($i = 1; file_exists ( $sFilename ); $i ++) {
@@ -181,7 +179,7 @@ EOT;
 		}
 	}
 	/**
-	 * Checks if element is a structur element or not 
+	 * Checks if element is a structur element or not
 	 *
 	 * @param unknown $oTopLevel
 	 *        	The object to check
@@ -246,20 +244,42 @@ EOT;
 		$sHTML = '';
 		switch ($oCourse->lva->lvatype) {
 			case '1' :
-				$sHTML .= '<tr nobr="true" style="word-break: break-all;word-wrap:break-word;"><td></td><td><B>' . $oCourse->lva->typename . ' ' . $oCourse->lva->title . '</B></td><td></td><td></td></tr>';
+				$sName = $oCourse->lva->typename . ' ' . $oCourse->lva->title;
+				{
+					$sHTML .= '<tr nobr="true"><td></td><td><B>' . $this->splitBoldTextIntoLines ( $sName, 123 ) . '</B></td><td></td><td></td></tr>';
+				}
 				break;
 			case '2' :
-				$sHTML .= '<tr nobr="true" style="word-break: break-all;word-wrap:break-word;"><td></td><td><I>' . $oCourse->lva->typename . ' ' . $oCourse->lva->title . '</I></td><td></td><td></td></tr>';
+				$sHTML .= '<tr nobr="true"><td></td><td><I>' . $oCourse->lva->typename . ' ' . $oCourse->lva->title . '</I></td><td></td><td></td></tr>';
 				break;
 			case '3' :
 			default :
-				$sHTML .= '<tr nobr="true" style="word-break: break-all;word-wrap:break-word;"><td align="center">' . $oCourse->lva->lvtypshort . '</td><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->wst . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
+				$sHTML .= '<tr nobr="true"><td align="center">' . $oCourse->lva->lvtypshort . '</td><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->wst . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
 				break;
 		}
 		if (property_exists ( $oCourse, 'children' ))
 			foreach ( $oCourse->children as $oChild )
 				$sHTML .= $this->generateTableRecHelper ( $oChild );
 		return $sHTML;
+	}
+	private function splitBoldTextIntoLines($sText, $iMaxWidth) {
+		$aWords = preg_split ( '/\s+/', $sText );
+		foreach ( $aWords as $sWord )
+			if ($this->getStringWidth ( $sWord, '', 'B' ) > $iMaxWidth)
+				return $sText;
+		if ($this->getStringWidth ( $sText, '', 'B' ) < $iMaxWidth)
+			return $sText;
+		return $this->splitRecHelper ( $aWords, 0, $iMaxWidth );
+	}
+	private function splitRecHelper($aWords, $iCurrIndex, $iMaxWidth) {
+		$sRetString = '';
+		for($i = $iCurrIndex; $i < count ( $aWords ); $i ++) {
+			if ($this->getStringWidth ( $sRetString . ' ' . $aWords [$i], '', 'B' ) > $iMaxWidth)
+				return $sRetString . '<br>' . $this->splitRecHelper ( $aWords, $i, $iMaxWidth );
+			else
+				$sRetString = $sRetString . ' ' . $aWords [$i];
+		}
+		return $sRetString;
 	}
 	private function printZieleInhalte($oCourse) {
 		if ($oCourse->lva->ziele) {
@@ -289,7 +309,7 @@ EOT;
 	 * @param string $sAlign
 	 *        	Alignment of the heading. For allowed values see @see TCPDF::Multicell()
 	 * @param boolean $bAddBookmark
-	 *			true if heading should be in index / bookmarked
+	 *        	true if heading should be in index / bookmarked
 	 */
 	private function printHeading($sText, $iLevel, $bShowIndex = true, $sAlign = 'L', $bAddBookmark = true) {
 		$iIndex = $this->getNextIndex ( $iLevel );

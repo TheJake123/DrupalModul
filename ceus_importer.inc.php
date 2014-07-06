@@ -472,7 +472,7 @@ class ceus_importer
     $oVocabulary = taxonomy_vocabulary_load(variable_get('ceus_importer_'.$aCurriculum['typeshort'].'_'.$aCurriculum['version'].'_vocabulary', 0)); 
     if (!$oVocabulary) 
     { 
-      $sMachineName = $aCurriculum['typeshort'].'_'.$aCurriculum['version'];
+      $sMachineName = 'curriculum_' . $aCurriculum['typeshort'].'_'.$aCurriculum['version'];
       $oContentManager = new content_manager();
       $sMachineName = $oContentManager->getUniqueMachineName($sMachineName);
       $aEdit = array( 
