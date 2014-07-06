@@ -1,5 +1,7 @@
 var kurse = {};
 var drupal_root = "";
+var jsonCalls = [];
+
 /**
  * Gets list of all courses from test JSON file and sets up event handlers
  */
@@ -41,7 +43,9 @@ jQuery(document)
 									"click",
 									"a.bedingung",
 									function(event) {
-										if (document.getElementById(jQuery(this).data("goto")) !== null) {
+										if (document
+												.getElementById(jQuery(this)
+														.data("goto")) !== null) {
 
 											if (jQuery(this).hasClass(
 													"voraussetzung")) {
@@ -182,7 +186,7 @@ function fillMissingDetail(data) {
 	if (data == null || "error" in data)
 		return;
 	kurse[data["id"]] = {}
-        kurse[data["id"]]["lva"] = data;
+	kurse[data["id"]]["lva"] = data;
 }
 
 /**
@@ -399,12 +403,20 @@ function createTds(kurs) {
 			+ '<td class="right ects" title="ECTS">'
 			+ ("lva" in kurs ? kurs["lva"]["ects"] : "") + '</td>';
 	for (var i = 0; i < anzEmpfohlen; i++) {
-		jQuery.getJSON(drupal_root + "?q=stukowin/lva/" + kurs["lva"]["empfehlung"][i],
-				fillMissingDetail)
+		if (!kurs["lva"]["empfehlung"][i] in kurse
+				&& jsonCalls.indexOf(kurs["lva"]["empfehlung"][i]) == -1) {
+			jQuery.getJSON(drupal_root + "?q=stukowin/lva/"
+					+ kurs["lva"]["empfehlung"][i], fillMissingDetail);
+			jsonCalls.push(kurs["lva"]["empfehlung"][i]);
+		}
 	}
 	for (var i = 0; i < anzVoraussetzungen; i++) {
-		jQuery.getJSON(drupal_root + "?q=stukowin/lva/"
-				+ kurs["lva"]["voraussetzung"][i], fillMissingDetail)
+		if (!kurs["lva"]["voraussetzung"][i] in kurse
+				&& jsonCalls.indexOf(kurs["lva"]["empfehlung"][i]) == -1) {
+			jQuery.getJSON(drupal_root + "?q=stukowin/lva/"
+					+ kurs["lva"]["voraussetzung"][i], fillMissingDetail);
+			jsonCalls.push(kurs["lva"]["voraussetzung"][i]);
+		}
 	}
 	return rightTds;
 }
