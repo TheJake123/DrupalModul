@@ -73,6 +73,15 @@ function stukowin_admin() {
 			'#description' => t ( "Timestamp of last Update in CEUS" ),
 			'#required' => TRUE 
 	);
+	$form ['stukowin_pdf_path'] = array (
+			'#type' => 'textfield',
+			'#title' => t ( 'Select Path to save Curricula' ),
+			'#default_value' =>  variable_get ( 'stukowin_pdf_path', DRUPAL_ROOT . '/sites/default/files/images/pdf/Archive/LVA-Übersicht Wirtschaftsinformatik'),
+			'#size' => 20,
+			'#description' => t ( "The Path where the PDF is saved" ),
+			'#required' => FALSE,
+	);
+	
 	return system_settings_form ( $form );
 }
 
