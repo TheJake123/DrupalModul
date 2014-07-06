@@ -89,68 +89,90 @@ CKEDITOR.dialog
 							div.setAttribute('id', "curriculum_display");
 
 							// Creates the explanation for the curriculum display
-							var curr_div = document.createElement('div');
+							var curr_div = new CKEDITOR.dom.element('div');
 							curr_div.setAttribute('id', 'curriculum_legende')
-							var table = editor.document.createElement('table');
+                                                        curr_div.setStyle('padding-left', '1.5em');
+							var table = new CKEDITOR.dom.element('table');
 							table.id = "Legende";
+                                                        
+                                                        var row1 = new CKEDITOR.dom.element('tr');
+                                                        table.append(row1);
+							
+							var cell11 = new CKEDITOR.dom.element('td');
+                                                        row1.append(cell11);
+							var cell12 = new CKEDITOR.dom.element('td');
+                                                        row1.append(cell12);
+							var cell13 = new CKEDITOR.dom.element('td');
+                                                        row1.append(cell13);
+							var cell14 = new CKEDITOR.dom.element('td');
+                                                        row1.append(cell14);
 
-							var row1 = table.insertRow(0);
-							var cell11 = row1.insertCell(0);
-							var cell12 = row1.insertCell(-1);
-							var cell13 = row1.insertCell(-1);
-							var cell14 = row1.insertCell(-1);
+							var row2 = new CKEDITOR.dom.element('tr');
+                                                        table.append(row2);
+							var cell21 = new CKEDITOR.dom.element('td');
+                                                        row2.append(cell21);
+							var cell22 = new CKEDITOR.dom.element('td');
+                                                        row2.append(cell22);
+							var cell31 = new CKEDITOR.dom.element('td');
+                                                        row2.append(cell31);
+							var cell32 = new CKEDITOR.dom.element('td');
+                                                        row2.append(cell32);
 
-							var row2 = table.insertRow(-1);
-							var cell21 = row2.insertCell(0);
-							var cell22 = row2.insertCell(-1);
-							var cell31 = row2.insertCell(-1);
-							var cell32 = row2.insertCell(-1);
+							var cell23 = new CKEDITOR.dom.element('td');
+                                                        row1.append(cell23);
+							var cell24 = new CKEDITOR.dom.element('td');
+                                                        row1.append(cell24);
+							var cell33 = new CKEDITOR.dom.element('td');
+                                                        row2.append(cell33);
+							var cell34 = new CKEDITOR.dom.element('td');
+                                                        row2.append(cell34);
 
-							var cell23 = row1.insertCell(-1);
-							var cell24 = row1.insertCell(-1);
-							var cell33 = row2.insertCell(-1);
-							var cell34 = row2.insertCell(-1);
+							var plusIcon = new CKEDITOR.dom.element('img');
+							plusIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/Plus.png");
+                                                        plusIcon.setStyle('width', '3em');
+                                                        plusIcon.setStyle('height', '3em');
+                                                        
+							var minusIcon = new CKEDITOR.dom.element('img');
+							minusIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/Minus.png");
+                                                        minusIcon.setStyle('width', '3em');
+                                                        minusIcon.setStyle('height', '3em');
+                                                        
+							var vorIcon = new CKEDITOR.dom.element('img');
+							vorIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/Voraussetzung.png");
+                                                        vorIcon.setStyle('width', '3em');
+                                                        vorIcon.setStyle('height', '3em');
+                                                        
+							var empfIcon = new CKEDITOR.dom.element('img');
+							empfIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/Empfohlen.png");
+                                                        empfIcon.setStyle('width', '3em');
+                                                        empfIcon.setStyle('height', '3em');
+                                                        
+							var ectsIcon = new CKEDITOR.dom.element('img');
+							ectsIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/ECTS.png");
+                                                        ectsIcon.setStyle('width', '3em');
+                                                        ectsIcon.setStyle('height', '3em');
+                                                        
+							var voIcon = new CKEDITOR.dom.element('img');
+							voIcon.setAttribute('src', drupal_root + "sites/all/modules/stukowin/images/V300.png");
+                                                        voIcon.setStyle('width', '3em');
+                                                        voIcon.setStyle('height', '3em');
+                                                        
+							cell11.append(plusIcon);
+							cell12.appendText("Aufklappen");
+							cell13.append(empfIcon);
+							cell14.appendText("Empfohlene Voraussetzungen anzeigen");
 
-							var plusIcon = document.createElement('img');
-							plusIcon.src = drupal_root
-									+ "sites/all/modules/stukowin/images/Plus.png";
+							cell21.append(minusIcon);
+							cell22.appendText("Zuklappen");
+							cell23.append(ectsIcon);
+							cell24.appendText("ECTS");
 
-							var minusIcon = document.createElement('img');
-							minusIcon.src = drupal_root
-									+ "sites/all/modules/stukowin/images/Minus.png";
-
-							var vorIcon = document.createElement('img');
-							vorIcon.src = drupal_root
-									+ "sites/all/modules/stukowin/images/Voraussetzung.png";
-
-							var empfIcon = document.createElement('img');
-							empfIcon.src = drupal_root
-									+ "sites/all/modules/stukowin/images/Empfohlen.png";
-
-							var ectsIcon = document.createElement('img');
-							ectsIcon.src = drupal_root
-									+ "sites/all/modules/stukowin/images/ECTS.png";
-
-							var voIcon = document.createElement('img');
-							voIcon.src = drupal_root
-									+ "sites/all/modules/stukowin/images/V300.png";
-
-							cell11.appendChild(plusIcon);
-							cell12.innerHTML = "Aufklappen";
-							cell13.appendChild(empfIcon);
-							cell14.innerHTML = "Empfohlene Voraussetzungen anzeigen";
-
-							cell21.appendChild(minusIcon);
-							cell22.innerHTML = "Zuklappen";
-							cell23.appendChild(ectsIcon);
-							cell24.innerHTML = "ECTS";
-
-							cell31.appendChild(vorIcon);
-							cell32.innerHTML = "Verpflichtende Voraussetzungen anzeigen";
-							cell33.appendChild(voIcon);
-							cell34.innerHTML = "LVA-Typ";
-							div.appendChild(curr_div);
-							curr_div.appendChild(table);
+							cell31.append(vorIcon);
+							cell32.appendText("Verpflichtende Voraussetzungen anzeigen");
+							cell33.append(voIcon);
+							cell34.appendText("LVA-Typ");
+							div.append(curr_div);
+							curr_div.append(table);
 
 							editor.insertElement(div);
 						}
