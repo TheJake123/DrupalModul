@@ -427,6 +427,16 @@ function isFullyVisible(elem) {
 	}
 }
 
+/**
+ * Creates the JSON request for curricula based on the div properties
+ * 
+ * @param {String}
+ *            baseUrl URL for JSON request
+ * @param {String}
+ *            type Curriculum type
+ * @param {Array}
+ *            curriculums Taxonomy types
+ */
 function buildRequest(baseUrl, type, curriculums) {
 	var url = baseUrl + "?q=stukowin/crclmlst";
 	if (url.indexOf("?") >= 0) {
@@ -443,6 +453,9 @@ function buildRequest(baseUrl, type, curriculums) {
 	return url;
 }
 
+/**
+ * Deletes content of div except of legend
+ */
 function clearDiv() {
 	jQuery("#curriculum_display > div").not('#loading_div,#curriculum_legende')
 			.remove();
