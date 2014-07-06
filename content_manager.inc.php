@@ -17,7 +17,7 @@ class content_manager {
 	 * @param string $sLang
 	 *        	Language to return
 	 * @return object $oReturnNode
-	 * 			Selected ReturnNode
+	 *         Selected ReturnNode
 	 */
 	private function get_return_node($iNodeID, $sLang = 'de') {
 		if ($sLang = 'de')
@@ -103,8 +103,13 @@ class content_manager {
 	 */
 	public function json_service_lva($iNodeID) {
 		$oReturnNode = $this->get_return_node ( $iNodeID );
-		header ( 'Access-Control-Allow-Origin: *' );
-		drupal_json_output ( $oReturnNode );
+		if ($oReturnNode)
+			drupal_json_output ( $oReturnNode );
+		else {
+			$oError = new StdClass ();
+			$oError->error = "NodeID does not exist";
+			drupal_json_output ( $oError );
+		}
 		die ();
 	}
 	
@@ -118,7 +123,7 @@ class content_manager {
 	 * @param string $sLang
 	 *        	= 'de' The language to get the curricula in (optional)
 	 * @return array $aCurricula
-	 *			= array of selected curricula
+	 *         = array of selected curricula
 	 */
 	public function getCurricula($sCurrType = '', $aTaxonomyTypes = array('curriculum'), $sLang = 'de') {
 		if ($sLang === 'de')
@@ -196,13 +201,12 @@ class content_manager {
 	}
 	/**
 	 * Returns Curriculum as JSON object
-	 * 
+	 *
 	 * @param integer $iVID
-	 *				Drupal-ID of desired curriculum
+	 *        	Drupal-ID of desired curriculum
 	 */
 	public function json_service_curriculum($iVID) {
 		$aTerms = $this->taxonomy_get_nested_tree ( $iVID );
-		header ( 'Access-Control-Allow-Origin: *' );
 		// PHP ist doof. json_encode glaubt ein Array ist ein Objekt, mit dem Trick unten versteht es auch PHP
 		array_unshift ( $aTerms, 'blabla' );
 		array_shift ( $aTerms );

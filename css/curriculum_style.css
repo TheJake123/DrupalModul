@@ -67,7 +67,7 @@ div#curriculum_display div.modul {
 
     background-color: #DFDFDF;
 
-    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 
 
 }
@@ -86,7 +86,7 @@ div#curriculum_display div.lv {
 
     background-color: #e6e6e6;
 
-    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 
 
 }
@@ -100,6 +100,7 @@ div#curriculum_display table.header {
     width: 100%;
     border: 0 px;
     border-collapse: separate;
+    margin-bottom: 0.5em;
 }
 
 
