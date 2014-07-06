@@ -229,13 +229,13 @@ function _stukowin_installed_instances()
     'code' => array( 
       'field_name' => 'code', 
       'type' => 'text', 
-      'label' => $t('Code'), 
+      'label' => $t('LV-Code'), 
       'widget' => array( 
         'type' => 'text_textfield', 
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('Code'), 
+        'label' => $t('LV-Code'), 
         'type' => 'text', 
         ), 
       ), 
@@ -271,13 +271,13 @@ function _stukowin_installed_instances()
     'verantname' => array( 
       'field_name' => 'verantname', 
       'type' => 'text', 
-      'label' => $t('Veranstalter'), 
+      'label' => $t('Verantwortliche(r)'), 
       'widget' => array( 
         'type' => 'text_textfield', 
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('Veranstalter'), 
+        'label' => $t('Verantwortliche(r)'), 
         'type' => 'text', 
         ), 
       ), 
@@ -285,13 +285,13 @@ function _stukowin_installed_instances()
     'verantemail' => array( 
       'field_name' => 'verantemail', 
       'type' => 'text', 
-      'label' => $t('E-Mail Veranstalter'), 
+      'label' => $t('E-Mail Verantwortliche(r)'), 
       'widget' => array( 
         'type' => 'text_textfield', 
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('E-Mail Veranstalter'), 
+        'label' => $t('E-Mail Verantwortliche(r)'), 
         'type' => 'text', 
         ), 
       ), 
@@ -313,13 +313,13 @@ function _stukowin_installed_instances()
     'lvtypname' => array( 
       'field_name' => 'lvtypname', 
       'type' => 'text', 
-      'label' => $t('LV-Type'), 
+      'label' => $t('Art der LV'), 
       'widget' => array( 
         'type' => 'text_textfield', 
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('LV-Type'), 
+        'label' => $t('Art der LV'), 
         'type' => 'text', 
         ), 
       ), 
@@ -355,13 +355,13 @@ function _stukowin_installed_instances()
     'typename' => array( 
       'field_name' => 'typename', 
       'type' => 'text', 
-      'label' => $t('Typename'), 
+      'label' => $t('Art der LV'), 
       'widget' => array( 
         'type' => 'text_textfield', 
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('Typename'), 
+        'label' => $t('Art der LV'), 
         'type' => 'text', 
         ), 
       ), 
@@ -369,13 +369,13 @@ function _stukowin_installed_instances()
     'ziele' => array( 
       'field_name' => 'ziele', 
       'type' => 'text', 
-      'label' => $t('Ziele der Lehrveranstaltung'), 
+      'label' => $t('Lehrveranstaltungsziele'), 
       'widget' => array( 
         'type' => 'text_long', 
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('Ziele der Lehrveranstaltung'), 
+        'label' => $t('Lehrveranstaltungsziele'), 
         'type' => 'text_long', 
         ), 
       ), 
@@ -383,13 +383,13 @@ function _stukowin_installed_instances()
     'lehrinhalte' => array( 
       'field_name' => 'lehrinhalte', 
       'type' => 'text', 
-      'label' => $t('Lehrinhalte der Lehrveranstaltung'), 
+      'label' => $t('Lehrinhalte'), 
       'widget' => array( 
         'type' => 'text_long', 
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('Lehrinhalte der Lehrveranstaltung'), 
+        'label' => $t('Lehrinhalte'), 
         'type' => 'text_long', 
         ), 
       ), 
@@ -397,20 +397,20 @@ function _stukowin_installed_instances()
     'voraussetzungen' => array( 
       'field_name' => 'voraussetzungen', 
       'type' => 'text', 
-      'label' => $t('Voraussetzungen'), 
+      'label' => $t('Anmeldevoraussetzung(en)'), 
       'widget' => array( 
         'type' => 'text_long', 
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('Voraussetzungen'), 
+        'label' => $t('Anmeldevoraussetzung(en)'), 
         'type' => 'text_long', 
         ), 
       ), 
     ), 
     'voraussetzung' => array( 
       'field_name' => 'voraussetzung', 
-      'label' => $t('Voraussetzung'), 
+      'label' => $t('Anmeldevoraussetzung(en)'), 
       'type' => 'relation_select', 
       'widget' => array( 
         'type' => 'relation_select',
@@ -418,7 +418,7 @@ function _stukowin_installed_instances()
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('Voraussetzung'), 
+        'label' => $t('Anmeldevoraussetzung(en)'), 
         'type' => 'relation_select', 
         ), 
       ), 
@@ -432,7 +432,7 @@ function _stukowin_installed_instances()
     ), 
     'empfehlung' => array( 
       'field_name' => 'empfehlung', 
-      'label' => $t('Empfehlung'), 
+      'label' => $t('Empfehlung(en)'), 
       'type' => 'relation_select', 
       'widget' => array( 
         'type' => 'relation_select', 
@@ -440,7 +440,7 @@ function _stukowin_installed_instances()
       ), 
       'display' => array( 
       'example_node_list' => array( 
-        'label' => $t('Empfehlung'), 
+        'label' => $t('Empfehlung(en)'), 
         'type' => 'relation_select', 
         ), 
       ),
