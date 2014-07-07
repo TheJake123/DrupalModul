@@ -23,12 +23,6 @@ class ceus_importer {
 	
 	/**
 	 *
-	 * @var string Last update date & time as received from CEUS
-	 */
-	private $sLastupdate;
-	
-	/**
-	 *
 	 * @var string Authtoken, retreived from CEUS API
 	 */
 	private $sAuthtoken;
@@ -79,8 +73,6 @@ class ceus_importer {
 		$this->sCeusUrl = variable_get ( 'stukowin_ceus_api_url' );
 		$this->sUsername = variable_get ( 'stukowin_ceus_api_username' );
 		$this->sPassword = variable_get ( 'stukowin_ceus_api_userpassword' );
-		$this->sLastupdate = variable_get ( 'stukowin_ceus_api_lastupdate' );
-		set_time_limit ( 600 );
 	}
 	
 	/**
@@ -148,11 +140,12 @@ class ceus_importer {
 	 * @return integer Node id of the saved node
 	 */
 	private function save_node($aDetail, $tid) {
-		$aNode = taxonomy_select_nodes ( $tid );
-		if (! empty ( $oNode ))
-			$iNodeID = $aNode [0];
+		$aNodes = taxonomy_select_nodes ( $tid );
+		if (! empty ( $aNodes ))
+			$iNodeID = $aNodes [0];
 		else
 			$iNodeID = null;
+		
 		$oNode = node_load ( $iNodeID );
 		// If same changedate, do nothing
 		if (! empty ( $iNodeID ) && ($aDetail ['de'] ['changedate'] == $oNode->changedate ['und'] [0] ['value'])) {
@@ -189,6 +182,8 @@ class ceus_importer {
 		);
 		if (! empty ( $aDetail ['de'] ['type'] ))
 			$oNode->{'lvatype'} ['und'] [0] ['value'] = $aDetail ['de'] ['type'];
+		if (! empty ( $aDetail ['de'] ['id'] ))
+			$oNode->{'ceusid'} ['und'] [0] ['value'] = $aDetail ['de'] ['id'];
 		foreach ( $aMembers as $sMember ) {
 			if (! empty ( $aDetail ['de'] [$sMember] ))
 				$oNode->{$sMember} ['und'] [0] ['value'] = $aDetail ['de'] [$sMember];
@@ -213,7 +208,6 @@ class ceus_importer {
 			$oNode->revision = true;
 		}
 		$oNode = node_submit ( $oNode );
-		
 		node_save ( $oNode );
 		return $oNode->nid;
 	}
@@ -412,7 +406,9 @@ class ceus_importer {
 			$iWeight = 0;
 			$aTerms = taxonomy_get_tree ( $this->aVocabulary [$iCurriculumID] );
 			foreach ( $aTerms as $oCurrTerm ) {
-				$aCurrTerms [$oCurrTerm->description] = $oCurrTerm;
+				$oTermNode = (new content_manager ())->get_return_node ( $oCurrTerm->description );
+				if ($oTermNode && ! empty ( $oTermNode ) && property_exists ( $oTermNode, 'ceusid' ))
+					$aCurrTerms [$oTermNode->ceusid] = $oCurrTerm;
 			}
 			foreach ( $aTree as $aBranch ) {
 				$aDetail = $this->get_detail ( $aBranch ['id'] );
@@ -446,6 +442,7 @@ class ceus_importer {
 	 * @return string boolean
 	 */
 	public function get_curricula() {
+		set_time_limit ( 0 );
 		if ($aCurriculaList = $this->get_curricula_list ()) {
 			foreach ( $aCurriculaList as $aCurriculum ) {
 				$this->check_vocabulary ( $aCurriculum );

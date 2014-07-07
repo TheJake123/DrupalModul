@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file stukowin.install
- * TODO: Enter file description here.
- */
-
 /** 
 * Implements hook_install(). 
 * - Add the body field. 
@@ -130,6 +125,11 @@ function _stukowin_installed_fields()
 { 
   $t = get_t(); 
   return array( 
+  	'ceusid' => array( 
+      'field_name' => 'ceusid', 
+      'label' => $t('CEUS ID'), 
+      'type' => 'text', 
+    ),
     'code' => array( 
       'field_name' => 'code', 
       'label' => $t('Code'), 
@@ -226,6 +226,20 @@ function _stukowin_installed_instances()
 { 
   $t = get_t(); 
   return array( 
+  	'ceusid' => array( 
+      'field_name' => 'ceusid', 
+      'type' => 'text', 
+      'label' => $t('CEUS ID'), 
+      'widget' => array( 
+        'type' => 'text_textfield', 
+      ), 
+      'display' => array( 
+      'example_node_list' => array( 
+        'label' => $t('CEUS ID'), 
+        'type' => 'text', 
+        ), 
+      ), 
+    ),
     'code' => array( 
       'field_name' => 'code', 
       'type' => 'text', 
@@ -487,7 +501,7 @@ function _stukowin_installed_instances()
 } 
 
 /**
- * Create the relation type for books <=> collection.
+ * Create the relation type
  */
 function _stukowin_create_relation_types() {
   $aRelation = array(

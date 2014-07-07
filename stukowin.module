@@ -76,37 +76,28 @@ function stukowin_admin() {
 			'#description' => t ( "Password for CEUS API" ),
 			'#required' => TRUE 
 	);
-	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_lastupdate'] = array (
-			'#type' => 'textfield',
-			'#title' => t ( 'Last Update from CEUS API' ),
-			'#default_value' => variable_get ( 'stukowin_ceus_api_lastupdate' ),
-			'#size' => 20,
-			'#maxlength' => 40,
-			'#description' => t ( "Timestamp of last Update in CEUS" ),
-			'#required' => TRUE 
-	);
 	// PDF generation settings
 	$form ['stukowin_pdf'] = array (
 			'#type' => 'fieldset',
 			'#title' => t ( 'PDF Settings' ),
 			'#collapsible' => TRUE,
-			'#collapsed' => TRUE 
+			'#collapsed' => FALSE 
 	);
 	$form ['stukowin_pdf'] ['stukowin_pdf_path'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'Path' ),
 			'#default_value' => variable_get ( 'stukowin_pdf_path', DRUPAL_ROOT . '/sites/default/files/pdf/archive' ),
-			'#size' => 40,
+			'#size' => 60,
 			'#description' => t ( "The Path where the generated PDFs are saved" ),
-			'#required' => FALSE 
+			'#required' => TRUE 
 	);
 	$form ['stukowin_pdf'] ['stukowin_pdf_name'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'Name' ),
 			'#default_value' => variable_get ( 'stukowin_pdf_name', 'Uebersicht %currtype% %version%' ),
-			'#size' => 20,
+			'#size' => 40,
 			'#description' => t ( 'The name template to use for new PDFs. Insert %version% for the curriculum version (e.g. "2013W") and %currtype% for the curriculum type (e.g "Bachelorstudium")' ),
-			'#required' => FALSE 
+			'#required' => TRUE 
 	);
 	return system_settings_form ( $form );
 }
