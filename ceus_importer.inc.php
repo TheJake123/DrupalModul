@@ -2,6 +2,10 @@
 include_once __DIR__ . '/simple_html_dom.php';
 include_once dirname ( __FILE__ ) . '/stukowin.install';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
+
+/* 
+ * Encapsulates import from CEUS JSON interface into drupal structures
+ */
 class ceus_importer {
 	/**
 	 *
