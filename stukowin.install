@@ -58,6 +58,11 @@ function stukowin_install()
   } 
 } 
 
+/**
+ * Returns a structured array defining the custom fields for taxonomies used
+ * Additional fields: faculty, version and type of curriculum as received 
+ * from CEUS
+ */
 function _stukowin_installed_taxonomy_fields()
 {
     $t = get_t();
@@ -83,6 +88,11 @@ function _stukowin_installed_taxonomy_fields()
   
 }
 
+/**
+ * Returns a structured array defining the custom fields for taxonomies used
+ * Additional fields: faculty, version and type of curriculum as received 
+ * from CEUS - instances
+ */
 function _stukowin_installed_taxonomy_instances() 
 { 
     $t = get_t();
