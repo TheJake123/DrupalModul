@@ -70,6 +70,11 @@ class ceus_importer {
 	private $aTerms;
 	/**
 	 *
+	 * @var array all Import stats
+	 */
+	private $aStats;
+	/**
+	 *
 	 * @var array array of relations that is filled during import and evaluated at the end; Key = LVA ID, value = content text of "voraussetzungen" field from CEUS
 	 */
 	private $aRelations;
@@ -136,6 +141,7 @@ class ceus_importer {
 			}
 			$aDetail [$sLang] = $aReturn;
 		}
+		$this->aStats ['loaded'] ++;
 		return $aDetail;
 	}
 	
@@ -163,7 +169,10 @@ class ceus_importer {
 		global $user;
 		// If LVA is new, new node is created
 		if (empty ( $oNode )) {
+			$this->aStats ['new'] ++;
 			$oNode = new stdClass ();
+		} else {
+			$this->aStats ['updated'] ++;
 		}
 		$oNode->type = 'stukowin';
 		node_object_prepare ( $oNode );
@@ -375,6 +384,7 @@ class ceus_importer {
 				}
 				try {
 					$aRid [] = relation_save ( $oRelation );
+					$this->aStats ['relations'] ++;
 				} catch ( Exception $e ) {
 					drupal_set_message ( "Error while saving required dependency between course " . $iNodeID . " and course " . $iReqNodeID . ": " . $e . getMessage (), "error" );
 				}
@@ -405,8 +415,8 @@ class ceus_importer {
 					drupal_set_message ( "Error while creating suggested dependency between course " . $iNodeID . " and course " . $iReqNodeID . ": " . $e . getMessage (), "error" );
 				}
 				try {
-					$oRelation = relation_create ( 'empfehlung', $aEndpoints );
 					$iRid [] = relation_save ( $oRelation );
+					$this->aStats ['relations'] ++;
 				} catch ( Exception $e ) {
 					drupal_set_message ( "Error while saving suggested dependency between course " . $iNodeID . " and course " . $iReqNodeID . ": " . $e . getMessage (), "error" );
 				}
@@ -467,14 +477,20 @@ class ceus_importer {
 	 */
 	public function get_curricula() {
 		set_time_limit ( 0 );
+		$this->aStats ['loaded'] = 0;
+		$this->aStats ['new'] = 0;
+		$this->aStats ['updated'] = 0;
+		$this->aStats ['numcurrs'] = 0;
+		$this->aStats ['relations'] = 0;
 		if ($aCurriculaList = $this->get_curricula_list ()) {
 			foreach ( $aCurriculaList as $aCurriculum ) {
+				$this->aStats ['numcurrs'] ++;
 				$this->check_vocabulary ( $aCurriculum );
 				$aCurrTree [$aCurriculum ['id']] = $this->get_curriculum ( $aCurriculum ['id'] );
 				$this->get_details ( $aCurrTree [$aCurriculum ['id']] ['tree'], 0, $aCurriculum ['id'] );
 				$this->process_relations ();
 			}
-			return 'Import successful';
+			return 'Import successful. <b>' . $this->aStats ['numcurrs'] . '</b> curricula with <b>' . $this->aStats ['loaded'] . '</b> courses loaded, <b>' . $this->aStats ['new'] . '</b> new nodes created, <b>' . $this->aStats ['updated'] . '</b> nodes updated and <b>' . $this->aStats ['relations'] . '</b> relations processed.';
 		} else
 			return false;
 	}
