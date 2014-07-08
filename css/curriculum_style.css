@@ -89,10 +89,12 @@ div#curriculum_display td.right {
 
 div#curriculum_display td.right.button.empfohlen {
 	background-image: url("../images/Empfohlen.png");
+	cursor: pointer;
 }
 
 div#curriculum_display td.right.button.empfohlen.empty {
 	background-image: url("../images/Empfohlen_empty.png");
+	cursor: default;
 }
 
 div#curriculum_display td.right.button.empfohlen.active {
@@ -101,10 +103,12 @@ div#curriculum_display td.right.button.empfohlen.active {
 
 div#curriculum_display td.right.button.voraussetzung {
 	background-image: url("../images/Voraussetzung.png");
+	cursor: pointer;
 }
 
 div#curriculum_display td.right.button.voraussetzung.empty {
 	background-image: url("../images/Voraussetzung_empty.png");
+	cursor: default;
 }
 
 div#curriculum_display td.right.button.voraussetzung.active {
