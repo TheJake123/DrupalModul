@@ -21,8 +21,9 @@ class content_manager {
 		if ($sLang = 'de')
 			$sLang = 'und';
 		$oNode = node_load ( $iNodeID );
-		if (! $oNode)
+		if (! $oNode) {
 			return null;
+		}
 		$oReturnNode = new stdClass ();
 		$oReturnNode->title = $oNode->title;
 		$aFields = _stukowin_installed_fields ();
@@ -164,7 +165,7 @@ class content_manager {
 	 */
 	public function getUniqueMachineName($sCoreName) {
 		$sMachineName = preg_replace ( "/[^a-z0-9_]+/i", "", $sCoreName );
-		$sMachineName = strtolower($sMachineName);
+		$sMachineName = strtolower ( $sMachineName );
 		$aExistingNames = array ();
 		$query = new EntityFieldQuery ();
 		$query->entityCondition ( 'entity_type', 'taxonomy_vocabulary', '=' )->propertyCondition ( 'machine_name', $sCoreName . '%', 'LIKE' );
@@ -188,7 +189,7 @@ class content_manager {
 	
 	/**
 	 * Gets the curriculum with the given vid from the database
-	 * 
+	 *
 	 * @param integer $iVID
 	 *        	The vid of the curriculum vocabulary
 	 * @return $oCurriculum array of the curriculum object

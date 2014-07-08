@@ -56,6 +56,7 @@ function stukowin_install()
     $instance['bundle'] = 'taxonomy_vocabulary'; 
     field_create_instance($instance); 
   } 
+  drupal_set_message('StukoWIN CEUS module installed. <a href="' . url('admin/stukowin/settings') . '">Configure</a>');
 } 
 
 /**

@@ -3,7 +3,7 @@ include_once __DIR__ . '/simple_html_dom.php';
 include_once dirname ( __FILE__ ) . '/stukowin.install';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 
-/* 
+/*
  * Encapsulates import from CEUS JSON interface into drupal structures
  */
 class ceus_importer {
@@ -63,7 +63,11 @@ class ceus_importer {
 	 * @var array all vocabularies for current curricula
 	 */
 	private $aVocabulary;
-	
+	/**
+	 *
+	 * @var array all Terms for vocabularies
+	 */
+	private $aTerms;
 	/**
 	 *
 	 * @var array array of relations that is filled during import and evaluated at the end; Key = LVA ID, value = content text of "voraussetzungen" field from CEUS
@@ -93,7 +97,7 @@ class ceus_importer {
 		}
 		$aReturn = drupal_json_decode ( $sReturn );
 		if (! empty ( $aReturn ['error'] )) {
-			$this->sError = $aError ['error'];
+			$this->sError = $aReturn ['error'];
 			return false;
 		}
 		return $aReturn;
@@ -147,18 +151,20 @@ class ceus_importer {
 		$aNodes = taxonomy_select_nodes ( $tid );
 		if (! empty ( $aNodes ))
 			$iNodeID = $aNodes [0];
-		else
+		else {
 			$iNodeID = null;
+		}
 		
 		$oNode = node_load ( $iNodeID );
 		// If same changedate, do nothing
 		if (! empty ( $iNodeID ) && ($aDetail ['de'] ['changedate'] == $oNode->changedate ['und'] [0] ['value'])) {
-			return true;
+			return $iNodeID;
 		}
 		global $user;
 		// If LVA is new, new node is created
-		if (empty ( $oNode ))
+		if (empty ( $oNode )) {
 			$oNode = new stdClass ();
+		}
 		$oNode->type = 'stukowin';
 		node_object_prepare ( $oNode );
 		// Fields of CEUS-DB to be copied
@@ -213,6 +219,8 @@ class ceus_importer {
 		}
 		$oNode = node_submit ( $oNode );
 		node_save ( $oNode );
+		if (! empty ( $aDetail ['de'] ['voraussetzungen'] ) && $this->has_relation ( $aDetail ['de'] ['voraussetzungen'] ))
+			$this->aRelations [$oNode->nid] = $aDetail ['de'] ['voraussetzungen'];
 		return $oNode->nid;
 	}
 	
@@ -331,6 +339,8 @@ class ceus_importer {
 	 * and stores them in the node
 	 */
 	private function process_relations() {
+		if (! ($this->aRelations) || empty ( $this->aRelations ))
+			return;
 		$aSuggested = array ();
 		$aRequired = array ();
 		foreach ( $this->aRelations as $iID => $sRelationfield ) {
@@ -358,8 +368,16 @@ class ceus_importer {
 								'entity_id' => $iReqNodeID 
 						) 
 				);
-				$oRelation = relation_create ( 'voraussetzung', $aEndpoints );
-				$aRid [] = relation_save ( $oRelation );
+				try {
+					$oRelation = relation_create ( 'voraussetzung', $aEndpoints );
+				} catch ( Exception $e ) {
+					drupal_set_message ( "Error while creating required dependency between course " . $iNodeID . " and course " . $iReqNodeID . ": " . $e . getMessage (), "error" );
+				}
+				try {
+					$aRid [] = relation_save ( $oRelation );
+				} catch ( Exception $e ) {
+					drupal_set_message ( "Error while saving required dependency between course " . $iNodeID . " and course " . $iReqNodeID . ": " . $e . getMessage (), "error" );
+				}
 			}
 			if (! empty ( $aRid )) {
 				$oNode = node_load ( $iNodeID );
@@ -381,8 +399,17 @@ class ceus_importer {
 								'entity_id' => $iReqNodeID 
 						) 
 				);
-				$oRelation = relation_create ( 'empfehlung', $aEndpoints );
-				$iRid [] = relation_save ( $oRelation );
+				try {
+					$oRelation = relation_create ( 'empfehlung', $aEndpoints );
+				} catch ( Exception $e ) {
+					drupal_set_message ( "Error while creating suggested dependency between course " . $iNodeID . " and course " . $iReqNodeID . ": " . $e . getMessage (), "error" );
+				}
+				try {
+					$oRelation = relation_create ( 'empfehlung', $aEndpoints );
+					$iRid [] = relation_save ( $oRelation );
+				} catch ( Exception $e ) {
+					drupal_set_message ( "Error while saving suggested dependency between course " . $iNodeID . " and course " . $iReqNodeID . ": " . $e . getMessage (), "error" );
+				}
 			}
 			if (! empty ( $aRid )) {
 				$oNode = node_load ( $iNodeID );
@@ -408,18 +435,12 @@ class ceus_importer {
 	private function get_details($aTree, $iParentID, $iCurriculumID) {
 		if (is_array ( $aTree ) && count ( $aTree )) {
 			$iWeight = 0;
-			$aTerms = taxonomy_get_tree ( $this->aVocabulary [$iCurriculumID] );
-			foreach ( $aTerms as $oCurrTerm ) {
-				$oTermNode = (new content_manager ())->get_return_node ( $oCurrTerm->description );
-				if ($oTermNode && ! empty ( $oTermNode ) && property_exists ( $oTermNode, 'ceusid' ))
-					$aCurrTerms [$oTermNode->ceusid] = $oCurrTerm;
-			}
 			foreach ( $aTree as $aBranch ) {
 				$aDetail = $this->get_detail ( $aBranch ['id'] );
 				// Create new term if not in vocabulary
 				$oTerm = new stdClass ();
-				if (! empty ( $aCurrTerms [$aDetail ['de'] ['id']] )) {
-					$oTerm->tid = $aCurrTerms [$aDetail ['de'] ['id']]->tid;
+				if (! empty ( $this->aTerms [$iCurriculumID] [$aDetail ['de'] ['id']] )) {
+					$oTerm->tid = $this->aTerms [$iCurriculumID] [$aDetail ['de'] ['id']]->tid;
 				}
 				$sLvtyp = empty ( $aDetail ['de'] ['lvtypshort'] ) ? '' : " ({$aDetail['de']['lvtypshort']})";
 				$oTerm->name = $aDetail ['de'] ['typename'] . ': ' . $aDetail ['de'] ['title'] . $sLvtyp;
@@ -428,8 +449,7 @@ class ceus_importer {
 				$oTerm->weight = $iWeight;
 				taxonomy_term_save ( $oTerm );
 				$iNodeID = $this->save_node ( $aDetail, $oTerm->tid );
-				if (! empty ( $aDetail ['de'] ['voraussetzungen'] ) && $this->has_relation ( $aDetail ['de'] ['voraussetzungen'] ))
-					$this->aRelations [$iNodeID] = $aDetail ['de'] ['voraussetzungen'];
+				
 				$iWeight ++;
 				$oTerm->description = $iNodeID;
 				taxonomy_term_save ( $oTerm );
@@ -485,6 +505,13 @@ class ceus_importer {
 			$oVocabulary->{'currtype'} ['und'] [0] ['value'] = $aCurriculum ['type'];
 			taxonomy_vocabulary_save ( $oVocabulary );
 			variable_set ( 'ceus_importer_' . $aCurriculum ['typeshort'] . '_' . $aCurriculum ['version'] . '_vocabulary', $oVocabulary->vid );
+		}
+		$aTerms = taxonomy_get_tree ( $oVocabulary->vid );
+		foreach ( $aTerms as $oCurrTerm ) {
+			$oTermNode = (new content_manager ())->get_return_node ( $oCurrTerm->description );
+			if ($oTermNode && ! empty ( $oTermNode ) && property_exists ( $oTermNode, 'ceusid' )) {
+				$this->aTerms [$aCurriculum ['id']] [$oTermNode->ceusid] = $oCurrTerm;
+			}
 		}
 		$this->aVocabulary [$aCurriculum ['id']] = $oVocabulary->vid;
 	}
