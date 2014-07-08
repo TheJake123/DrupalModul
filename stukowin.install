@@ -222,12 +222,7 @@ function _stukowin_installed_fields()
       'field_name' => 'term', 
       'label' => $t('term'), 
       'type' => 'taxonomy_term_reference', 
-    ), 
-    'ideal_curriculum' => array( 
-      'field_name' => 'ideal_curriculum', 
-      'label' => $t('ideal curriculum'), 
-      'type' => 'taxonomy_term_reference', 
-    ),       
+    )     
   ); 
 } 
 /** 
@@ -493,21 +488,6 @@ function _stukowin_installed_instances()
         ), 
       ), 
     ), 
-    'ideal_curriculum' => array( 
-      'field_name' => 'ideal_curriculum', 
-      'type' => 'taxonomy_term_reference', 
-      'label' => $t('ideal_curriculum'), 
-      'widget' => array( 
-        'type' => 'taxonomy_term_reference', 
-      ), 
-      'display' => array( 
-      'example_node_list' => array( 
-        'label' => $t('ideal_curriculum'), 
-        'type' => 'taxonomy_term_reference', 
-        ), 
-      ), 
-    ), 
-      
   ); 
 } 
 
