@@ -80,6 +80,7 @@ div#curriculum_display td.left,td.right {
 div#curriculum_display td.left.button.expander {
 	background-image: url("../images/Minus.png");
 	background-repeat: no-repeat;
+	cursor: pointer;
 }
 
 div#curriculum_display td.right {
