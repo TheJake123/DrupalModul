@@ -68,22 +68,17 @@ CKEDITOR.dialog
 								taxonomyTypeSet = true;
 							}
 							if (dialog.getValueOf('currdialog', 'itsv')) {
-                                                            if(curriculums){
-								curriculums += 'itsv';
+								if (curriculums)
+									curriculums += ' ';
+								curriculums += ' itsv';
 								taxonomyTypeSet = true;
-                                                            } else {
-                                                                curriculums += ' itsv';
-								taxonomyTypeSet = true;
-                                                            }
 							}
-							if (dialog.getValueOf('currdialog','specialisation')) {
-                                                            if(curriculums){
-								curriculums += 'specialisation';
+							if (dialog.getValueOf('currdialog',
+									'specialisation')) {
+								if (curriculums)
+									curriculums += ' ';
+								curriculums += ' specialisation';
 								taxonomyTypeSet = true;
-                                                            } else {
-                                                                curriculums += ' specialisation';
-								taxonomyTypeSet = true;
-                                                            }
 							}
 							if (!taxonomyTypeSet) {
 								alert('Error: Please select at least one taxonomy type to display');
