@@ -337,7 +337,7 @@ function createDivs(kurs, level) {
 			} else if (kurs["lva"]["lvatype"] == 2) {
 				typ = "modul";
 			}
-			var expander = "children" in kurs ? "left button expander" : "left";
+			var expander = "children" in kurs ? "left button expander" : "";
 			div = '<div class="' + typ + '" id="' + kurs["description"] + '">'
 					+ '<table class="header"><tr>' + '<td class="' + expander
 					+ '" alt="minus" title="Ausklappen"></td>' + rightTds
