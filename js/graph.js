@@ -64,7 +64,7 @@ jQuery(document)
 													// is not included in
 													// display
 											window.location.href = drupal_root
-													+ "node/"
+													+ "?q=node/"
 													+ jQuery(this).data("goto");
 										}
 										return false; // Cancel click
@@ -99,7 +99,6 @@ function getCurricula(data) {
 		var loadingIcon = document.getElementById('curriculum_display');
 		loadingIcon.style.display = 'block';
 		select.style.display = 'none';
-		selectElem.parentNode.insertBefore(loadingIcon, selectElem.nextSibling);
 		// Load selected curriculum
 		jQuery.getJSON(drupal_root + "?q=stukowin/crclm/" + currId, fill_crclm);
 	};
@@ -172,8 +171,8 @@ function showEmpfohlen(element) {
 									+ val
 									+ '">'
 									+ ("lvtypshort" in kurse[val]["lva"] ? kurse[val]["lva"]["lvtypshort"]
-											+ " "
 											: kurse[val]["lva"]["typename"])
+									+ " "
 									+ kurse[val]["lva"]["title"] + "</a></li>";
 						});
 		list += "</ul>";
@@ -209,8 +208,8 @@ function showVoraussetzungen(element) {
 										+ val
 										+ '">'
 										+ ("lvtypshort" in kurse[val] ? kurse[val]["lva"]["lvtypshort"]
-												+ " "
 												: "")
+										+ " "
 										+ kurse[val]["lva"]["title"]
 										+ "</a></li>";
 							}
@@ -377,7 +376,7 @@ function createTds(kurs) {
 	var anzEmpfohlen = "empfehlung" in kurs["lva"] ? kurs["lva"]["empfehlung"].length
 			: 0;
 	var rightTds = '<td class="center">'
-			+ ("lva" in kurs ? '<a href="' + drupal_root + 'node/' + kurs['id']
+			+ ("lva" in kurs ? '<a href="' + drupal_root + '?q=node/' + kurs['id']
 					+ '">' + kurs["lva"]["title"] + '</a>' : kurs["name"])
 			+ '</td>'
 			+ '</td>'
@@ -398,7 +397,7 @@ function createTds(kurs) {
 			+ '<td class="right ects" title="ECTS">'
 			+ ("lva" in kurs ? kurs["lva"]["ects"] : "") + '</td>';
 	for (var i = 0; i < anzEmpfohlen; i++) {
-		if (!kurs["lva"]["empfehlung"][i] in kurse
+		if (!(kurs["lva"]["empfehlung"][i] in kurse)
 				&& jsonCalls.indexOf(kurs["lva"]["empfehlung"][i]) == -1) {
 			jQuery.getJSON(drupal_root + "?q=stukowin/lva/"
 					+ kurs["lva"]["empfehlung"][i], fillMissingDetail);
@@ -406,8 +405,8 @@ function createTds(kurs) {
 		}
 	}
 	for (var i = 0; i < anzVoraussetzungen; i++) {
-		if (!kurs["lva"]["voraussetzung"][i] in kurse
-				&& jsonCalls.indexOf(kurs["lva"]["empfehlung"][i]) == -1) {
+		if (!(kurs["lva"]["voraussetzung"][i] in kurse)
+				&& jsonCalls.indexOf(kurs["lva"]["voraussetzung"][i]) == -1) {
 			jQuery.getJSON(drupal_root + "?q=stukowin/lva/"
 					+ kurs["lva"]["voraussetzung"][i], fillMissingDetail);
 			jsonCalls.push(kurs["lva"]["voraussetzung"][i]);
