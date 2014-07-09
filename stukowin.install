@@ -23,11 +23,12 @@ function stukowin_install()
     'title_label' => $t('LVA content type for stukowin module'),
     'custom' => TRUE,
   );
-  $content_type = node_type_set_defaults($stukowin_type);    
+  $content_type = node_type_set_defaults($stukowin_type);   
   // add the body field to the node type 
   node_add_body_field($content_type); 
   node_type_save($content_type);
-  
+  variable_set('language_content_type_stukowin',1);
+  variable_set('node_options_stukowin',array('status','promote','revision'));
   // create Relation Types for Voraussetzungen and Empfehlungen
   _stukowin_create_relation_types();
   // Load the instance definition for our content type's body 
@@ -492,38 +493,119 @@ function _stukowin_installed_instances()
 } 
 
 /**
+ * Custom relation types for recommendations and requirements
+ */
+function _stukowin_relation_types(){
+  return array(
+    array(
+    'disabled'=>FALSE, 'api_version'=>1,'relation_type'=>'empfehlung','label'=>'Empfohlen',
+      'reverse_label'=>'Empfohlen für','directional'=>1,'transitive'=>0,'r_unique'=>1,
+      'min_arity'=>2, 'max_arity'=>2, 'source_bundles'=>array('node:stukowin'),'target_bundles'=>array('node:stukowin')),
+    array('disabled'=>FALSE, 'api_version'=>1,'relation_type'=>'voraussetzung','label'=>'Voraussetzung',
+      'reverse_label'=>'Vorausgesetzt von','directional'=>1,'transitive'=>0,'r_unique'=>1,
+      'min_arity'=>2, 'max_arity'=>2, 'source_bundles'=>array('node:stukowin'),'target_bundles'=>array('node:stukowin'))
+  );  
+}
+
+/**
  * Create the relation type
  */
 function _stukowin_create_relation_types() {
-  $aRelation = array(
-    'disabled'=>FALSE, 'api_version'=>1,'relation_type'=>'empfehlung','label'=>'Empfohlen',
-      'reverse_label'=>'Empfohlen für','directional'=>1,'transitive'=>0,'r_unique'=>1,
-      'min_arity'=>2, 'max_arity'=>2, 'source_bundles'=>array('node:stukowin'),'target_bundles'=>array('node:stukowin')
-  );
+  $aRelationtypes = _stukowin_relation_types();
   // Empfehlung
-  $relation_type = new stdClass();
-  foreach($aRelation as $sMember=>$sValue)
-  {
-    $relation_type->$sMember = $sValue;
+  foreach($aRelationtypes as $aRelationtype){
+    $oRelation_type = new stdClass();
+    foreach($aRelationtype as $sMember=>$sValue)
+    {
+      $oRelation_type->$sMember = $sValue;
+    }
+    // Relation type create adds default keys.  It also handles casting to array.
+    $oRelation_type = relation_type_create($oRelation_type);
+    // Yes, in relation.module 'save' is a distinct step from 'create'.
+    relation_type_save($oRelation_type);
   }
-  // Relation type create adds default keys.  It also handles casting to array.
-  $relation_type = relation_type_create($relation_type);
-  // Yes, in relation.module 'save' is a distinct step from 'create'.
-  relation_type_save($relation_type);
-  
-  // Voraussetzung
-  $aRelation['label'] = "Voraussetzung";
-  $aRelation['reverse_label'] = 'Vorausgesetzt von';
-  $aRelation['relation_type'] = 'voraussetzung';
-  $relation_type = new stdClass();
-  foreach($aRelation as $sMember=>$sValue)
-  {
-    $relation_type->$sMember = $sValue;
-  }
-  // Relation type create adds default keys.  It also handles casting to array.
-  $relation_type = relation_type_create($relation_type);
-  // Yes, in relation.module 'save' is a distinct step from 'create'.
-  relation_type_save($relation_type);
-  
 }
 
+
+
+/** 
+* Implements hook_uninstall(). 
+*/ 
+function stukowin_uninstall() 
+{ 
+  // load all taxonomies 
+  $aTaxonomies = taxonomy_vocabulary_get_names();
+  $aStukoTaxonomies = array();
+  foreach($aTaxonomies as $oTaxonomy) {
+    if(substr($oTaxonomy->machine_name, 0, 11) == 'curriculum_'){
+      $aStukoTaxonomies[] = $oTaxonomy->vid;
+      $oVocabulary = taxonomy_vocabulary_load($oTaxonomy->vid);
+      variable_del("ceus_importer_M_{$oVocabulary->version['und'][0]['value']}_vocabulary");
+      variable_del("ceus_importer_B_{$oVocabulary->version['und'][0]['value']}_vocabulary");
+    }
+  }
+  // Gather all the example content that might have been created while this 
+  // module was enabled. 
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type'; 
+  $result = db_query($sql, array(':type' => 'stukowin')); 
+  $nids = array(); 
+  foreach ($result as $row) { 
+    $nids[] = $row->nid; 
+  } 
+  // Delete all the nodes at once 
+  node_delete_multiple($nids); 
+  // Loop over each of the fields defined by this module and delete 
+  // all instances of the field, their data, and the field itself. 
+  foreach (array_keys(_stukowin_installed_fields()) as $field) { 
+    field_delete_field($field); 
+  } 
+  // Loop over any remaining field instances attached to the stukowin 
+  // content type (such as the body field) and delete them individually. 
+  $instances = field_info_instances('node', 'stukowin'); 
+  foreach ($instances as $instance_name => $instance) { 
+    field_delete_instance($instance); 
+  } 
+  // Delete our content type 
+  node_type_delete('stukowin'); 
+
+  // Loop over each of the fields defined by this module and delete 
+  // all instances of the field, their data, and the field itself. 
+  foreach (array_keys(_stukowin_installed_taxonomy_fields()) as $field) { 
+    field_delete_field($field); 
+  } 
+  // Loop over any remaining field instances attached to the stukowin 
+  // content type (such as the body field) and delete them individually. 
+  $instances = field_info_instances('taxonomy'); 
+  foreach ($instances as $instance_name => $instance) { 
+    field_delete_instance($instance); 
+  } 
+
+  // Loop over all stukowin taxonomies and delete them. All of them.
+  foreach ($aStukoTaxonomies as $vid){
+    taxonomy_vocabulary_delete($vid);    
+  }
+  
+  // Delete relation types
+  $aRelationtypes = _stukowin_relation_types();
+  foreach ($aRelationtypes as $aRelationtype){
+    $oRelationtype = relation_type_load($aRelationtype['relation_type']);
+    relation_type_delete($aRelationtype['relation_type']);
+  }
+  
+  // Delete Variables
+  $aVariables = array(
+      'language_content_type_stukowin', 
+      'node_options_stukowin',
+      'stukowin_ceus_api_url',
+      'stukowin_ceus_api_username',
+      'stukowin_ceus_api_userpassword',
+      'stukowin_pdf_name',
+      'stukowin_pdf_path');
+  foreach($aVariables as $sVariable){
+    variable_del($sVariable);
+  }
+  // Purge all field information 
+  field_purge_batch(1000); 
+  drupal_set_message('StukoWIN CEUS module uninstalled.');
+  
+}
