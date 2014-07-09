@@ -12,4 +12,5 @@ dependencies[] = taxonomy_manager
 dependencies[] = fieldable_vocabularies
 dependencies[] = ctools
 dependencies[] = ckeditor
+dependencies[] = diff
 scripts[] = js/graph.js
