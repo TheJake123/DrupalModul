@@ -99,6 +99,7 @@ function getCurricula(data) {
 		var loadingIcon = document.getElementById('curriculum_display');
 		loadingIcon.style.display = 'block';
 		select.style.display = 'none';
+		jsonCalls = [];
 		// Load selected curriculum
 		jQuery.getJSON(drupal_root + "?q=stukowin/crclm/" + currId, fill_crclm);
 	};
