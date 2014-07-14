@@ -1,19 +1,52 @@
 <?php
+/**
+ * @file
+ * @brief PDF document generation from curricula data
+ * 
+ * This file contains all necessary functionality for
+ * automatically generating PDF documents from the
+ * imported curricula data.
+ * 
+ * @author Jakob Straßer - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-15
+ * @see overviewPDF
+ */
 include_once dirname ( __FILE__ ) . '/tcpdf/tcpdf.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 
 /**
- * Class for automatically generating a PDF document from a curriculum
+ * @brief Class for PDF document generation from curricula data
+ *
+ * This class provides the functionality for automatically
+ * generating a PDF document from a curriculum.
+ *
+ * It is publicly accessible through the @ref createPDF()
+ * method, which initiates and guides the PDF generation.
+ *
+ * @todo Add creation date and time to footer
+ * @author Jakob Straßer - jakob.strasser@telenet.be
+ * @version 1.0.0
+ * @see createPDF()
  */
 class overviewPDF extends TCPDF {
 	/**
+	 * @brief Array of indices for continuous indexation of headings
+	 * Every key in this array represents an indexation level
+	 * (e.g.
+	 * level 2 for 1.1, level 3 for 1.1.1) and every value
+	 * in the array the current index for that level.
 	 *
-	 * @var array Array of indices for continuous indexation of headings
+	 * @see getNextIndex()
 	 */
 	private $aIndices = array ();
 	
 	/**
-	 * Generates Footer for each page
+	 * @brief Generates Footer for each page
+	 *
+	 * This method draws a 1px line across the entire page 15mm above the bottom
+	 * and writes the page number in the format "current page/total pages" into the bottom right corner.
+	 *
+	 * @see TCPDF::Footer()
 	 */
 	public function Footer() {
 		$this->setFont ( 'times', '', 12 );
@@ -23,11 +56,19 @@ class overviewPDF extends TCPDF {
 	}
 	
 	/**
-	 * Gets index of desired the level
+	 * @brief Gets index of the desired level
+	 *
+	 * This utility method manages the @ref $aIndices array and determines
+	 * what heading index comes next in the given @p $iLevel (e.g. 1, 2, 3 etc.).
+	 *
+	 * If some levels have been skipped (e.g. the first call to this method
+	 * is with <code>$iLevel = 3</code>), it fills up the missing array values with 1.
+	 *
+	 * After it has determined the correct index, it increments the corresponding value in the array by 1.
 	 *
 	 * @param integer $iLevel
-	 *        	level from which the index is wanted
-	 * @return index
+	 *        	Level for which the index is wanted
+	 * @return The next index on the given level. One single integer (i.e. not "1.1.2")
 	 */
 	private function getNextIndex($iLevel) {
 		if (! array_key_exists ( $iLevel, $this->aIndices )) {
@@ -44,9 +85,14 @@ class overviewPDF extends TCPDF {
 	}
 	
 	/**
-	 * Gets the height that the HTML code would need if printed to the PDF
+	 * @brief Determines height of HTML Code
 	 *
-	 * @return float The height of the HTML code
+	 * This utility method prints @e $sHTML to a test instance of @ref overviewPDF and determines what height the HTML code has if printed.
+	 *
+	 * This method is needed for evaluating whether an HTML table would fit into the remaining space on the page or if it would be broken into two pages.
+	 *
+	 * @return The height of the HTML code
+	 * @see printFach()
 	 */
 	private static function getHTMLHeight($sHTML) {
 		$oPdf = new overviewPDF ();
@@ -58,19 +104,41 @@ class overviewPDF extends TCPDF {
 	}
 	
 	/**
-	 * Gets the total y
+	 * @brief Gets the full y-position in the document
 	 *
-	 * @return float Total y-position in document (not just on this page)
+	 * This utility method determines the current y position
+	 * in relation to the beginning of the document, not just
+	 * the current page (like @link TCPDF::GetY() GetY()@endlink),
+	 * excluding top and bottom margins.
+	 *
+	 * This method is needed to compare positions in the document across pages.
+	 *
+	 * @return Full y-position in the entire document (not just on this page), excluding margins
+	 * @see getHTMLHeight()
+	 * @see TCPDF::GetY()
 	 */
 	private function getTotalY() {
-		return ($this->PageNo () - 1) * ($this->getPageHeight () - $this->getMargins ()['top'] - $this->getMargins ()['bottom']) + $this->getY ();
+		return ($this->PageNo () - 1) * ($this->getPageHeight () - $this->getMargins ()['top'] - $this->getMargins ()['bottom']) + $this->GetY ();
 	}
 	
 	/**
-	 * Creates the PDF document and saves it to the preconfigured path
+	 * @brief Creates the PDF document
+	 *
+	 * This method is the main public method of the @ref overviewPDF class.
+	 * It manages the entire document generation and saves the PDF to the preconfigured path.
+	 * The steps for creating the document are as follows:
+	 * 1. Set up PDF document
+	 * 2. Set document meta information
+	 * 3. Set up title page
+	 * 4. Initiate printing of individual subjects
+	 * 5. Add index page
+	 * 6. Save the document
 	 *
 	 * @param integer $iVID
-	 *        	Drupal-ID of desired Curriculum
+	 *        	Drupal vocabulary id of the desired Curriculum
+	 * @return Success message: 'PDF successfully created at ' and the filepath
+	 * @see stukowin_pdf_menu()
+	 * @see stukowin_pdf_menu_submit()
 	 */
 	public function createPDF($iVID) {
 		// create new PDF document
@@ -82,7 +150,7 @@ class overviewPDF extends TCPDF {
 		$this->SetAuthor ( 'StukoWIN' );
 		$this->SetTitle ( 'Curriculum ' . 'Curriculum Wirtschaftsinformatik ' . $oCurriculum ['version'] );
 		$this->SetSubject ( 'Curriculum Wirtschaftsinformatik' );
-		$this->SetKeywords ( 'Curriculum, ï¿½bersicht, Wirtschaftsinformatik' );
+		$this->SetKeywords ( 'Curriculum, Wirtschaftsinformatik' );
 		// set up first page
 		$this->AddPage ();
 		$this->SetFontSize ( 45 );
@@ -108,14 +176,29 @@ class overviewPDF extends TCPDF {
 	}
 	
 	/**
-	 * Needed for displaying errors in drupal itself
+	 * @brief Throws exception in case of an error
+	 *
+	 * This method is needed for displaying errors as drupal messages,
+	 * due to TCPDF normally displaying errors by itself and the dying.
+	 *
+	 * @param string $msg
+	 *        	The error message to throw the ecxeption with
+	 * @throws Exception A new exception with the given message
+	 * @see TCPDF::Error()
 	 */
 	public function Error($msg) {
 		throw new Exception ( $msg );
 	}
 	
 	/**
-	 * Adds a table of contents page to the PDF document
+	 * @brief Adds a table of contents page to the PDF document
+	 *
+	 * This method is called at the end of the document creation,
+	 * after all subjects have been printed to the document,
+	 * and inserts a table of contents (index) page as the second page in the document.
+	 *
+	 * @see TCPDF::addTOCPage()
+	 * @see printHeading()
 	 */
 	private function createTOCPage() {
 		$this->addTOCPage ();
@@ -127,15 +210,20 @@ class overviewPDF extends TCPDF {
 	}
 	
 	/**
-	 * Determines if a file with the standard filename already exists.
+	 * @brief Creates a unique filename
+	 *
+	 * Determines if a file with the standard filename as defined in the module settings already exists.
 	 * If one exists, it appends a number and increases it until the name is not already taken.
+	 *
+	 * Also, it creates the directory into which the document
+	 * should be saved according to the module settings (if it does not already exist).
 	 *
 	 * @param string $sCurrType
 	 *        	The type of the curriculum (Bachelorstudium, Masterstudium)
 	 * @param string $sCurrVersion
-	 *        	The verision of the curriculum (e.g. 2013W)
-	 * @return string $sFilename
-	 *         name of the unique filename found
+	 *        	The version of the curriculum (e.g. 2013W)
+	 * @return The unique filename
+	 * @see stukowin_admin()
 	 */
 	private function getUniqueFilename($sCurrType, $sCurrVersion) {
 		// Get save path
@@ -161,10 +249,16 @@ class overviewPDF extends TCPDF {
 	}
 	
 	/**
-	 * Prints a curriculum object and all its courses to the PDF document
+	 * @brief Prints a curriculum object and all its courses to the PDF document
+	 *
+	 * This method does the following things:
+	 * 1. Print the curriculum name as a heading
+	 * 2. Create an overview table with all the subjects it contains
+	 * 3. Print the details of each subject to the document
 	 *
 	 * @param object $oCurriculum
 	 *        	The curriculum object to print
+	 * @todo Overview table with structural elements
 	 */
 	private function printCurriculum($oCurriculum) {
 		$this->AddPage ();
@@ -172,6 +266,7 @@ class overviewPDF extends TCPDF {
 		$this->SetFontSize ( 20 );
 		$this->printHeading ( strtoupper ( $oCurriculum ['type'] ), 0, false, 'C' );
 		$this->SetFont ( 'times', '', 12 );
+		// Print overview table
 		$sHTML = <<<EOT
 		<p>Es sind folgende F&auml;cher zu absolvieren:<p>
 		<table border="1" style="padding-left:5px">
@@ -188,14 +283,18 @@ EOT;
 		}
 		$sHTML .= '</table>';
 		$this->writeHTML ( $this->unhtmlentities ( $sHTML ) );
+		// Print details of each course
 		foreach ( $aCourses as $oCourse ) {
 			$this->printTopLevel ( $oCourse );
 		}
 	}
 	
 	/**
-	 * Helper function that checks if an object is a structure element (1.
-	 * Semester, 2. Semester etc.) or a course and calls {@link printFach()} if it is a course object
+	 * @brief Decides whether to print a structural element or a subject
+	 *
+	 * This is a dispatcher method that checks if an object is a structural element (1. Semester, 2. Semester etc.) or a course.
+	 * If calls @ref printHeading() if it is a structural element and then
+	 * @ref printFach() for all its children or just @ref printFach() if it is a course object.
 	 *
 	 * @param object $oTopLevel
 	 *        	The object to check
@@ -212,13 +311,19 @@ EOT;
 	}
 	
 	/**
-	 * Prints a subject, an overview for it and all its sub-courses to the PDF document
+	 * @brief Prints a subject to the PDF document
+	 *
+	 * This method prints the subject title and details, an overview of all its subcourses and their details to the document.
 	 *
 	 * @param object $oFach
 	 *        	The course object to print
 	 */
 	private function printFach($oFach) {
-		// Generate HTML code for the overview table
+		if (! property_exists ( $oFach, 'children' )) {
+			$this->printHeading ( $oFach->lva->title, 1, true );
+			return;
+		}
+		// Print overview table
 		$sHTML = <<<EOT
 		<p>Das Fach {$oFach->lva->title} gliedert sich in folgende Module/Lehrveranstaltungen:<p>
 		<table border="1" style="padding-left:5px" nobr="true">
@@ -229,10 +334,6 @@ EOT;
 				<th width="10%" align="center">ECTS</th>
 			</tr>
 EOT;
-		if (! property_exists ( $oFach, 'children' )) {
-			$this->printHeading ( $oFach->lva->title, 1, true );
-			return;
-		}
 		$aChildren = $oFach->children;
 		foreach ( $aChildren as $oChild )
 			$sHTML .= $this->generateTableRecHelper ( $oChild );
@@ -246,6 +347,7 @@ EOT;
 			$this->checkPageBreak ( $this->getHTMLHeight ( $sHTML ) );
 			$this->writeHTML ( $sHTML );
 		}
+		// Print details of each subcourse
 		foreach ( $aChildren as $oChild )
 			if (($oChild->lva->ziele || $oChild->lva->lehrinhalte) && $oChild->lva->lvatype && $oChild->lva->lvatype != '3') {
 				$this->printHeading ( $oChild->lva->typename . ' ' . $oChild->lva->title, 2, true, 'L', false );
@@ -255,11 +357,18 @@ EOT;
 	}
 	
 	/**
-	 * Helper function for generating a subject overview table that traverses the nested array of courses down to the leaves and creates a table row for each course
+	 * @brief Recursive function for generating overview table
+	 *
+	 * This is a recursive helper function for generating a subject overview table.
+	 * It traverses the nested array of courses down to the leaves and creates a table row for each course.
+	 * - Subjects are printed in bold
+	 * - Modules are printed in italics
+	 * - Courses are printed in normal text
 	 *
 	 * @param object $oCourse
-	 *        	The course to generate the table html code for
-	 * @return string The table's html code
+	 *        	The course to generate the table HTML code for
+	 * @return The HTML code of the table rows for this course and all its children
+	 * @see printFach()
 	 */
 	private function generateTableRecHelper($oCourse) {
 		$sHTML = '';
@@ -288,14 +397,19 @@ EOT;
 	}
 	
 	/**
-	 * Inserts line breaks into a string if it would exceed a certain width if printed as bold text.
-	 * This method is needed in {@link generateTableRecHelper()} because {@see TCPDF} does not break the words correctly in a table if the text is written in a <<B>> tag. If one word alone is too long, it is not splitted.
+	 * @brief Inserts line breaks into bold text
+	 *
+	 * This method breaks the @e $sText into separate lines which are shorter than @e $iMaxWidth if printed as bold text.
+	 * If one word alone is too long or the entire string is shorter than @e $iMaxWidth, it is not splitted.
+	 *
+	 * This method is needed in @ref generateTableRecHelper() because @ref TCPDF does not break the words correctly in a table if the text is written in a @<B@> tag.
+	 * This caused issues where text would overflow its table cell to the right by a few cm.
 	 *
 	 * @param string $sText
 	 *        	The text to split
 	 * @param $iMaxWidth The
 	 *        	The maximum width a line is allowed to have
-	 * @return The string with <br> tags inserted whenever necessary
+	 * @return The @e $sText with @<br@> tags inserted whenever necessary
 	 */
 	private function splitBoldTextIntoLines($sText, $iMaxWidth) {
 		$aWords = preg_split ( '/\s+/', $sText );
@@ -305,14 +419,15 @@ EOT;
 	}
 	
 	/**
-	 * Recursive helper function for {@link splitBoldTextIntoLines()}
+	 * @brief Recursive helper function for @ref splitBoldTextIntoLines()
 	 *
 	 * @param array $aWords
-	 *        	The array of words as split in {@link splitBoldTextIntoLines()}
+	 *        	The array of words as split in @ref splitBoldTextIntoLines()
 	 * @param integer $iCurrIndex
 	 *        	The current index in the array
 	 * @param integer $iMaxWidth
 	 *        	The maximum width a line is allowed to have
+	 * @see splitBoldTextIntoLines()
 	 */
 	private function splitRecHelper($aWords, $iCurrIndex, $iMaxWidth) {
 		if ($this->getStringWidth ( $aWords [$iCurrIndex], '', 'B' ) > $iMaxWidth)
@@ -328,11 +443,13 @@ EOT;
 	}
 	
 	/**
-	 * Prints the course goals and content of teaching and their respecitve headings to the PDF document.
-	 * If one of them is not set or empty, their heading is not printed either
+	 * @brief Prints the course goals and content of teaching and their respecitve headings to the document.
+	 *
+	 * If one of them is not set or empty, their heading is not printed either.
 	 *
 	 * @param object $oCourse
 	 *        	The course to print the goals and contents for
+	 * @see printFach()
 	 */
 	private function printZieleInhalte($oCourse) {
 		// Print goals
@@ -354,29 +471,36 @@ EOT;
 	}
 	
 	/**
-	 * Prints a heading to the PDF document and optionally adds a bookmark for it
+	 * @brief Prints a heading to the PDF document
+	 *
+	 * This method manages headings in the document. It automatically indexes the headings using @ref getNextIndex() and optionally adds a bookmark for it.
 	 *
 	 * @param string $sText
 	 *        	The heading text
 	 * @param int $iLevel
 	 *        	The level at which the heading should be created and the bookmark set
 	 * @param boolean $bShowIndex
-	 *        	true if the index should be shown in the heading
+	 *        	@c true if the index should be shown in the heading
 	 * @param string $sAlign
-	 *        	Alignment of the heading. For allowed values see {@link TCPDF::Multicell()}
+	 *        	Alignment of the heading. For allowed values see @ref TCPDF::Multicell()
 	 * @param boolean $bAddBookmark
-	 *        	true if heading should be in index / bookmarked
+	 *        	@c true if heading should be shown on the index page and bookmarked
+	 * @see createTOCPage()
+	 * @see getNextIndex()
 	 */
 	private function printHeading($sText, $iLevel, $bShowIndex = true, $sAlign = 'L', $bAddBookmark = true) {
 		$iIndex = $this->getNextIndex ( $iLevel );
 		$sText = $this->unhtmlentities ( $sText );
 		switch ($iLevel) {
+			// Curriculum title
 			case 0 :
 				$this->SetFont ( 'times', 'B', 20 );
 				break;
+			// Subject title
 			case 1 :
 				$this->SetFont ( 'times', 'B', 14 );
 				break;
+			// Module title
 			case 2 :
 				$this->SetFont ( 'times', 'I', 12 );
 				break;
@@ -391,11 +515,13 @@ EOT;
 	}
 	
 	/**
-	 * Gets all courses for a given curriculum id
+	 * @brief Gets all courses for a given curriculum id
+	 *
+	 * This method gets all the courses in a curriculum and prepares them for further processing in the PDF creation process.
 	 *
 	 * @param integer $currId
-	 *        	The id of the curriculum to get the courses from
-	 * @return array The nested array of all courses in the given curriculum
+	 *        	The vocabulary id of the curriculum to get the courses from
+	 * @return The nested array of all courses in the given curriculum
 	 */
 	private static function getCourses($currId) {
 		$aCourses = (new content_manager ())->taxonomy_get_nested_tree ( $currId );
@@ -406,11 +532,23 @@ EOT;
 	}
 	
 	/**
-	 * Guarantees the existence of the specified attributes in the course and all its children.
+	 * @brief Guarantees the existence of the specified attributes in the course and all its children.
+	 *
+	 * This is a recursive helper method which asserts that the following attributes exist in the course object:
+	 * - title
+	 * - ects
+	 * - wst
+	 * - lvatype
+	 * - typename
+	 * - ziele
+	 * - lehrinhalte
+	 * - lvtypshort
+	 * - typename
+	 *
 	 * Needed so that the other methods do not have to check everytime an attribute is accessed.
 	 *
 	 * @param object $oCourse
-	 *        	The course to assert the attributes in
+	 *        	The course to assert the attributes for
 	 */
 	private static function assertAttributes($oCourse) {
 		static $aRequiredFields = array (
@@ -437,11 +575,11 @@ EOT;
 	}
 	
 	/**
-	 * Utility method that formats a string into a valid file name
+	 * @brief Utility method that formats a string into a valid file name
 	 *
 	 * @param string $sString
 	 *        	The file name to validate
-	 * @return string The valid file name created from the input
+	 * @return The valid file name created from the input
 	 *        
 	 */
 	private static function convertStringToValidFilename($sString) {
