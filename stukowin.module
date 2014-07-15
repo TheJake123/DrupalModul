@@ -103,6 +103,7 @@ function stukowin_admin() {
 }
 
 /**
+ * @ingroup Drupal2PDF
  * Menu callback for generating PDF documents ("admin/settings/stukowin/pdf").
  * The user can choose between all currently published curriculum taxonomies. If none are availably, a warning message is displayed.
  */
@@ -133,6 +134,7 @@ function stukowin_pdf_menu($form, &$form_state) {
 }
 
 /**
+ * @ingroup Drupal2PDF
  * Submit handler for {@link stukowin_pdf_menu()}.
  * Creates an instance of {@link overViewPDF} and starts the document generation. If successful, displays the full path of the generated document.
  */
@@ -355,7 +357,7 @@ function stukowin_menu() {
 	);
 	
 	$items ['admin/settings/stukowin/import'] = array (
-			'title' => 'CEUS Data import',
+			'title' => 'CEUS Data Import',
 			'page callback' => 'drupal_get_form',
 			'page arguments' => array (
 					'stukowin_pre_retreive' 
@@ -367,7 +369,7 @@ function stukowin_menu() {
 			'type' => MENU_NORMAL_ITEM 
 	);
 	$items ['admin/stukowin/settings'] = array (
-			'title' => 'CEUS API Settings',
+			'title' => 'Module Settings',
 			'page callback' => 'drupal_get_form',
 			'page arguments' => array (
 					'stukowin_admin' 

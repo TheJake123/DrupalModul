@@ -1,21 +1,50 @@
 <?php
+/**
+ * @file
+ * @brief Access to curricula data
+ * 
+ * This file contains all necessary functionality for
+ * accessing the curricula data stored in drupal
+ * 
+ * @author Werner Breuer - bluescreenwerner@gmail.com
+ * @version 1.0.0 2014-07-07
+ * @since Commit f90560aa on 2014-06-28
+ * 
+ * @see content_manager
+ */
 include_once __DIR__ . '/simple_html_dom.php';
 include_once dirname ( __FILE__ ) . '/stukowin.install';
 
 /**
- * Class for accessing drupal vocabularies and content nodes
+ * @brief Access to drupal vocabularies and content nodes
+ *
+ * This class is used to fetch LVA-nodes and vocabulary trees from the drupal database. As it is a utility class, it has mainly @c public functions.
+ *
+ * @author Werner Breuer - bluescreenwerner@gmail.com
+ * @version 1.0.0 2014-07-07
+ * @since Commit f90560aa on 2014-06-28
  */
 class content_manager {
 	
 	/**
-	 * Returns course content node with all fields required for display
+	 * @brief Gets course details
+	 *
+	 * This method returns the drupal content node corresponding
+	 * to the given @e $iNodeID in the given @e $sLang with all fields
+	 * required for displaying the course either in the
+	 * @ref pdf_creator.inc.php "PDF document" or in the @ref graph.js "curriculum display" (i.e. the fields set in @ref _stukowin_installed_fields()).
 	 *
 	 * @param integer $iNodeID
-	 *        	Content node id
+	 *        	Drupal id of the content node
 	 * @param string $sLang
-	 *        	Language to return
-	 * @return object $oReturnNode
-	 *         Selected course
+	 *        	Language to return. Default is 'de'.
+	 * @return The selected course with all the needed attributes as properties
+	 *        
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit 58a583aa on 2014-06-29
+	 *       
+	 * @see _stukowin_installed_fields()
+	 * @see taxonomy_get_nested_tree()
 	 */
 	public function get_return_node($iNodeID, $sLang = 'de') {
 		if ($sLang = 'de')
@@ -31,7 +60,7 @@ class content_manager {
 			if (! empty ( $oNode->{$sKey} [$sLang] [0] ['value'] ))
 				$oReturnNode->{$sKey} = $oNode->{$sKey} [$sLang] [0] ['value'];
 		}
-		// Relations: Must and wouldbenice, only if index=1 (forward) index=0 is backward, we do not deliver this back
+		// Relations: Obligatory and recommended, only if index=1 (forward) index=0 is backward, we do not deliver this
 		if (! empty ( $oNode->voraussetzung ['und'] ) && is_array ( $oNode->voraussetzung ['und'] )) {
 			foreach ( $oNode->voraussetzung ['und'] as $aRelation ) {
 				if (! empty ( $aRelation ['endpoints'] [1] ))
@@ -49,19 +78,25 @@ class content_manager {
 	}
 	
 	/**
-	 * Recursive function that reads a vocabulary into a nested array
+	 * @brief Gets vocabulary tree
+	 *
+	 * This is a recursive function that reads an entire drupal vocabulary into a nested array.
+	 * It can be called externally by giving the vocabulary id (vid) as the first parameter and leaving the other parameters empty.
 	 *
 	 * @param integer|array $vid_or_terms
-	 *        	The vid of the curriculum to get
+	 *        	The vid of the curriculum to get. Default is an empty @c array
 	 * @param integer $max_depth
-	 *        	The maximum depth of the nested array
-	 * @param object $parent
-	 *        	The tid of the parent term of the next term
+	 *        	The maximum depth of the nested array. Default is @c NULL
+	 * @param integer $parent
+	 *        	The drupal term id (tid) of the next term's parent term. Default is @c 0
 	 * @param array $parents_index
-	 *        	An array of all parents
+	 *        	An array of all parents that have been traversed by the method in earlier recursion steps. Default is an empty @c array
 	 * @param integer $depth
-	 *        	The current recursion depth
-	 * @return array The nested array of all courses in the curriculum
+	 *        	The current recursion depth. Defaul is @c 0
+	 * @return The nested array of all courses in the vocabulary
+	 *        
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit f90560aa on 2014-06-28
 	 */
 	public function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
 		if (! is_array ( $vid_or_terms )) {
@@ -100,10 +135,17 @@ class content_manager {
 	}
 	
 	/**
-	 * Returns LVA as JSON object
+	 * @brief Returns course as JSON object
+	 *
+	 * This method fetches a single course from the drupal database and returns it as JSON.
 	 *
 	 * @param integer $iNodeID
-	 *        	Content node id of the desired node
+	 *        	Content node id of the desired course
+	 *        	
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit f90560aa on 2014-06-28
+	 *       
+	 * @see stukowin_get_lva()
 	 */
 	public function json_service_lva($iNodeID) {
 		$oReturnNode = $this->get_return_node ( $iNodeID );
@@ -118,25 +160,34 @@ class content_manager {
 	}
 	
 	/**
-	 * Reads all curricula of curriculum type $sCurrType and taxonomy types $aTaxonomyTypes in the language $sLang and returns them as an associative array
+	 * @brief Gets multiple curriculula
+	 *
+	 * This method reads all curricula of curriculum type @e $sCurrType and vocabulary types
+	 * @e $aVocabularyTypes in the language @e $sLang from the drupal database and returns them as an associative array.
 	 *
 	 * @param string $sCurrType
-	 *        	The type of curriculum to get. Valid values are "Bachelorstudium" and "Masterstudium"
-	 * @param array $aTaxonomyTypes
-	 *        	The taxonomy types to get. Valid values are "curriculum", "itsv" and "schwerpunkt"
+	 *        	The type of curriculum to get. Valid values are
+	 *        	- Bachelorstudium
+	 *        	- Masterstudium
+	 * @param array $aVocabularyTypes
+	 *        	The taxonomy types to get. Default is 'curriculum'. Valid values are
+	 *        	- curriculum
+	 *        	- itsv
+	 *        	- schwerpunkt
 	 * @param string $sLang
-	 *        	= 'de' The language to get the curricula in
-	 * @return array $aCurricula
-	 *         Array of selected curricula
+	 *        	The language to get the curricula in. Default is 'de'
+	 * @return Associative array of selected curricula
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit 19057756 on 2014-07-02
 	 */
-	public function getCurricula($sCurrType = '', $aTaxonomyTypes = array('curriculum'), $sLang = 'de') {
+	public function getCurricula($sCurrType = '', $aVocabularyTypes = array('curriculum'), $sLang = 'de') {
 		if ($sLang === 'de')
 			$sLang = 'und';
 		$aCurricula = array ();
-		foreach ( $aTaxonomyTypes as $sTaxonomyType ) {
-			
+		foreach ( $aVocabularyTypes as $VocabularyType ) {
 			$query = new EntityFieldQuery ();
-			$query->entityCondition ( 'entity_type', 'taxonomy_vocabulary', '=' )->propertyCondition ( 'machine_name', $sTaxonomyType . '_%', 'LIKE' )->propertyCondition ( 'weight', '0', '<' );
+			$query->entityCondition ( 'entity_type', 'taxonomy_vocabulary', '=' )->propertyCondition ( 'machine_name', $VocabularyType . '_%', 'LIKE' )->propertyCondition ( 'weight', '0', '<' );
 			$aVocabulary = $query->execute ();
 			if (isset ( $aVocabulary ['taxonomy_vocabulary'] )) {
 				foreach ( $aVocabulary ['taxonomy_vocabulary'] as $iVID => $aVID ) {
@@ -157,11 +208,19 @@ class content_manager {
 	}
 	
 	/**
-	 * Asserts that a machine name is valid and adds numbers at the end until it is unique.
+	 * @brief Gets a unique and valid machine name
+	 *
+	 * This function asserts that a machine name is valid and adds incrementing numbers at the end until it is also unique.
 	 *
 	 * @param string $sCoreName
 	 *        	The initial name
-	 * @return string $sMachineName unique machine name
+	 * @return The unique and valid machine name
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit 19057756 on 2014-07-02
+	 *       
+	 * @see stukowin_taxonomy_menu_submit()
+	 * @see ceus_importer::check_vocabulary()
 	 */
 	public function getUniqueMachineName($sCoreName) {
 		$sMachineName = preg_replace ( "/[^a-z0-9_]+/i", "", $sCoreName );
@@ -188,11 +247,18 @@ class content_manager {
 	}
 	
 	/**
-	 * Gets the curriculum with the given vid from the database
+	 * @brief Gets one the curriculum
+	 *
+	 * This function fetches the curriculum object with the given vocabulary id (@e $iVID) from the database.
+	 *
+	 * @b Note: it does not fetch the vocabulary tree, just its meta-information.
 	 *
 	 * @param integer $iVID
 	 *        	The vid of the curriculum vocabulary
-	 * @return $oCurriculum array of the curriculum object
+	 * @return An associative array representing the curriculum object
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit 19057756 on 2014-07-02
 	 */
 	public function getCurriculum($iVID) {
 		$oVocabulary = taxonomy_vocabulary_load ( $iVID, 0 );
@@ -208,10 +274,17 @@ class content_manager {
 	}
 	
 	/**
-	 * Returns Curriculum as JSON object
+	 * @brief Returns curriculum tree as JSON array
+	 *
+	 * This method gets the entire tree of the curriculum with the vocabulary id @c $iVID and returns it as a JSON array.
 	 *
 	 * @param integer $iVID
-	 *        	Content node id of the desired curriculum
+	 *        	Drupal vocabulary id of the desired curriculum
+	 *        	
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit f90560aa on 2014-06-28
+	 *       
+	 * @see taxonomy_get_nested_tree()
 	 */
 	public function json_service_curriculum($iVID) {
 		$aTerms = $this->taxonomy_get_nested_tree ( $iVID );

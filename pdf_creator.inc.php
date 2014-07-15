@@ -1,20 +1,32 @@
 <?php
 /**
- * @file
- * @brief PDF document generation from curricula data
+ * @defgroup Drupal2PDF Drupal2PDF
+ * @brief Module to create PDF documents from curricula data
  * 
+ * This module contains all files, classes and methods that provide 
+ * the functionality for automatically generating PDF documents from the
+ * imported curricula data.
+ */
+/**
+ * @file
+ * @ingroup Drupal2PDF
+ * @brief PDF document generation from curricula data
+ *
  * This file contains all necessary functionality for
  * automatically generating PDF documents from the
  * imported curricula data.
- * 
- * @author Jakob Straßer - jakob.strasser@telenet.be
+ *
+ * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-15
+ * @since Commit b9342d94 on 2014-06-30
+ *       
  * @see overviewPDF
  */
 include_once dirname ( __FILE__ ) . '/tcpdf/tcpdf.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 
 /**
+ * @ingroup Drupal2PDF
  * @brief Class for PDF document generation from curricula data
  *
  * This class provides the functionality for automatically
@@ -23,10 +35,12 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
  * It is publicly accessible through the @ref createPDF()
  * method, which initiates and guides the PDF generation.
  *
- * @todo Add creation date and time to footer
- * @author Jakob Straßer - jakob.strasser@telenet.be
+ * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0
+ * @since Commit b9342d94 on 2014-06-30
+ *       
  * @see createPDF()
+ * @todo Add creation date and time to footer
  */
 class overviewPDF extends TCPDF {
 	/**
@@ -36,6 +50,7 @@ class overviewPDF extends TCPDF {
 	 * level 2 for 1.1, level 3 for 1.1.1) and every value
 	 * in the array the current index for that level.
 	 *
+	 * @since Commit b9342d94 on 2014-06-30
 	 * @see getNextIndex()
 	 */
 	private $aIndices = array ();
@@ -46,6 +61,9 @@ class overviewPDF extends TCPDF {
 	 * This method draws a 1px line across the entire page 15mm above the bottom
 	 * and writes the page number in the format "current page/total pages" into the bottom right corner.
 	 *
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @see TCPDF::Footer()
 	 */
 	public function Footer() {
@@ -69,6 +87,10 @@ class overviewPDF extends TCPDF {
 	 * @param integer $iLevel
 	 *        	Level for which the index is wanted
 	 * @return The next index on the given level. One single integer (i.e. not "1.1.2")
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 *        
+	 * @since Commit b9342d94 on 2014-06-30
 	 */
 	private function getNextIndex($iLevel) {
 		if (! array_key_exists ( $iLevel, $this->aIndices )) {
@@ -92,6 +114,10 @@ class overviewPDF extends TCPDF {
 	 * This method is needed for evaluating whether an HTML table would fit into the remaining space on the page or if it would be broken into two pages.
 	 *
 	 * @return The height of the HTML code
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @see printFach()
 	 */
 	private static function getHTMLHeight($sHTML) {
@@ -114,6 +140,10 @@ class overviewPDF extends TCPDF {
 	 * This method is needed to compare positions in the document across pages.
 	 *
 	 * @return Full y-position in the entire document (not just on this page), excluding margins
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @see getHTMLHeight()
 	 * @see TCPDF::GetY()
 	 */
@@ -137,6 +167,10 @@ class overviewPDF extends TCPDF {
 	 * @param integer $iVID
 	 *        	Drupal vocabulary id of the desired Curriculum
 	 * @return Success message: 'PDF successfully created at ' and the filepath
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @see stukowin_pdf_menu()
 	 * @see stukowin_pdf_menu_submit()
 	 */
@@ -184,6 +218,10 @@ class overviewPDF extends TCPDF {
 	 * @param string $msg
 	 *        	The error message to throw the ecxeption with
 	 * @throws Exception A new exception with the given message
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit e4fa523c on 2014-07-02
+	 *       
 	 * @see TCPDF::Error()
 	 */
 	public function Error($msg) {
@@ -197,6 +235,9 @@ class overviewPDF extends TCPDF {
 	 * after all subjects have been printed to the document,
 	 * and inserts a table of contents (index) page as the second page in the document.
 	 *
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @see TCPDF::addTOCPage()
 	 * @see printHeading()
 	 */
@@ -223,6 +264,10 @@ class overviewPDF extends TCPDF {
 	 * @param string $sCurrVersion
 	 *        	The version of the curriculum (e.g. 2013W)
 	 * @return The unique filename
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit e8704fdc45 on 2014-06-30
+	 *       
 	 * @see stukowin_admin()
 	 */
 	private function getUniqueFilename($sCurrType, $sCurrVersion) {
@@ -258,6 +303,10 @@ class overviewPDF extends TCPDF {
 	 *
 	 * @param object $oCurriculum
 	 *        	The curriculum object to print
+	 *        	
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @todo Overview table with structural elements
 	 */
 	private function printCurriculum($oCurriculum) {
@@ -298,6 +347,9 @@ EOT;
 	 *
 	 * @param object $oTopLevel
 	 *        	The object to check
+	 *        	
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit a311596e on 2014-07-02
 	 */
 	private function printTopLevel($oTopLevel) {
 		if (property_exists ( $oTopLevel, 'lva' )) {
@@ -317,6 +369,9 @@ EOT;
 	 *
 	 * @param object $oFach
 	 *        	The course object to print
+	 *        	
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
 	 */
 	private function printFach($oFach) {
 		if (! property_exists ( $oFach, 'children' )) {
@@ -368,6 +423,10 @@ EOT;
 	 * @param object $oCourse
 	 *        	The course to generate the table HTML code for
 	 * @return The HTML code of the table rows for this course and all its children
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @see printFach()
 	 */
 	private function generateTableRecHelper($oCourse) {
@@ -410,6 +469,9 @@ EOT;
 	 * @param $iMaxWidth The
 	 *        	The maximum width a line is allowed to have
 	 * @return The @e $sText with @<br@> tags inserted whenever necessary
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit 7e5b5459 on 2014-07-06
 	 */
 	private function splitBoldTextIntoLines($sText, $iMaxWidth) {
 		$aWords = preg_split ( '/\s+/', $sText );
@@ -427,6 +489,10 @@ EOT;
 	 *        	The current index in the array
 	 * @param integer $iMaxWidth
 	 *        	The maximum width a line is allowed to have
+	 *        	
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit 7e5b5459 on 2014-07-06
+	 *       
 	 * @see splitBoldTextIntoLines()
 	 */
 	private function splitRecHelper($aWords, $iCurrIndex, $iMaxWidth) {
@@ -449,6 +515,10 @@ EOT;
 	 *
 	 * @param object $oCourse
 	 *        	The course to print the goals and contents for
+	 *        	
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @see printFach()
 	 */
 	private function printZieleInhalte($oCourse) {
@@ -485,6 +555,10 @@ EOT;
 	 *        	Alignment of the heading. For allowed values see @ref TCPDF::Multicell()
 	 * @param boolean $bAddBookmark
 	 *        	@c true if heading should be shown on the index page and bookmarked
+	 *        	
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
+	 *       
 	 * @see createTOCPage()
 	 * @see getNextIndex()
 	 */
@@ -522,6 +596,9 @@ EOT;
 	 * @param integer $currId
 	 *        	The vocabulary id of the curriculum to get the courses from
 	 * @return The nested array of all courses in the given curriculum
+	 *        
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
 	 */
 	private static function getCourses($currId) {
 		$aCourses = (new content_manager ())->taxonomy_get_nested_tree ( $currId );
@@ -549,6 +626,9 @@ EOT;
 	 *
 	 * @param object $oCourse
 	 *        	The course to assert the attributes for
+	 *        	
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit b9342d94 on 2014-06-30
 	 */
 	private static function assertAttributes($oCourse) {
 		static $aRequiredFields = array (
@@ -581,6 +661,8 @@ EOT;
 	 *        	The file name to validate
 	 * @return The valid file name created from the input
 	 *        
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit f157d512 on 2014-07-06
 	 */
 	private static function convertStringToValidFilename($sString) {
 		if (strpos ( $sString = htmlentities ( $sString, ENT_QUOTES, 'UTF-8' ), '&' ) !== false) {
