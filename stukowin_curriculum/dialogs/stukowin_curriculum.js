@@ -185,4 +185,5 @@ CKEDITOR.dialog.add('stukowin_curriculum_Dialog',
                 editor.insertElement(div);
             }
         };
-    });
+    }
+);
