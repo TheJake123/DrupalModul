@@ -1,11 +1,29 @@
 <?php
+/**
+ * @file stukowin.install
+ * @brief install skript
+ * 
+ * Drupal install skript for Stukowin module
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ * 
+ */
+
 
 /** 
-* Implements hook_install(). 
-* - Add the body field. 
-* - Configure the body field. 
-* - Create the company name field. 
-*/ 
+ * @brief Implements hook_install(). 
+ * 
+ * Creates the content type for LVA nodes
+ * Creates relation types for requirements and recommendations
+ * Adds 3 fields to taxonomy nodes for faculty, version and type of curriculum
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-07
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ */ 
 function stukowin_install() 
 { 
   $t = get_t(); 
@@ -61,9 +79,17 @@ function stukowin_install()
 } 
 
 /**
- * Returns a structured array defining the custom fields for taxonomies used
+ * @brief capsule for array for additional fields for taxonomies
+ * 
+ * Returns a structured array defining the custom fields for taxonomies 
  * Additional fields: faculty, version and type of curriculum as received 
  * from CEUS
+ * 
+ * @return array Structured array for drupal field generation
+ * 
+ * @version 1.0.0 2014-07-07
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 function _stukowin_installed_taxonomy_fields()
 {
@@ -91,9 +117,17 @@ function _stukowin_installed_taxonomy_fields()
 }
 
 /**
- * Returns a structured array defining the custom fields for taxonomies used
+ * @brief capsule for array for additional fields for taxonomies - instances
+ * 
+ * Returns a structured array defining the custom fields and input types for taxonomies 
  * Additional fields: faculty, version and type of curriculum as received 
  * from CEUS - instances
+ * 
+ * @return array Structured array for drupal field instance generation
+ * 
+ * @version 1.0.0 2014-07-07
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 function _stukowin_installed_taxonomy_instances() 
 { 
@@ -128,11 +162,19 @@ function _stukowin_installed_taxonomy_instances()
 }
 
 /** 
-* Return a structured array defining the fields created by this content type. 
-* For the job post module there is only one additional field – the company name 
-* Other fields could be added by defining them in this function as additional elements 
-* in the array below 
-*/
+ * @brief capsule for fields for stukowin node type
+ * 
+ * Return a structured array defining the fields created by this content type. 
+ * For the job post module there is only one additional field – the company name 
+ * Other fields could be added by defining them in this function as additional elements 
+ * in the array below 
+ * 
+ * @return array Structured array for Drupal field generation
+ * 
+ * @version 1.0.0 2014-07-07
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ */
 function _stukowin_installed_fields() 
 { 
   $t = get_t(); 
@@ -226,9 +268,21 @@ function _stukowin_installed_fields()
     )     
   ); 
 } 
+
 /** 
-* Return a structured array defining the field instances associated with this content type. 
-*/ 
+ * @brief capsule for fields for stukowin node type: instances
+ * 
+ * Return a structured array defining the fields and form entry types created by this content type. 
+ * For the job post module there is only one additional field – the company name 
+ * Other fields could be added by defining them in this function as additional elements 
+ * in the array below 
+ * 
+ * @return array Structured array for Drupal field instance generation
+ * 
+ * @version 1.0.0 2014-07-07
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ */
 function _stukowin_installed_instances() 
 { 
   $t = get_t(); 
@@ -493,7 +547,13 @@ function _stukowin_installed_instances()
 } 
 
 /**
+ * @brief Custom relation types for recommendations and requirements
+ * 
  * Custom relation types for recommendations and requirements
+ * 
+ * @version 1.0.0 2014-07-07
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 function _stukowin_relation_types(){
   return array(
@@ -508,7 +568,13 @@ function _stukowin_relation_types(){
 }
 
 /**
- * Create the relation type
+ * @brief Create the relation type
+ * 
+ * Creates the relation type for LVA recommendations and requirements
+ * 
+ * @version 1.0.0 2014-07-07
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 function _stukowin_create_relation_types() {
   $aRelationtypes = _stukowin_relation_types();
@@ -529,8 +595,19 @@ function _stukowin_create_relation_types() {
 
 
 /** 
-* Implements hook_uninstall(). 
-*/ 
+ * @brief Implements hook_uninstall(). 
+ * 
+ * Deletes all content nodes
+ * Deletes all CEUS taxonomies
+ * Deletes content type for LVA nodes
+ * 
+ * @version 1.0.0 2014-07-09
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @author Werner Breuer - bluescreenwerner@gmail.com
+ * 
+ * @since Commit 2506486 on 2014-07-09
+ */ 
 function stukowin_uninstall() 
 { 
   // set time limit for this specific method higher than the limit configured in the php.ini file
