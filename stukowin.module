@@ -1,4 +1,15 @@
 <?php
+/**
+ * @defgroup Drupal2ITSV Drupal2ITSV
+ * @brief This module implements all the functions we need for creating new Taxonomies
+ * These Taxonomies can be curriculum, itsv or specialisation
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @author Markus Gutmayer
+ * @author Werner Breuer
+ * @since d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ */
 
 include_once dirname ( __FILE__ ) . '/ceus_importer.inc.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
@@ -28,6 +39,7 @@ function stukowin_help($path, $arg) {
 }
 
 /**
+ * @ingroup Stukowin_Module
  * Menu callback for module settings ("admin/stukowin/settings").
  * This form has the following input fields:
  * <ul>
@@ -275,6 +287,7 @@ function stukowin_taxonomy_menu($form, &$form_state) {
 }
 
 /**
+ * @ingroup Drupal2ITSV
  * Submit handler for {@see stukowin_taxonomy_menu}.
  * Creates a new ITSV or specialisation taxonomy and redirects the user to the taxonomy manager.
  */
@@ -316,6 +329,7 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
 }
 
 /**
+ * @ingroup Stukowin_Module
  * Implements hook_menu().
  * Registers all menu links with drupal. The following links are registered:
  * <ul>
@@ -410,6 +424,7 @@ function stukowin_menu() {
 }
 
 /**
+ * @ingroup Drupal2AGG
  * Adds hook for the ckeditor plugin to insert a curriculum display
  */
 function stukowin_ckeditor_plugin() {
@@ -433,6 +448,7 @@ function stukowin_ckeditor_plugin() {
 }
 
 /**
+ * @ingroup Drupal2AGG
  * Hook for telling the system to use our template on stukowin custom content type
  */
 function stukowin_theme_registry_alter(&$theme_registry) {
