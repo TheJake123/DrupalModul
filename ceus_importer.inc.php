@@ -1,5 +1,17 @@
 <?php
 /**
+ * @defgroup CEUS2Drupal CEUS2Drupal
+ * @brief This module is reponsible for transforming CEUS data to a proper graphical representation.
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @author Markus Gutmayer
+ * @author Werner Breuer
+ * @since d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ */
+
+/**
+ * @ingroup CEUS2Drupal
  * @file ceus_importer.inc.php
  * @brief Imports data from CEUS
  * 
@@ -15,6 +27,7 @@ include_once dirname ( __FILE__ ) . '/stukowin.install';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 
 /**
+ * @ingroup CEUS2Drupal
  * @brief Imports data from CEUS and stores it in the Drupal DB
  *
  * This class is used to import data from the CEUS-API and for saving them in drupal database. It also provides the change management functionality
