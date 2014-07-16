@@ -533,11 +533,16 @@ function _stukowin_create_relation_types() {
 */ 
 function stukowin_uninstall() 
 { 
+  // set time limit for this specific method higher than the limit configured in the php.ini file
+  // needed to not get timeouts on slower hardware
+  set_time_limit ( 0 );
   // load all taxonomies 
   $aTaxonomies = taxonomy_vocabulary_get_names();
   $aStukoTaxonomies = array();
   foreach($aTaxonomies as $oTaxonomy) {
-    if(substr($oTaxonomy->machine_name, 0, 11) == 'curriculum_'){
+    if((substr($oTaxonomy->machine_name, 0, 11) == 'curriculum_')
+           || (substr($oTaxonomy->machine_name, 0, 15) == 'specialisation_')
+           || (substr($oTaxonomy->machine_name, 0, 5) == 'itsv_')){
       $aStukoTaxonomies[] = $oTaxonomy->vid;
       $oVocabulary = taxonomy_vocabulary_load($oTaxonomy->vid);
       variable_del("ceus_importer_M_{$oVocabulary->version['und'][0]['value']}_vocabulary");

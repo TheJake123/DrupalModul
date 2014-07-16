@@ -482,6 +482,8 @@ class ceus_importer {
 	 * @return string boolean
 	 */
 	public function get_curricula() {
+                // set time limit for this specific function higher than the limit configured in the php.ini file
+                // needed to not get timeouts on slower hardware as this function needs 2-5 minutes to complete
 		set_time_limit ( 0 );
 		$this->aStats ['loaded'] = 0;
 		$this->aStats ['new'] = 0;
