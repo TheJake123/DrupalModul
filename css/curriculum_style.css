@@ -167,3 +167,11 @@ div#curriculum_display table.header tr td {
 div#curriculum_display table.header tr {
 	background: inherit;
 }
+
+#curr_select {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 2em;
+	border-radius: 0.5em;
+	font-size: 130%;
+}
