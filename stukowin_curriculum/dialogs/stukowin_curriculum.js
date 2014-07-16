@@ -70,14 +70,14 @@ CKEDITOR.dialog
 							if (dialog.getValueOf('currdialog', 'itsv')) {
 								if (curriculums)
 									curriculums += ' ';
-								curriculums += ' itsv';
+								curriculums += 'itsv';
 								taxonomyTypeSet = true;
 							}
 							if (dialog.getValueOf('currdialog',
 									'specialisation')) {
 								if (curriculums)
 									curriculums += ' ';
-								curriculums += ' specialisation';
+								curriculums += 'specialisation';
 								taxonomyTypeSet = true;
 							}
 							if (!taxonomyTypeSet) {
