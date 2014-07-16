@@ -1,5 +1,6 @@
 /**
  * @file 
+ * @ingroup Drupal2AGG
  * @brief Registers this CKEditor plugin
  * 
  * This file contains all commands for registering the CKEditor Plugin.

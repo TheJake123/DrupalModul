@@ -1,5 +1,6 @@
 /**
- * @file 
+ * @file
+ * @ingroup Drupal2AGG
  * @brief The stukowin_curriculum dialog definition
  * 
  * This file contains the dialog definition for our CKEditor Plugin.
