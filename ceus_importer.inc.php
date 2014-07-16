@@ -509,9 +509,9 @@ class ceus_importer {
 	 */
 	private function check_vocabulary($aCurriculum) {
 		$oVocabulary = taxonomy_vocabulary_load ( variable_get ( 'ceus_importer_' . $aCurriculum ['typeshort'] . '_' . $aCurriculum ['version'] . '_vocabulary', 0 ) );
+                $oContentManager = new content_manager ();
 		if (! $oVocabulary) {
 			$sMachineName = 'curriculum_' . $aCurriculum ['typeshort'] . '_' . $aCurriculum ['version'];
-			$oContentManager = new content_manager ();
 			$sMachineName = $oContentManager->getUniqueMachineName ( $sMachineName );
 			$aEdit = array (
 					'name' => $aCurriculum ['name'] . ', ' . $aCurriculum ['type'] . ' ' . $aCurriculum ['version'],
@@ -530,7 +530,7 @@ class ceus_importer {
 		}
 		$aTerms = taxonomy_get_tree ( $oVocabulary->vid );
 		foreach ( $aTerms as $oCurrTerm ) {
-			$oTermNode = (new content_manager ())->get_return_node ( $oCurrTerm->description );
+			$oTermNode = $oContentManager->get_return_node ( $oCurrTerm->description );
 			if ($oTermNode && ! empty ( $oTermNode ) && property_exists ( $oTermNode, 'ceusid' )) {
 				$this->aTerms [$aCurriculum ['id']] [$oTermNode->ceusid] = $oCurrTerm;
 			}
