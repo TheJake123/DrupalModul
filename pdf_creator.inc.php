@@ -327,8 +327,12 @@ EOT;
 		foreach ( $aCourses as $oCourse ) {
 			if (property_exists ( $oCourse, 'lva' ))
 				$sHTML .= '<tr nobr="true"><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
-			else
+			else {
 				$sHTML .= '<tr nobr="true"><td><I>' . $oCourse->name . '</I></td><td align="center"></td></tr>';
+				foreach ( $oCourse->children as $oChild ) {
+					$sHTML .= '<tr nobr="true"><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
+				}
+			}
 		}
 		$sHTML .= '</table>';
 		$this->writeHTML ( $this->unhtmlentities ( $sHTML ) );
@@ -552,7 +556,7 @@ EOT;
 	 * @param boolean $bShowIndex
 	 *        	@c true if the index should be shown in the heading
 	 * @param string $sAlign
-	 *        	Alignment of the heading. For allowed values see @ref TCPDF::Multicell()
+	 *        	Alignment of the heading. For allowed values see @ref TCPDF::MultiCell()
 	 * @param boolean $bAddBookmark
 	 *        	@c true if heading should be shown on the index page and bookmarked
 	 *        	
