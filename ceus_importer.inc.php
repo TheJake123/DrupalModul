@@ -1,17 +1,29 @@
 <?php
 /**
  * @file ceus_importer.inc.php
+ * @brief Imports data from CEUS
+ * 
  * This file manages the import of curricula data from CEUS.
- * @author Konstantinos Dafalias
- * @version 1.0.0
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
+
 include_once __DIR__ . '/simple_html_dom.php';
 include_once dirname ( __FILE__ ) . '/stukowin.install';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 
 /**
- * Encapsulates import from CEUS JSON interface into drupal structures
- **/
+ * @brief Imports data from CEUS and stores it in the Drupal DB
+ *
+ * This class is used to import data from the CEUS-API and for saving them in drupal database. It also provides the change management functionality
+ *
+ * @author Konstantinos Dafalias
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ * 
+ */
 class ceus_importer {
 	/**
 	 *
@@ -86,7 +98,12 @@ class ceus_importer {
 	private $aRelations;
 	
 	/**
+         * @brief Constructor
+         * 
 	 * Constructor reads configuration data
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	public function __construct() {
 		$this->sCeusUrl = variable_get ( 'stukowin_ceus_api_url' );
@@ -95,11 +112,16 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Checks if API server responded and if there was an error
+	 * @brief Checks the return value from CEUS-API server
+         * 
+         * Checks if CEUS-API server responded and if there was an error
 	 *
 	 * @param string $sReturn
 	 *        	JSON encoded String fetched from CEUS API server
 	 * @return mixed false if error occurred - error is stored in $sError member - decoded array if successful
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function check_return_value($sReturn) {
 		if (empty ( $sReturn )) {
@@ -115,9 +137,15 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Connect to CEUS and receive Authtoken
-	 *
+	 * @brief Connect to CEUS and receive Authtoken
+	 * 
+         * This function tries to connect to the CEUS-API server and receives and stores the authtoken.
+         * Returns true if an authtoken was recieved otherwise it returns false.
+         * 
 	 * @return boolean
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	public function connect() {
 		$sReturn = file_get_contents ( $this->sCeusUrl . '/' . $this->aFiles ['AUTH'] . '?username=' . $this->sUsername . '&password=' . $this->sPassword );
@@ -129,11 +157,16 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Get single lva from CEUS
-	 *
+	 * @brief Get single lva from CEUS
+	 * This function gets a single LVA from the CEUS-API and saves all the details in an array.
+         * On Success it returns the array containing the data from an single LVA otherwise it returns false
+         * 
 	 * @param integer $iID
 	 *        	LVA-CEUS-ID
-	 * @return boolean true if success
+	 * @return boolean 
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function get_detail($iID) {
 		$aDetail = array ();
@@ -152,12 +185,18 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Saves a content node for an lva
-	 *
+	 * @brief Saves a content node for an LVA
+	 * 
+         * This function saves a content node for the given LVA. If a node already exists
+         * it checks if the changedate has changed. If so a new version of this conent node is created.
+         *  
 	 * @param array $aDetail        	
 	 * @param array $tid
 	 *        	Term id of Taxonomy item
 	 * @return integer Node id of the saved node
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function save_node($aDetail, $tid) {
 		$aNodes = taxonomy_select_nodes ( $tid );
@@ -240,21 +279,33 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Determines if a LVA has a relation when field is empty or begins with "kein"
+	 * @brief Checks if a LVA has relations
+         * 
+         * Determines if a LVA has a relation when field is empty or begins with "kein".
+         * Returns true if there are any relations that need to be processed. Return false if the arent any.
 	 *
 	 * @param string $sRelationfield
 	 *        	content of "voraussetzungen" field
 	 *        	
 	 * @return boolean true if has recommendations or prerequisites
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function has_relation($sRelationfield) {
 		return ! empty ( $sRelationfield ) && strtolower ( substr ( $sRelationfield, 0, 4 ) ) != 'kein';
 	}
 	
 	/**
-	 * Parses linked web page and tries to extract code
+	 * @brief Parses linked web page and tries to extract code
 	 *
-	 * @param type $sLink        	
+         * This function tries to extract the CEUS-ID from a given link and returns it.
+         * Return false if there was no CEUS-ID to extract
+         * 
+	 * @param type $sLink
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28   	
 	 */
 	private function parse_link_term_code($sLink) {
 		$oHTML = file_get_html ( $sLink );
@@ -266,11 +317,15 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Looks for LVA content element with title or code, returns LVA CEUS ID if successful, false if not
+	 * @brief Looks for LVA content element with title or code
+         * Looks for LVA content element with title or code, returns LVA CEUS ID if successful, false if not
 	 *
 	 * @param string $sTitle
 	 *        	LVA title
 	 * @return mixed Term id or false
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28   	
 	 */
 	private function find_nodeid_by_field($sFieldtype, $sFieldcontent) {
 		$oQuery = new EntityFieldQuery ();
@@ -289,9 +344,17 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Parses Relationfield and tries to extract
-	 *
-	 * @param string $sRelationfield        	
+	 * @brief Parses Relationfield and tries to extract
+	 * This function tries to extract from the given relationfield all dependencies.
+         * Does this in 3 steps:
+         *      1. Extract the LVA names
+         *      2. Try to get for the CEUS-ID for the LVA names
+         *      3. Try to extract CEUS-ID from links
+         * 
+	 * @param string $sRelationfield
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28   	
 	 */
 	private function get_term_ids($sRelationfield) {
 		$oHTML = str_get_html ( $sRelationfield );
@@ -328,8 +391,13 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Test method to extract all values from voraussetzungen and process them without having to reload
+	 * @brief Private test method
+         * 
+         * Test method to extract all values from voraussetzungen and process them without having to reload
 	 * all data from CEUS server
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
 	 */
 	private function test_make_relations() {
 		$oQuery = new EntityFieldQuery ();
@@ -352,6 +420,9 @@ class ceus_importer {
 	/**
 	 * Parses the voraussetzungen field an generates Relations for required and suggested courses
 	 * and stores them in the node
+         * 
+         * @author Konstantinos Dafalias - kdafalias@gmail.com
+         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
 	 */
 	private function process_relations() {
 		if (! ($this->aRelations) || empty ( $this->aRelations ))

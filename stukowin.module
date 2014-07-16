@@ -1,5 +1,4 @@
 <?php
-set_time_limit ( 600 );
 
 include_once dirname ( __FILE__ ) . '/ceus_importer.inc.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
