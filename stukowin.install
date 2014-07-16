@@ -1,5 +1,16 @@
 <?php
 /**
+ * @defgroup Stukowin_Module Stukowin_Module
+ * @brief This module implements all the function a Drupal module requieres
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @author Markus Gutmayer
+ * @author Werner Breuer
+ * @since d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ */
+
+/**
  * @file stukowin.install
  * @brief install skript
  * 
@@ -13,6 +24,7 @@
 
 
 /** 
+ * @ingroup Stukowin_Module
  * @brief Implements hook_install(). 
  * 
  * Creates the content type for LVA nodes
@@ -79,6 +91,7 @@ function stukowin_install()
 } 
 
 /**
+ * @ingroup Stukowin_Module
  * @brief capsule for array for additional fields for taxonomies
  * 
  * Returns a structured array defining the custom fields for taxonomies 
@@ -117,6 +130,7 @@ function _stukowin_installed_taxonomy_fields()
 }
 
 /**
+ * @ingroup Stukowin_Module
  * @brief capsule for array for additional fields for taxonomies - instances
  * 
  * Returns a structured array defining the custom fields and input types for taxonomies 
@@ -161,7 +175,8 @@ function _stukowin_installed_taxonomy_instances()
     );
 }
 
-/** 
+/**
+ * @ingroup Stukowin_Module
  * @brief capsule for fields for stukowin node type
  * 
  * Return a structured array defining the fields created by this content type. 
@@ -269,7 +284,8 @@ function _stukowin_installed_fields()
   ); 
 } 
 
-/** 
+/**
+ * @ingroup Stukowin_Module
  * @brief capsule for fields for stukowin node type: instances
  * 
  * Return a structured array defining the fields and form entry types created by this content type. 
@@ -547,6 +563,7 @@ function _stukowin_installed_instances()
 } 
 
 /**
+ * @ingroup Stukowin_Module
  * @brief Custom relation types for recommendations and requirements
  * 
  * Custom relation types for recommendations and requirements
@@ -568,6 +585,7 @@ function _stukowin_relation_types(){
 }
 
 /**
+ * @ingroup Stukowin_Module
  * @brief Create the relation type
  * 
  * Creates the relation type for LVA recommendations and requirements
@@ -595,6 +613,7 @@ function _stukowin_create_relation_types() {
 
 
 /** 
+ * @ingroup Stukowin_Module
  * @brief Implements hook_uninstall(). 
  * 
  * Deletes all content nodes

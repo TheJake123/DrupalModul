@@ -1,7 +1,8 @@
 <?php
 /**
  * @defgroup CEUS2Drupal CEUS2Drupal
- * @brief This module is reponsible for transforming CEUS data to a proper graphical representation.
+ * @brief This module is reponsible for requesting the data form CEUS and storing the data in the drupal database.
+ * It also implements the functions for the change management
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @author Jakob Strasser - jakob.strasser@telenet.be
