@@ -1,12 +1,30 @@
 <?php
+/**
+ * @file stukowin.module
+ * @brief main module 
+ * 
+ * Drupal install skript for Stukowin module
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ * 
+ */
 
 include_once dirname ( __FILE__ ) . '/ceus_importer.inc.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 include_once dirname ( __FILE__ ) . '/pdf_creator.inc.php';
 
 /**
+ * @brief Implements hook_help()
  * Displays help information about the module.
- * Implements hook_help().
+ * 
+ * @param string $path Drupal Path for Help-Link
+ * @param string $arg addional arguments
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
 function stukowin_help($path, $arg) {
 	switch ($path) {
@@ -14,21 +32,13 @@ function stukowin_help($path, $arg) {
 		case 'admin/help#stukowin' :
 			return '<p>' . t ( 'This module gets the complete JKU curriculum for Business Informatics from CEUS and displays it' ) . '</p>';
 			break;
-		// Main module help for the block module
-		case 'admin/help#block' :
-			return '<p>' . t ( 'Blocks are boxes of content rendered into an area, or region, of a web page. The default theme Bartik, for example, implements the regions "Sidebar first", "Sidebar second", "Featured", "Content", "Header", "Footer", etc., and a block may appear in any one of these areas. The <a href="@blocks">blocks administration page</a> provides a drag-and-drop interface for assigning a block to a region, and for controlling the order of blocks within regions.', array (
-					'@blocks' => url ( 'admin/structure/block' ) 
-			) ) . '</p>';
-			break;
-		// Help for another path in the block module
-		case 'admin/structure/block' :
-			return '<p>' . t ( 'This page provides a drag-and-drop interface for assigning a block to a region, and for controlling the order of blocks within regions. Since not all themes implement the same regions, or display regions in the same way, blocks are positioned on a per-theme basis. Remember that your changes will not be saved until you click the <em>Save blocks</em> button at the bottom of the page.' ) . '</p>';
-			break;
 	}
 }
 
 /**
- * Menu callback for module settings ("admin/stukowin/settings").
+ * @brief Menu callback for module settings ("admin/stukowin/settings").
+ * 
+ * Form for administration of the module settings
  * This form has the following input fields:
  * <ul>
  * <li>URL to CEUS API</li>
@@ -38,6 +48,13 @@ function stukowin_help($path, $arg) {
  * <li>PDF Path</li>
  * <li>PDF generic name</li>
  * </ul>
+ * 
+ * @return array The form structure 
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
 function stukowin_admin() {
 	$form = array ();
@@ -103,8 +120,12 @@ function stukowin_admin() {
 
 /**
  * @ingroup Drupal2PDF
- * Menu callback for generating PDF documents ("admin/settings/stukowin/pdf").
+ * @brief Menu callback for generating PDF documents ("admin/settings/stukowin/pdf").
  * The user can choose between all currently published curriculum taxonomies. If none are availably, a warning message is displayed.
+ * 
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit e6573f8 on 2014-06-30 
  */
 function stukowin_pdf_menu($form, &$form_state) {
 	// Load available curricula into array
@@ -134,8 +155,12 @@ function stukowin_pdf_menu($form, &$form_state) {
 
 /**
  * @ingroup Drupal2PDF
- * Submit handler for {@link stukowin_pdf_menu()}.
+ * @brief Submit handler for {@link stukowin_pdf_menu()}.
  * Creates an instance of {@link overViewPDF} and starts the document generation. If successful, displays the full path of the generated document.
+ * 
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit e6573f8 on 2014-06-30 
  */
 function stukowin_pdf_menu_submit($form, &$form_state) {
 	$oPdf = new overviewPDF ();
@@ -143,8 +168,12 @@ function stukowin_pdf_menu_submit($form, &$form_state) {
 }
 
 /**
- * Menu callback for import ("admin/settings/stukowin/import").
+ * @brief Menu callback for import ("admin/settings/stukowin/import").
  * Used as a warning before starting the import, as the process usually takes a long time to complete.
+ * 
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit bcdb4ba on 2014-06-30 
  */
 function stukowin_pre_retreive($form, &$form_state) {
 	$form = array ();
@@ -159,8 +188,12 @@ function stukowin_pre_retreive($form, &$form_state) {
 }
 
 /**
- * Submit handler for {@link stukowin_pre_retrieve()}.
+ * @brief Submit handler for {@link stukowin_pre_retrieve()}.
  * Starts the import process and displays the outcome to the user.
+ * 
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit bcdb4ba on 2014-06-30 
  */
 function stukowin_pre_retreive_submit($form, &$form_state) {
 	include_once dirname ( __FILE__ ) . '/stukowin.install';
@@ -172,10 +205,14 @@ function stukowin_pre_retreive_submit($form, &$form_state) {
 }
 
 /**
- * JSON-Service for one the detailed nested array of courses for one curriculum.
+ * @brief JSON-Service for one the detailed nested array of courses for one curriculum.
  *
  * @param integer $iVID
  *        	The vid of the curriculum to get
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
 function stukowin_get_crclm_taxonomy($iVID) {
 	$oContentManager = new content_manager ();
@@ -183,8 +220,12 @@ function stukowin_get_crclm_taxonomy($iVID) {
 }
 
 /**
- * JSON-Service for a list of all currently published curricula.
+ * @brief JSON-Service for a list of all currently published curricula.
  * The type of curriculum (e.g. "Bachelorstudium", "Masterstudium"), types of taxonomies (e.g. "curriculum", "itsv" or "specialisation") and the language (e.g. "de") can be given as HTTP GET-parameters.
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
 function stukowin_get_crclm_list() {
 	$oContentManager = new content_manager ();
@@ -212,6 +253,10 @@ function stukowin_get_crclm_list() {
  *
  * @param integer $iNodeID
  *        	The content node id of the course to get
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
 function stukowin_get_lva($iNodeID) {
 	$oContentManager = new content_manager ();
@@ -219,8 +264,16 @@ function stukowin_get_lva($iNodeID) {
 }
 
 /**
- * Menu callback for creating a new ITSV or specialisation vocabulary.
+ * @brief Menu callback for creating a new ITSV or specialisation vocabulary.
  * Allows the user to select a source vocabulary, choose which type of vocabulary to create, set a name for the new vocabulary and choose how many structural terms (e.g. "1. Semester", "2. Semester") to automatically insert.
+ * 
+ * @param array $form Form structure
+ * @param object $form_state Form state
+ * 
+ * @return array form structure
+ * @author author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
 function stukowin_taxonomy_menu($form, &$form_state) {
 	// Load available curricula into array
@@ -275,8 +328,15 @@ function stukowin_taxonomy_menu($form, &$form_state) {
 }
 
 /**
- * Submit handler for {@see stukowin_taxonomy_menu}.
+ * @brief Submit handler for {@see stukowin_taxonomy_menu}.
  * Creates a new ITSV or specialisation taxonomy and redirects the user to the taxonomy manager.
+ * 
+ * @param array $form Form structure
+ * @param object $form_state Form state
+ * 
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit 1905775 on 2014-07-02
  */
 function stukowin_taxonomy_menu_submit($form, &$form_state) {
 	$sTaxonomyType = $form_state ['values'] ['type_select'] ? 'specialisation' : 'itsv';
@@ -316,7 +376,7 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
 }
 
 /**
- * Implements hook_menu().
+ * @brief Implements hook_menu().
  * Registers all menu links with drupal. The following links are registered:
  * <ul>
  * <li>CEUS API Settings @ 'admin/stukowin/settings'</li>
@@ -327,6 +387,11 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
  * <li>Curricula List JSON Service @ 'stukowin/crclmlst'</li>
  * <li>Course Detail JSON Service @ 'stukowin/lva'</li>
  * </ul>
+ * 
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
 function stukowin_menu() {
 	$items = array ();
@@ -410,7 +475,13 @@ function stukowin_menu() {
 }
 
 /**
+ * @brief  implements hook_ckeditor_plugin
  * Adds hook for the ckeditor plugin to insert a curriculum display
+ * 
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit b63de89 on 2014-06-30 
+ * 
  */
 function stukowin_ckeditor_plugin() {
 	return array (
@@ -433,7 +504,14 @@ function stukowin_ckeditor_plugin() {
 }
 
 /**
+ * @brief implements hook_theme_registry_alter
  * Hook for telling the system to use our template on stukowin custom content type
+ * 
+ * @param object $theme_registry The entire cache of theme registry information, post-processing.
+ * 
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @version 1.0.0 2014-07-16
+ * @since Commit 9f1f3db on 2014-07-05 
  */
 function stukowin_theme_registry_alter(&$theme_registry) {
 	$theme_registry_copy = $theme_registry;
