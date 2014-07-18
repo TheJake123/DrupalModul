@@ -11,6 +11,7 @@
  */
 
 /**
+ * @ingroup Stukowin_Module
  * @file stukowin.install
  * @brief install skript
  * 
