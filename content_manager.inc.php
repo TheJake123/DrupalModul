@@ -1,5 +1,6 @@
 <?php
 /**
+ * @ingroup Stukowin_Module
  * @file
  * @brief Access to curricula data
  * 
@@ -14,10 +15,10 @@
  * 
  * @see content_manager
  */
-include_once __DIR__ . '/simple_html_dom.php';
 include_once dirname ( __FILE__ ) . '/stukowin.install';
 
 /**
+ * @ingroup Stukowin_Module
  * @brief Access to drupal vocabularies and content nodes
  *
  * This class is used to fetch LVA-nodes and vocabulary trees from the drupal database. As it is a utility class, it has mainly @c public functions.

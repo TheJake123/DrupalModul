@@ -6,10 +6,10 @@
  * This module contains all files, classes and methods that provide 
  * the core functionality of the Drupal module.
  * 
- * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
- * @author Markus Gutmayer
- * @author Werner Breuer
+ * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
  */
 
 /**
@@ -20,9 +20,9 @@
  * the functionality for supporting the administrator when creating new Drupal vocabularies
  * that represent either an ITSV ("Idealtypischer Studienverlauf") or a specialisation (mainly for Master curricula).
  * 
- * @authors Jakob Strasser - jakob.strasser@telenet.be
- * @authors Markus Gutmayer
- * @authors Werner Breuer
+ * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
  */
 
 /**
@@ -33,8 +33,8 @@
  * 
  * @authors Konstantinos Dafalias - kdafalias@gmail.com
  * @authors Jakob Strasser - jakob.strasser@telenet.be
- * @authors Markus Gutmayer
- * @authors Werner Breuer
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
@@ -419,7 +419,6 @@ function stukowin_taxonomy_menu($form, &$form_state) {
  * @param array $form_state Form state as given by Drupal
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
- * 
  * @version 1.0.0 2014-07-16
  * @since Commit 190577568295b7682dc74a79c4fd478e9e33c639 on 2014-07-02
  * 
@@ -577,7 +576,7 @@ function stukowin_menu() {
  * Adds the hook for the @ref stukowin_curriculum.js "ckeditor plugin" to insert a curriculum display.
  * 
  * @authors Werner Breuer - bluescreenwerner@gmail.com
- * @authors Markus Gutmayr
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @version 1.0.0 2014-07-16
  * @since Commit b63de89ea0d0b45b428d333a4ba5c8d859047ba2 on 2014-07-01 
  */
@@ -610,7 +609,7 @@ function stukowin_ckeditor_plugin() {
  * @param object $theme_registry The entire cache of theme registry information, post-processing.
  * 
  * @authors Werner Breuer - bluescreenwerner@gmail.com
- * @authors Markus Gutmayr
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @version 1.0.0 2014-07-16
  * @since Commit 9f1f3db3b94f0c44518af0f58401bac46f41d7cb on 2014-07-05 
  */

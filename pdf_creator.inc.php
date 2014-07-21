@@ -8,7 +8,7 @@
  * imported curricula data.
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
- * @authors Fabian Pühringer - f.puehringer@24speed.at
+ * @authors Fabian Puehringer - f.puehringer@24speed.at
  */
 
 /**
@@ -21,7 +21,7 @@
  * imported curricula data.
  *
  * @author Jakob Strasser - jakob.strasser@telenet.be
- * @authors Fabian Pühringer - f.puehringer@24speed.at
+ * @authors Fabian Puehringer - f.puehringer@24speed.at
  * @version 1.0.0 2014-07-15
  * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
  *       
@@ -41,7 +41,7 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
  * method, which initiates and guides the PDF generation.
  *
  * @author Jakob Strasser - jakob.strasser@telenet.be
- * @authors Fabian Pühringer - f.puehringer@24speed.at
+ * @authors Fabian Puehringer - f.puehringer@24speed.at
  * @version 1.0.0
  * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
  *       

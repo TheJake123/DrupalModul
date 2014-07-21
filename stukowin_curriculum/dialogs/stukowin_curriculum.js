@@ -8,10 +8,10 @@
  * 
  * @remark For this plugin to work, it has to be enabled in the CKEditor configuration.
  * 
- * @author Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
- * @author Fabian Pühringer - f.puehringer@24speed.at
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Fabian Puehringer - f.puehringer@24speed.at
  * 
  * @version 1.0.0 2014-07-01
  * @since Commit 6f56770fb90b50992ff33f46c323061bf4b2dc4b on 2014-06-30

@@ -1,14 +1,15 @@
 <?php
 /**
  * @defgroup CEUS2Drupal CEUS2Drupal
- * @brief This module is reponsible for requesting the data form CEUS and storing the data in the drupal database.
+ * @brief Module for importing data from CEUS
+ * 
+ * This module is reponsible for requesting the data from the CEUS API and storing it in the drupal database.
  * It also implements the functions for the change management
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @authors Werner Breuer - bluescreenwerner@gmail.com
- * @since d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 
 /**

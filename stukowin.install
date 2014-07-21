@@ -328,7 +328,7 @@ function _stukowin_installed_fields()
  * 
  * @version 1.0.0 2014-07-07
  * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @authors Fabian Pühringer - f.puehringer@24speed.at
+ * @authors Fabian Puehringer - f.puehringer@24speed.at
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 function _stukowin_installed_instances() 

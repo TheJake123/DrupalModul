@@ -9,7 +9,7 @@
  * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @authors Werner Breuer - bluescreenwerner@gmail.com
- * @authors Manuel Mühlburger - Hansbert92@googlemail.com
+ * @authors Manuel Muehlburger - Hansbert92@googlemail.com
  */
 
 /**
@@ -116,8 +116,7 @@ jQuery(document).ready(
  * select box at the top of the page and calls
  * @ref fill_crclm() for the first curriculum.
  * 
- * @param object
- *            data The received JSON file containing the curricula list
+ * @param data The received JSON file containing the curricula list
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
@@ -172,8 +171,7 @@ function getCurricula(data) {
  * fills the page with content by calling
  * @ref createDivs().
  * 
- * @param object
- *            data The received JSON file containing the curriculum tree
+ * @param data The received JSON file containing the curriculum tree
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
@@ -206,8 +204,7 @@ function fill_crclm(data) {
  * This click handler shows or hides the list of recommended courses for a given
  * course.
  * 
- * @param object
- *            element The element to show the recommended courses for
+ * @param element The element to show the recommended courses for
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
@@ -251,8 +248,7 @@ function showEmpfohlen(element) {
  * This click handler shows or hides the list of required courses for a given
  * course.
  * 
- * @param object
- *            element The element to show the required courses for
+ * @param element The element to show the required courses for
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
@@ -298,8 +294,7 @@ function showVoraussetzungen(element) {
  * This procedure expands/reduces a course @<div@>, thus showing or hiding its
  * children.
  * 
- * @param object
- *            element The element to expand/reduce
+ * @param element The element to expand/reduce
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @since Commit 3372f36c1ac4e45adeb0a5e51baa77dbd1871daf on 2014-06-29
@@ -370,10 +365,8 @@ function reduce_all() {
  * to it and then highlights it in the given
  * @c highlightColor.
  * 
- * @param object|string|integer
- *            element The element to expand and scroll to
- * @param string
- *            highlightColor The color to highlight the element in. Default is
+ * @param element The element to expand and scroll to
+ * @param highlightColor The color to highlight the element in. Default is
  *            #90EE90.
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
@@ -410,10 +403,8 @@ function expandAndScrollToElement(element, highlightColor) {
  * This function creates the entire content of the graphical display
  * recursively. For each course it creates a header table and its children.
  * 
- * @param object
- * kurs The course to create the @<div@v> for
- * @param integer
- *            level The current recursion level (needed in order to decide if
+ * @param kurs The course to create the @<div@> for
+ * @param level The current recursion level (needed in order to decide if
  *            the element is top-level or not
  * @return The complete HTML for the given course's @<div@>
  * 
@@ -470,9 +461,8 @@ function createDivs(kurs, level) {
  * course, module and subject @<div@>s. It also requests the details of all
  * courses referenced (as recommendation/prerequisite) but not included in the
  * loaded vocabulary.
- * @param object
- *            kurs The course to create the cells for
- * @return string The HTML code for the @<td@>s in the header
+ * @param kurs The course to create the cells for
+ * @return The HTML code for the @<td@>s in the header
  * 
  * @author Markus Gutmayer - m.gutmayer@gmail.com
  * @authors Jakob Strasser - jakob.strasser@telenet.be
@@ -531,11 +521,9 @@ function createTds(kurs) {
  * 
  * This utility function determines if an element is fully visible on the screen
  * 
- * @param object
- *            elem The element to check
+ * @param elem The element to check
  * @retval true The element is fully visible
- * @retval false The element is
- * @b not fully visible
+ * @retval false The element is @b not fully visible
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @since Commit 3372f36c1ac4e45adeb0a5e51baa77dbd1871daf on 2014-06-29
@@ -558,14 +546,11 @@ function isFullyVisible(elem) {
  * This utility function buils the URL for the JSON request based on the main @<div@>s
  * @c data tags.
  * 
- * @param string
- *            baseUrl Drupal base URL to build the request on (Needed because
+ * @param baseUrl Drupal base URL to build the request on (Needed because
  *            drupal could be installed under a sub path)
- * @param string
- *            type The curriculum type to get
+ * @param type The curriculum type to get
  *            ("Bachelorstudium","Masterstudium")
- * @param array
- *            curriculums The vocabulary types to get ("curriculum", "itsv"
+ * @param curriculums The vocabulary types to get ("curriculum", "itsv"
  *            and/or "specialisation")
  * @return The complete request URL
  * 
@@ -639,8 +624,7 @@ function addResources() {
  * all those courses that are not included in the display but referenced as
  * recommendation and/or prerequisite.
  * 
- * @param object
- *            data The received JSON details array of one course
+ * @param data The received JSON details array of one course
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @since Commit f157d51285e8cc638db4a8f62c7635e5ed2bb2fd on 2014-07-06
