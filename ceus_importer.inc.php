@@ -15,57 +15,82 @@
  * @ingroup CEUS2Drupal
  * @file ceus_importer.inc.php
  * @brief Imports data from CEUS
- * 
+ *
  * This file manages the import of curricula data from CEUS.
- * 
+ *
  * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
-
-include_once __DIR__ . '/simple_html_dom.php';
+include_once __DIR__ . '/include/simple_html_dom.php';
 include_once dirname ( __FILE__ ) . '/stukowin.install';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 
 /**
  * @ingroup CEUS2Drupal
- * @brief Imports data from CEUS and stores it in the Drupal DB
+ * @brief Imports data from CEUS and stores it in the Drupal database
  *
- * This class is used to import data from the CEUS-API and for saving them in drupal database. It also provides the change management functionality
+ * This class is used to import data from the CEUS-API and saving them in the Drupal database. It also provides the change management functionality described in the system documentation.
  *
- * @author Konstantinos Dafalias
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
- * 
+ *       
  */
 class ceus_importer {
 	/**
+	 * @brief Complete URL to CEUS API
 	 *
-	 * @var string Complete URL to CEUS-API as retreived from Module configuration
+	 * This variable contains the URL to the CEUS API as retreived from the module configuration.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $sCeusUrl;
 	
 	/**
+	 * @brief Username for CEUS API
 	 *
-	 * @var string Username for CEUS API as retreived from Module configuration
+	 * This variable contains the username for the CEUS API as retreived from the module configuration.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $sUsername;
 	
 	/**
+	 * @brief Password for CEUS API
 	 *
-	 * @var string Password for CEUS API as retreived from Module configuration
+	 * This variable contains the password for the CEUS API as retreived from the module configuration.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $sPassword;
 	
 	/**
+	 * @brief CEUS authentication token
 	 *
-	 * @var string Authtoken, retreived from CEUS API
+	 * This variable contains the authentication token as retreived from the CEUS API by calling its @c auth method.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $sAuthtoken;
 	
 	/**
+	 * @brief Names of the API methods
 	 *
-	 * @var array Name of the API files for getting authorization token, listing all curricula, getting one curriculum, getting one curriculum item
+	 * This array contains all the API method names for:
+	 * + Getting an authorization token
+	 * + Listing all curricula
+	 * + Getting one curriculum tree
+	 * + Getting one curriculum item
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $aFiles = array (
 			'AUTH' => 'auth.php',
@@ -75,15 +100,22 @@ class ceus_importer {
 	);
 	
 	/**
+	 * @brief Error message
 	 *
-	 * @var string error message, if error has occurred
+	 * If an error has occurred, this variable contains the error message.
+	 * 
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $sError;
-	private $counter = 0;
 	
 	/**
+	 * @brief All supported languages
 	 *
-	 * @var array All languages supported
+	 * This array contains the short names of all languages that should be imported.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $aLanguage = array (
 			'de',
@@ -91,34 +123,73 @@ class ceus_importer {
 	);
 	
 	/**
+	 * @brief All vocabularies for current curricula
 	 *
-	 * @var array all vocabularies for current curricula
+	 * This array contains the respective Drupal vocabularies corresponding to the currently imported curricula.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $aVocabulary;
+	
 	/**
+	 * @brief All Terms for vocabularies
 	 *
-	 * @var array all Terms for vocabularies
+	 * This array contains all the Drupal vocabulary terms associated with the curriculum currently being processed.
+	 *
+	 * The item key represents the CEUS id of one course.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $aTerms;
+	
 	/**
+	 * @brief Import statistics
 	 *
-	 * @var array all Import stats
+	 * This array contains all necessary import statistics, namely:
+	 * + The number of courses loaded from CEUS
+	 * + The number of new content nodes created (= new courses)
+	 * + The number of content nodes that were updated during the import (= changes in CEUS)
+	 * + The number of curricula loaded from CEUS
+	 * + the number of relations automatically processed
+	 *
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @since Commit 5ad002c8e7a233bc25ac0e1dcf2b9f62520281c1 on 2014-07-08
 	 */
-	private $aStats;
+	private $aStats = array (
+			'loaded' => 0,
+			'new' => 0,
+			'updated' => 0,
+			'numcurrs' => 0,
+			'relations' => 0 
+	);
+	
 	/**
+	 * @brief Relations of every course (if available)
 	 *
-	 * @var array array of relations that is filled during import and evaluated at the end; Key = LVA ID, value = content text of "voraussetzungen" field from CEUS
+	 * This array contains all relations (recommended and needed) in their raw textual form
+	 * It is filled during the import and evaluated at the end.
+	 *
+	 * The key is the CEUS id of the cours, the value contains the content text of the @c voraussetzungen field from CEUS.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private $aRelations;
 	
 	/**
-         * @brief Constructor
-         * 
-	 * Constructor reads configuration data
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 * @brief Constructor
+	 *
+	 * Creates a new instance of @ref ceus_importer and reads the CEUS API configuration data from Drupal.
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 *       
+	 * @see $sCeusUrl
+	 * @see $sUsername
+	 * @see $sPassword
 	 */
 	public function __construct() {
 		$this->sCeusUrl = variable_get ( 'stukowin_ceus_api_url' );
@@ -127,17 +198,18 @@ class ceus_importer {
 	}
 	
 	/**
-         * @brief Checks the return value from CEUS-API server
-         * 
-         * Checks if CEUS-API server responded and if there was an error
+	 * @brief Checks the JSON returned by the CEUS API
+	 *
+	 * This method checks if the CEUS API server responded and if there was an error.
 	 *
 	 * @param string $sReturn
-	 *        	JSON encoded String fetched from CEUS API server
-	 * @return mixed false if error occurred - error is stored in $sError member - decoded array if successful
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 *        	JSON encoded string fetched from the CEUS API
+	 *        	@retval "decoded array" Success
+	 *        	@retval false An error occurred. The error is stored in the @ref $sError member
+	 *        	
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function check_return_value($sReturn) {
 		if (empty ( $sReturn )) {
@@ -154,15 +226,16 @@ class ceus_importer {
 	
 	/**
 	 * @brief Connect to CEUS and receive Authtoken
-	 * 
-         * This function tries to connect to the CEUS-API server and receives and stores the authtoken.
-         * Returns true if an authtoken was recieved otherwise it returns false.
-         * 
-	 * @return boolean
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 *
+	 * This function tries to connect to the CEUS-API server and receives and stores the authtoken.
+	 * Returns true if an authtoken was recieved otherwise it returns false.
+	 *
+	 * @retval true Connection and authentication @b successful
+	 * @retval false Connection and/or authentication @b failed
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	public function connect() {
 		$sReturn = file_get_contents ( $this->sCeusUrl . '/' . $this->aFiles ['AUTH'] . '?username=' . $this->sUsername . '&password=' . $this->sPassword );
@@ -174,17 +247,22 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Get single lva from CEUS
-	 * This function gets a single LVA from the CEUS-API and saves all the details in an array.
-         * On Success it returns the array containing the data from an single LVA otherwise it returns false
-         * 
+	 * @brief Fetches a single course from CEUS
+	 *
+	 * This function fetches a single course from the CEUS API and returns all its details in an array.
+	 *
 	 * @param integer $iID
-	 *        	LVA-CEUS-ID
-	 * @return array Complete data structure for lva; 2-dimensional, 1. dimension = language, 2. dimension = detail data 
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 *        	CEUS id of the course
+	 *        	
+	 *        	@retval details 2-dimensional array containing the course details. 1. dimension = language, 2. dimension = details.
+	 *        	@retval false An error occured while fetching the details
+	 *        	
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 *       
+	 * @see get_details()
 	 */
 	private function get_detail($iID) {
 		$aDetail = array ();
@@ -203,19 +281,22 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Saves a content node for an LVA
-	 * 
-         * This function saves a content node for the given LVA. If a node already exists
-         * it checks if the changedate has changed. If so a new version of this conent node is created.
-         *  
-	 * @param array $aDetail Data structure of 1 lva       	
+	 * @brief Saves a course as a Drupal content node
+	 *
+	 * If a node already exists, the function checks if the changedate has changed.
+	 * If so, a new version of this conent node is created.
+	 * If not, nothing is changed
+	 *
+	 * @param array $aDetail
+	 *        	Array of course details as returned by @ref get_detail()
 	 * @param array $tid
-	 *        	Term id of Taxonomy item
-	 * @return integer Node id of the saved node
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 *        	Drupal vocabulary term id of the vocabulary term corresponding to the given course
+	 * @return Node id of the saved content node
+	 *        
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function save_node($aDetail, $tid) {
 		$aNodes = taxonomy_select_nodes ( $tid );
@@ -224,7 +305,6 @@ class ceus_importer {
 		else {
 			$iNodeID = null;
 		}
-		
 		$oNode = node_load ( $iNodeID );
 		// If same changedate, do nothing
 		if (! empty ( $iNodeID ) && ($aDetail ['de'] ['changedate'] == $oNode->changedate ['und'] [0] ['value'])) {
@@ -298,35 +378,40 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Checks if a LVA has relations
-         * 
-         * Determines if a LVA has a relation when field is empty or begins with "kein".
-         * Returns true if there are any relations that need to be processed. Return false if the arent any.
+	 * @brief Checks if a course has recommendations or prerequisites
+	 *
+	 * This function determines if a course has a relation with another course.
+	 * This is the case when the @e $sRelationfield is not empty and does not begin with "kein" (case insensitive).
+	 * Returns true if there are any relations that need to be processed. Return false if the arent any.
 	 *
 	 * @param string $sRelationfield
-	 *        	content of "voraussetzungen" field
+	 *        	Content of the courses @c voraussetzungen field
 	 *        	
-	 * @return boolean true if has recommendations or prerequisites
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 *        	@retval true The course has recommendations or prerequisites
+	 *        	@retval false The course does @b not have recommendations or prerequisites
+	 *        	
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function has_relation($sRelationfield) {
 		return ! empty ( $sRelationfield ) && strtolower ( substr ( $sRelationfield, 0, 4 ) ) != 'kein';
 	}
 	
 	/**
-	 * @brief Parses linked web page and tries to extract code
+	 * @brief Parses linked web page and tries to extract a course code
 	 *
-         * This function tries to extract the CEUS-ID from a given link and returns it.
-         * Return false if there was no CEUS-ID to extract
-         * 
-	 * @param string $sLink HTML-Code with Link to CEUS entry
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28   	
+	 * This function tries to extract the course code (e.g. @e 1FENKF) from website behind the given @e $sLink and returns it.
+	 *
+	 * @param string $sLink
+	 *        	HTML-Code with Link to CEUS entry
+	 *        	@retval "course code" The extracted code
+	 *        	@retval false The extraction was not successful
+	 *        	
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 * @see get_term_ids()
 	 */
 	private function parse_link_term_code($sLink) {
 		$oHTML = file_get_html ( $sLink );
@@ -338,16 +423,22 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Looks for LVA content element with title or code
-         * Looks for LVA content element with title or code, returns LVA CEUS ID if successful, false if not
+	 * @brief Looks for Drupal content node by title or code
 	 *
-	 * @param string $sTitle
-	 *        	LVA title
-	 * @return mixed Term id or false
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28   	
+	 * This function searches for the Drupal content node corresponding to a given course code or course title.
+	 *
+	 * @param string $sFieldType
+	 *        	The name of the field to search in. This can be either "code" or "title".
+	 * @param string $sFieldcontent
+	 *        	The search term to look for
+	 *        	@retval nid The node's id
+	 *        	@retval false No content node with this title or code could be found
+	 *        	
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 *       
+	 * @see get_term_ids()
 	 */
 	private function find_nodeid_by_field($sFieldtype, $sFieldcontent) {
 		$oQuery = new EntityFieldQuery ();
@@ -366,19 +457,24 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Parses Relationfield and tries to extract
-	 * This function tries to extract from the given relationfield all dependencies.
-         * Does this in 3 steps:
-         *      1. Extract the LVA names
-         *      2. Try to get for the CEUS-ID for the LVA names
-         *      3. Try to extract CEUS-ID from links
-         * 
-	 * @param string $sRelationfield Text content od relationfield as received from CEUS
-         * @return array node-ids of related lva entries
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28   	
+	 * @brief Parses the @c voraussetzungen field of a course and tries to extract the relation
+	 * 
+	 * This function loops through all links and list items in the @c voraussetzugnen field and tries to extracts the referenced courses.
+	 * It does this in 3 steps:
+	 * 1. Extract the course names
+	 * 2. Try to get the Drupal content node id through the course title
+	 * 3. Try to get the Drupal content node id through the course code
+	 *
+	 * @param string $sRelationfield
+	 *        	Textual content of the @c voraussetzungen field as received from CEUS
+	 * @return Drupal content node ids of related courses
+	 *        
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 * 
+	 * @see find_nodeid_by_field()
+	 * @see parse_link_term_code()
 	 */
 	private function get_term_ids($sRelationfield) {
 		$oHTML = str_get_html ( $sRelationfield );
@@ -415,41 +511,18 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Private test method
-         * 
-         * Test method to extract all values from voraussetzungen and process them without having to reload
-	 * all data from CEUS server
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
-	 */
-	private function test_make_relations() {
-		$oQuery = new EntityFieldQuery ();
-		$aEntities = $oQuery->entityCondition ( 'entity_type', 'node' )->propertyCondition ( 'type', 'stukowin' )->fieldCondition ( 'voraussetzungen', 'value', 'NULL', '!=' )->propertyOrderBy ( 'nid' )->execute ();
-		if (! empty ( $aEntities ['node'] )) {
-			$aArray = array_keys ( $aEntities ['node'] );
-			$aNodes = node_load_multiple ( $aArray );
-			$this->aRelations = array ();
-			foreach ( $aNodes as $iNodeID => $oNode ) {
-				if (substr ( $oNode->voraussetzungen ['und'] [0] ['value'], 0, 5 ) != 'keine') {
-					$aVoraussetzungen = $oNode->voraussetzungen ['und'] [0] ['value'];
-					if (! empty ( $aVoraussetzungen ))
-						$this->aRelations [$iNodeID] = $aVoraussetzungen;
-				}
-			}
-		}
-		$this->process_relations ();
-	}
-	
-	/**
-         * @brief Creates Drupal relations out of CEUS relations
-	 * Parses the voraussetzungen field an generates Relations for required and suggested courses
+	 * @brief Creates Drupal relations out of CEUS relations
+	 * 
+	 * This procedure loops through @ref $aRelations,
+	 * parses the @c voraussetzungen field of each course,
+	 * generates relations for required and suggested courses
 	 * and stores them in the node
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+	 *
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 * 
+	 * @see get_term_ids()
 	 */
 	private function process_relations() {
 		if (! ($this->aRelations) || empty ( $this->aRelations ))
@@ -534,20 +607,26 @@ class ceus_importer {
 	}
 	
 	/**
-	 * Recursive Method that traverses the tree of LVA ids that have been returned by CEUS
-	 * and reads the detail dataset for each node
-	 * A taxonomy term is being created for that item in the taxonomy tree
+	 * @brief Recursive function that traverses a curriculum tree
+	 * 
+	 * This method goes through all the courses of a curriculum that have been returned by CEUS recursively
+	 * and reads the details for each course into the @ref $aTerms array.
+	 * A vocabulary term is created for each item in the respective curriculum.
 	 *
 	 * @param array $aTree
-	 *        	Current subtree
+	 *        	The current subtree in the curriculum
 	 * @param integer $iParentID
-	 *        	tid of parent term
+	 *        	Drupal term id of this course's parent term
 	 * @param integer $iCurriculumID
-	 *        	CEUS-ID of curriculum
-	 * @return boolean
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+	 *        	CEUS id of the curriculum this tree belongs to
+	 * @retval true Courses have been read
+	 * @retval false The subtree has reached a leaf
+	 * 
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 * 
+	 * @see get_detail()
 	 */
 	private function get_details($aTree, $iParentID, $iCurriculumID) {
 		if (is_array ( $aTree ) && count ( $aTree )) {
@@ -578,19 +657,33 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Main method: get current curriculum data from CEUS
-	 * Main method that is called from stukowin.module
-         * Loads current data from CEUS api, processes and stores them into Drupal 
-         * 
-	 * @return mixed Return message if successful, otherwise false
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+	 * @brief Main method: Imports curriculum data from CEUS
+	 * 
+	 * This is the main public method of this class. It does the following things:
+	 * 1. Reset the statistics
+	 * 2. Imports all curricula
+	 * 3. Create a new vocabulary if none exists
+	 * 4. Load course data from CEUS API
+	 * 5. Process relations
+	 * 6. Store everything into the Drupal database
+	 *
+	 * @retval "success message" The import was successful. This message contains the @ref $aStats "import statistics".
+	 * @retval false An error has occured and the import was not successful.
+	 *        
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 * 
+	 * @see get_curricula_list()
+	 * @see check_vocabulary()
+	 * @see get_curriculum()
+	 * @see get_details()
+	 * @see process_relations()
 	 */
 	public function get_curricula() {
-                // set time limit for this specific function higher than the limit configured in the php.ini file
-                // needed to not get timeouts on slower hardware as this function needs 2-5 minutes to complete
+		// set time limit for this specific function higher than the limit configured in the php.ini file
+		// needed to not get timeouts on slower hardware as this function usually needs 2-5 minutes to complete
 		set_time_limit ( 0 );
 		$this->aStats ['loaded'] = 0;
 		$this->aStats ['new'] = 0;
@@ -611,21 +704,22 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Checks if a taxonomy vocabulary for the curriculum exists and creates it if not
-	 * Gets latest Curriculum and compares with stored curricula in the taxonomies
-         * if new, curriculum is stowed in a new taxonomy
-         * Default weight = 10, only weight below 0 will be displayed
-         * 
+	 * @brief Checks if a taxonomy vocabulary for the given curriculum exists and creates it if not
+	 * 
+	 * This function stores the corresponding vocabulary (either a new or an existing one) into the @ref $aVocabulary array.
+	 * 
+	 * @remark This method creates the new vocabulary with the default weight of @c 10, but only vocabularies with a weight below @c 0 will be shown publicly.
+	 *
 	 * @param array $aCurriculum
-	 *        	Curriculum entry from CEUS
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+	 *        	Curriculum from CEUS as returned by @ref get_curricula_list()
+	 *        	
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function check_vocabulary($aCurriculum) {
 		$oVocabulary = taxonomy_vocabulary_load ( variable_get ( 'ceus_importer_' . $aCurriculum ['typeshort'] . '_' . $aCurriculum ['version'] . '_vocabulary', 0 ) );
-                $oContentManager = new content_manager ();
+		$oContentManager = new content_manager ();
 		if (! $oVocabulary) {
 			$sMachineName = 'curriculum_' . $aCurriculum ['typeshort'] . '_' . $aCurriculum ['version'];
 			$sMachineName = $oContentManager->getUniqueMachineName ( $sMachineName );
@@ -655,14 +749,15 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Get list of all curricula (bachelor, master) from CEUS
-	 * Retreives a list of all available Curricula in CEUS
-         * 
-	 * @return array Array containing all Curricula
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+	 * @brief Gets a list of all curricula (bachelor, master) from CEUS
+	 * 
+	 * This function retreives a list of all available curricula from the CEUS API.
+	 *
+	 * @return Associative array containing all curricula
+	 *        
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function get_curricula_list() {
 		$sReturn = file_get_contents ( $this->sCeusUrl . '/' . $this->aFiles ['LIST'] . '?authtoken=' . $this->sAuthtoken );
@@ -670,16 +765,17 @@ class ceus_importer {
 	}
 	
 	/**
-	 * @brief Get curriculum tree from CEUS
-         * Retreives complete tree of one certain curriculum from CEUS API
+	 * @brief Gets one curriculum tree from CEUS
+	 * 
+	 * This function retreives the complete tree of one certain curriculum from the CEUS API
 	 *
 	 * @param integer $iID
-	 *        	CEUS-ID of curriculum
-	 * @return array multidimensional array of lva ids
-         * 
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+	 *        	CEUS id of the curriculum
+	 * @return Nested array of course ids
+	 *        
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function get_curriculum($iID) {
 		$sReturn = file_get_contents ( $this->sCeusUrl . '/' . $this->aFiles ['CURR'] . '?id=' . $iID . '&authtoken=' . $this->sAuthtoken );
@@ -688,12 +784,15 @@ class ceus_importer {
 	
 	/**
 	 * @brief Returns last error message
-	 * Getter for error message 
-         * 
+	 * 
+	 * This function acts as a public getter for the @ref $sError "error message".
+	 *
 	 * @return string
-         * @author Konstantinos Dafalias - kdafalias@gmail.com
-         * @version 1.0.0 2014-07-16
-         * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @version 1.0.0 2014-07-16
+	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+	 * 
+	 * @see $sError
 	 */
 	public function get_error() {
 		return $this->sError;

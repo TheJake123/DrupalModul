@@ -18,11 +18,11 @@
  *
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-15
- * @since Commit b9342d94 on 2014-06-30
+ * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
  *       
  * @see overviewPDF
  */
-include_once dirname ( __FILE__ ) . '/tcpdf/tcpdf.php';
+include_once dirname ( __FILE__ ) . '/include/tcpdf/tcpdf.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 
 /**
@@ -37,7 +37,7 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
  *
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0
- * @since Commit b9342d94 on 2014-06-30
+ * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
  *       
  * @see createPDF()
  * @todo Add creation date and time to footer
@@ -45,12 +45,12 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 class overviewPDF extends TCPDF {
 	/**
 	 * @brief Array of indices for continuous indexation of headings
+	 * 
 	 * Every key in this array represents an indexation level
-	 * (e.g.
-	 * level 2 for 1.1, level 3 for 1.1.1) and every value
+	 * (e.g. level 2 for 1.1, level 3 for 1.1.1) and every value
 	 * in the array the current index for that level.
 	 *
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 * @see getNextIndex()
 	 */
 	private $aIndices = array ();
@@ -62,7 +62,7 @@ class overviewPDF extends TCPDF {
 	 * and writes the page number in the format "current page/total pages" into the bottom right corner.
 	 *
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @see TCPDF::Footer()
 	 */
@@ -90,7 +90,7 @@ class overviewPDF extends TCPDF {
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
 	 *        
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 */
 	private function getNextIndex($iLevel) {
 		if (! array_key_exists ( $iLevel, $this->aIndices )) {
@@ -116,7 +116,7 @@ class overviewPDF extends TCPDF {
 	 * @return The height of the HTML code
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @see printFach()
 	 */
@@ -142,7 +142,7 @@ class overviewPDF extends TCPDF {
 	 * @return Full y-position in the entire document (not just on this page), excluding margins
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @see getHTMLHeight()
 	 * @see TCPDF::GetY()
@@ -169,7 +169,7 @@ class overviewPDF extends TCPDF {
 	 * @return Success message: 'PDF successfully created at ' and the filepath
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @see stukowin_pdf_menu()
 	 * @see stukowin_pdf_menu_submit()
@@ -220,7 +220,7 @@ class overviewPDF extends TCPDF {
 	 * @throws Exception A new exception with the given message
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit e4fa523c on 2014-07-02
+	 * @since Commit e4fa523cc03bdc9453581c7a43d23a09d4ee5688 on 2014-07-02
 	 *       
 	 * @see TCPDF::Error()
 	 */
@@ -236,7 +236,7 @@ class overviewPDF extends TCPDF {
 	 * and inserts a table of contents (index) page as the second page in the document.
 	 *
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @see TCPDF::addTOCPage()
 	 * @see printHeading()
@@ -266,7 +266,7 @@ class overviewPDF extends TCPDF {
 	 * @return The unique filename
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit e8704fdc45 on 2014-06-30
+	 * @since Commit e8704fdc454e3db61b5be799b2d4928b7bfb6686 on 2014-06-30
 	 *       
 	 * @see stukowin_admin()
 	 */
@@ -305,7 +305,7 @@ class overviewPDF extends TCPDF {
 	 *        	The curriculum object to print
 	 *        	
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @todo Overview table with structural elements
 	 */
@@ -353,7 +353,7 @@ EOT;
 	 *        	The object to check
 	 *        	
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit a311596e on 2014-07-02
+	 * @since Commit a311596e0d6f1d08314cfcbc9f4f878a131a3f61 on 2014-07-02
 	 */
 	private function printTopLevel($oTopLevel) {
 		if (property_exists ( $oTopLevel, 'lva' )) {
@@ -375,7 +375,7 @@ EOT;
 	 *        	The course object to print
 	 *        	
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 */
 	private function printFach($oFach) {
 		if (! property_exists ( $oFach, 'children' )) {
@@ -429,7 +429,7 @@ EOT;
 	 * @return The HTML code of the table rows for this course and all its children
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @see printFach()
 	 */
@@ -475,7 +475,7 @@ EOT;
 	 * @return The @e $sText with @<br@> tags inserted whenever necessary
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit 7e5b5459 on 2014-07-06
+	 * @since Commit 7e5b545971fbee0bb6140cf3fef51185bf86c94e on 2014-07-06
 	 */
 	private function splitBoldTextIntoLines($sText, $iMaxWidth) {
 		$aWords = preg_split ( '/\s+/', $sText );
@@ -495,7 +495,7 @@ EOT;
 	 *        	The maximum width a line is allowed to have
 	 *        	
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit 7e5b5459 on 2014-07-06
+	 * @since Commit 7e5b545971fbee0bb6140cf3fef51185bf86c94e on 2014-07-06
 	 *       
 	 * @see splitBoldTextIntoLines()
 	 */
@@ -521,7 +521,7 @@ EOT;
 	 *        	The course to print the goals and contents for
 	 *        	
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @see printFach()
 	 */
@@ -561,7 +561,7 @@ EOT;
 	 *        	@c true if heading should be shown on the index page and bookmarked
 	 *        	
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 *       
 	 * @see createTOCPage()
 	 * @see getNextIndex()
@@ -602,7 +602,7 @@ EOT;
 	 * @return The nested array of all courses in the given curriculum
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 */
 	private static function getCourses($currId) {
 		$aCourses = (new content_manager ())->taxonomy_get_nested_tree ( $currId );
@@ -632,7 +632,7 @@ EOT;
 	 *        	The course to assert the attributes for
 	 *        	
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit b9342d94 on 2014-06-30
+	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
 	 */
 	private static function assertAttributes($oCourse) {
 		static $aRequiredFields = array (
@@ -666,7 +666,7 @@ EOT;
 	 * @return The valid file name created from the input
 	 *        
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @since Commit f157d512 on 2014-07-06
+	 * @since Commit f157d51285e8cc638db4a8f62c7635e5ed2bb2fd on 2014-07-06
 	 */
 	private static function convertStringToValidFilename($sString) {
 		if (strpos ( $sString = htmlentities ( $sString, ENT_QUOTES, 'UTF-8' ), '&' ) !== false) {

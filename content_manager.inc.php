@@ -8,7 +8,7 @@
  * 
  * @author Werner Breuer - bluescreenwerner@gmail.com
  * @version 1.0.0 2014-07-07
- * @since Commit f90560aa on 2014-06-28
+ * @since Commit f90560aa796b39853beb42a521d6d94c86051c46 on 2014-06-28
  * 
  * @see content_manager
  */
@@ -22,7 +22,7 @@ include_once dirname ( __FILE__ ) . '/stukowin.install';
  *
  * @author Werner Breuer - bluescreenwerner@gmail.com
  * @version 1.0.0 2014-07-07
- * @since Commit f90560aa on 2014-06-28
+ * @since Commit f90560aa796b39853beb42a521d6d94c86051c46 on 2014-06-28
  */
 class content_manager {
 	
@@ -41,7 +41,7 @@ class content_manager {
 	 * @return The selected course with all the needed attributes as properties
 	 *        
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @since Commit 58a583aa on 2014-06-29
+	 * @since Commit 58a583aa830a1e2832126a782621f2ebd390d217 on 2014-06-29
 	 *       
 	 * @see _stukowin_installed_fields()
 	 * @see taxonomy_get_nested_tree()
@@ -96,7 +96,7 @@ class content_manager {
 	 * @return The nested array of all courses in the vocabulary
 	 *        
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @since Commit f90560aa on 2014-06-28
+	 * @since Commit f90560aa796b39853beb42a521d6d94c86051c46 on 2014-06-28
 	 */
 	public function taxonomy_get_nested_tree($vid_or_terms = array(), $max_depth = NULL, $parent = 0, $parents_index = array(), $depth = 0) {
 		if (! is_array ( $vid_or_terms )) {
@@ -143,7 +143,7 @@ class content_manager {
 	 *        	Content node id of the desired course
 	 *        	
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @since Commit f90560aa on 2014-06-28
+	 * @since Commit f90560aa796b39853beb42a521d6d94c86051c46 on 2014-06-28
 	 *       
 	 * @see stukowin_get_lva()
 	 */
@@ -179,7 +179,7 @@ class content_manager {
 	 * @return Associative array of selected curricula
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit 19057756 on 2014-07-02
+	 * @since Commit 190577568295b7682dc74a79c4fd478e9e33c639 on 2014-07-02
 	 */
 	public function getCurricula($sCurrType = '', $aVocabularyTypes = array('curriculum'), $sLang = 'de') {
 		if ($sLang === 'de')
@@ -217,7 +217,7 @@ class content_manager {
 	 * @return The unique and valid machine name
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit 19057756 on 2014-07-02
+	 * @since Commit 190577568295b7682dc74a79c4fd478e9e33c639 on 2014-07-02
 	 *       
 	 * @see stukowin_taxonomy_menu_submit()
 	 * @see ceus_importer::check_vocabulary()
@@ -258,7 +258,7 @@ class content_manager {
 	 * @return An associative array representing the curriculum object
 	 *        
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @since Commit 19057756 on 2014-07-02
+	 * @since Commit 190577568295b7682dc74a79c4fd478e9e33c639 on 2014-07-02
 	 */
 	public function getCurriculum($iVID) {
 		$oVocabulary = taxonomy_vocabulary_load ( $iVID, 0 );
@@ -282,7 +282,7 @@ class content_manager {
 	 *        	Drupal vocabulary id of the desired curriculum
 	 *        	
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @since Commit f90560aa on 2014-06-28
+	 * @since Commit f90560aa796b39853beb42a521d6d94c86051c46 on 2014-06-28
 	 *       
 	 * @see taxonomy_get_nested_tree()
 	 */
