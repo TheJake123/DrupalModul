@@ -1,26 +1,42 @@
 <?php
 /**
- * @defgroup Drupal2ITSV Drupal2ITSV
- * @brief This module implements all the functions we need for creating new Taxonomies
- * These Taxonomies can be curriculum, itsv or specialisation
+ * @defgroup Stukowin_Module Module Core
+ * @brief Module that contains core functionality
+ * 
+ * This module contains all files, classes and methods that provide 
+ * the core functionality of the Drupal module.
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @author Markus Gutmayer
  * @author Werner Breuer
- * @since d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 
 /**
- * @file stukowin.module
- * @brief Main module 
+ * @defgroup Drupal2ITSV Drupal2ITSV
+ * @brief Module to create new Drupal ITSV/specialisation vocabularies
  * 
- * Drupal install skript for Stukowin module
+ * This module contains all files, classes and methods that provide 
+ * the functionality for supporting the administrator when creating new Drupal vocabularies
+ * that represent either an ITSV ("Idealtypischer Studienverlauf") or a specialisation (mainly for Master curricula).
  * 
- * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Markus Gutmayer
+ * @authors Werner Breuer
+ */
+
+/**
+ * @file
+ * @brief Main module file
+ * 
+ * This file is the central hook for the Drupal module. All functions accessible by Drupal are located in this file.
+ * 
+ * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Markus Gutmayer
+ * @authors Werner Breuer
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
- * 
  */
 
 include_once dirname ( __FILE__ ) . '/ceus_importer.inc.php';
@@ -32,8 +48,8 @@ include_once dirname ( __FILE__ ) . '/pdf_creator.inc.php';
  * @brief Implements hook_help()
  * Displays help information about the module.
  * 
- * @param string $path Drupal Path for Help-Link
- * @param string $arg addional arguments
+ * @param string $path Drupal Path for help link
+ * @param string $arg Dddional call arguments
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @version 1.0.0 2014-07-16
@@ -50,23 +66,23 @@ function stukowin_help($path, $arg) {
 
 /**
  * @ingroup Stukowin_Module
- * @brief Menu callback for module settings ("admin/stukowin/settings").
+ * @brief Menu callback for module settings ("admin/stukowin/settings")
  * 
  * Form for administration of the module settings
  * This form has the following input fields:
- * <ul>
- * <li>URL to CEUS API</li>
- * <li>Username for CEUS API</li>
- * <li>Password for CEUS API</li>
- * <li>Last Update from CEUS API</li>
- * <li>PDF Path</li>
- * <li>PDF generic name</li>
- * </ul>
+ * * CEUS API Settings
+ * 	+ URL to CEUS API
+ * 	+ Username for CEUS API
+ * 	+ Password for CEUS API
+ * 	+ Last Update from CEUS API
+ * * PDF Settings
+ * 	+ PDF Path
+ * 	+ PDF generic name
  * 
- * @return array The form structure 
+ * @return An array containing the form structure
  * 
- * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
@@ -134,12 +150,19 @@ function stukowin_admin() {
 
 /**
  * @ingroup Drupal2PDF
- * @brief Menu callback for generating PDF documents ("admin/settings/stukowin/pdf").
- * The user can choose between all currently published curriculum taxonomies. If none are availably, a warning message is displayed.
+ * @brief Menu callback for generating PDF documents ("admin/settings/stukowin/pdf")
+ * 
+ * The user can choose between all currently published curriculum taxonomies. If none are available, a warning message is displayed.
+ * 
+ * @param array $form Form structure as given by Drupal
+ * @param array $form_state Form state as given by Drupal
+ * @return The filled out form structure
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
- * @since Commit e6573f8 on 2014-06-30 
+ * @since Commit e6573f8d945918d261f42b421be6e5de94881a0b on 2014-06-30
+ * 
+ * @see stukowin_pdf_menu_submit()
  */
 function stukowin_pdf_menu($form, &$form_state) {
 	// Load available curricula into array
@@ -169,12 +192,19 @@ function stukowin_pdf_menu($form, &$form_state) {
 
 /**
  * @ingroup Drupal2PDF
- * @brief Submit handler for {@link stukowin_pdf_menu()}.
- * Creates an instance of {@link overViewPDF} and starts the document generation. If successful, displays the full path of the generated document.
+ * @brief Submit handler for @ref stukowin_pdf_menu()
+ * 
+ * Creates an instance of @ref overviewPDF and starts the document generation. If successful, the full path of the generated document is displayed.
+ * 
+ * @param array $form Form structure as given by Drupal
+ * @param array $form_state Form state as given by Drupal
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
- * @since Commit e6573f8 on 2014-06-30 
+ * @since Commit e6573f8d945918d261f42b421be6e5de94881a0b on 2014-06-30
+ * 
+ * @see stukowin_pdf_menu()
+ * @see overviewPDF::createPDF()
  */
 function stukowin_pdf_menu_submit($form, &$form_state) {
 	$oPdf = new overviewPDF ();
@@ -183,12 +213,21 @@ function stukowin_pdf_menu_submit($form, &$form_state) {
 
 /**
  * @ingroup CEUS2Drupal
- * @brief Menu callback for import ("admin/settings/stukowin/import").
+ * @brief Menu callback for import ("admin/settings/stukowin/import")
+ * 
  * Used as a warning before starting the import, as the process usually takes a long time to complete.
+ * 
+ * @remark There is nothing to do in this menu except click "Ok".
+ *
+ * @param array $form Form structure as given by Drupal
+ * @param array $form_state Form state as given by Drupal
+ * @return The filled out form structure
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
- * @since Commit bcdb4ba on 2014-06-30 
+ * @since Commit bcdb4bad5d0a81dbf12a98c54f8512035a8661d4 on 2014-06-30
+ * 
+ * @see stukowin_re_retrieve_submit()
  */
 function stukowin_pre_retreive($form, &$form_state) {
 	$form = array ();
@@ -204,12 +243,18 @@ function stukowin_pre_retreive($form, &$form_state) {
 
 /**
  * @ingroup CEUS2Drupal
- * @brief Submit handler for {@link stukowin_pre_retrieve()}.
+ * @brief Submit handler for @ref stukowin_pre_retreive()
+ * 
  * Starts the import process and displays the outcome to the user.
  * 
+ * @param array $form Form structure as given by Drupal
+ * @param array $form_state Form state as given by Drupal
+ *  
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
- * @since Commit bcdb4ba on 2014-06-30 
+ * @since Commit bcdb4bad5d0a81dbf12a98c54f8512035a8661d4 on 2014-06-30 
+ * 
+ * @see stukowin_pre_retreive()
  */
 function stukowin_pre_retreive_submit($form, &$form_state) {
 	include_once dirname ( __FILE__ ) . '/stukowin.install';
@@ -221,14 +266,17 @@ function stukowin_pre_retreive_submit($form, &$form_state) {
 }
 
 /**
- * @brief JSON-Service for one the detailed nested array of courses for one curriculum.
+ * @ingroup Drupal2AGG
+ * @brief JSON service for the nested array of courses details for one curriculum
  *
  * @param integer $iVID
- *        	The vid of the curriculum to get
+ *        	The Drupal vocabulary id of the curriculum to get
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+ * 
+ * @see content_manager::json_service_curriculum()
  */
 function stukowin_get_crclm_taxonomy($iVID) {
 	$oContentManager = new content_manager ();
@@ -236,12 +284,19 @@ function stukowin_get_crclm_taxonomy($iVID) {
 }
 
 /**
- * @brief JSON-Service for a list of all currently published curricula.
- * The type of curriculum (e.g. "Bachelorstudium", "Masterstudium"), types of taxonomies (e.g. "curriculum", "itsv" or "specialisation") and the language (e.g. "de") can be given as HTTP GET-parameters.
+ * @ingroup Drupal2AGG
+ * @brief JSON service for a list of all currently published curricula
  * 
- * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * The type of curriculum (e.g. "Bachelorstudium", "Masterstudium"),
+ * types of taxonomies (e.g. "curriculum", "itsv" or "specialisation")
+ * and the language (e.g. "de") can be given as HTTP GET parameters through the respective parameter names @c "currtype", @c taxtypes and @c lang.
+ * 
+ * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+ * 
+ * @see content_manager::getCurricula()
  */
 function stukowin_get_crclm_list() {
 	$oContentManager = new content_manager ();
@@ -265,14 +320,17 @@ function stukowin_get_crclm_list() {
 }
 
 /**
- * @brief JSON-Service for the details of a single course
+ * @ingroup Drupal2AGG
+ * @brief JSON service for the details of a single course
  *
  * @param integer $iNodeID
- *        	The content node id of the course to get
+ *        	The Drupal content node id of the course to get
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+ * 
+ * @see content_manager::json_service_lva()
  */
 function stukowin_get_lva($iNodeID) {
 	$oContentManager = new content_manager ();
@@ -281,16 +339,23 @@ function stukowin_get_lva($iNodeID) {
 
 /**
  * @ingroup Drupal2ITSV
- * @brief Menu callback for creating a new ITSV or specialisation vocabulary.
- * Allows the user to select a source vocabulary, choose which type of vocabulary to create, set a name for the new vocabulary and choose how many structural terms (e.g. "1. Semester", "2. Semester") to automatically insert.
+ * @brief Menu callback for creating a new ITSV or specialisation vocabulary
  * 
- * @param array $form Form structure
- * @param object $form_state Form state
+ * Allows the user to
+ * + Select a source vocabulary
+ * + Choose which type of vocabulary to create (ITSV or specialisation)
+ * + Set a name for the new vocabulary
+ * + Choose how many structural terms (e.g. "1. Semester", "2. Semester") to automatically insert
  * 
- * @return array form structure
- * @author author Jakob Strasser - jakob.strasser@telenet.be
+ * @param array $form Form structure as given by Drupal
+ * @param array $form_state Form state as given by Drupal
+ * @return The filled out form structure
+ * 
+ * @author Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-16
- * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ * 
+ * @see stukowin_taxonomy_menu_submit()
  */
 function stukowin_taxonomy_menu($form, &$form_state) {
 	// Load available curricula into array
@@ -346,16 +411,19 @@ function stukowin_taxonomy_menu($form, &$form_state) {
 
 /**
  * @ingroup Drupal2ITSV
- * @brief Submit handler for {@see stukowin_taxonomy_menu}.
- * Creates a new ITSV or specialisation taxonomy and redirects the user to the taxonomy manager.
+ * @brief Submit handler for @ref stukowin_taxonomy_menu()
  * 
- * @param array $form Form structure
- * @param object $form_state Form state
+ * Creates a new ITSV or specialisation vocabulary and redirects the user to the taxonomy manager's dual view.
+ * 
+ * @param array $form Form structure as given by Drupal
+ * @param array $form_state Form state as given by Drupal
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * 
  * @version 1.0.0 2014-07-16
- * @since Commit 1905775 on 2014-07-02
+ * @since Commit 190577568295b7682dc74a79c4fd478e9e33c639 on 2014-07-02
+ * 
+ * @see stukowin_taxonomy_menu()
  */
 function stukowin_taxonomy_menu_submit($form, &$form_state) {
 	$sTaxonomyType = $form_state ['values'] ['type_select'] ? 'specialisation' : 'itsv';
@@ -397,22 +465,29 @@ function stukowin_taxonomy_menu_submit($form, &$form_state) {
 /**
  * @ingroup Stukowin_Module
  * @brief Implements hook_menu().
- * Registers all menu links with drupal. The following links are registered:
- * <ul>
- * <li>CEUS API Settings @ 'admin/stukowin/settings'</li>
- * <li>CEUS Data import @ 'admin/settings/stukowin/import'</li>
- * <li>PDF Generation @ 'admin/settings/stukowin/pdf'</li>
- * <li>ITSV/Specialisation Taxonomy Creation @ 'admin/settings/stukowin/taxonomy'</li>
- * <li>Curriculum JSON Service @ 'stukowin/crclm'</li>
- * <li>Curricula List JSON Service @ 'stukowin/crclmlst'</li>
- * <li>Course Detail JSON Service @ 'stukowin/lva'</li>
- * </ul>
  * 
- * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
- * @author Werner Breuer - bluescreenwerner@gmail.com
+ * Registers all menu links with Drupal. The following links are registered:
+ * + CEUS API Settings @ 'admin/stukowin/settings'
+ * + CEUS Data import @ 'admin/settings/stukowin/import'
+ * + PDF Generation @ 'admin/settings/stukowin/pdf'
+ * + ITSV/Specialisation Taxonomy Creation @ 'admin/settings/stukowin/taxonomy'
+ * + Curriculum JSON Service @ 'stukowin/crclm'
+ * + Curricula List JSON Service @ 'stukowin/crclmlst'
+ * + Course Detail JSON Service @ 'stukowin/lva'
+ * 
+ * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
  * @version 1.0.0 2014-07-16
- * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
+ * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ * 
+ * @see stukowin_pdf_menu()
+ * @see stukowin_taxonomy_menu()
+ * @see stukowin_pre_retreive()
+ * @see stukowin_admin()
+ * @see stukowin_get_lva()
+ * @see stukowin_get_crclm_taxonomy()
+ * @see stukowin_get_crclm_list()
  */
 function stukowin_menu() {
 	$items = array ();
@@ -497,13 +572,14 @@ function stukowin_menu() {
 
 /**
  * @ingroup Drupal2AGG
- * @brief  implements hook_ckeditor_plugin
- * Adds hook for the ckeditor plugin to insert a curriculum display
+ * @brief implements hook_ckeditor_plugin
  * 
- * @author Markus Gutmayr
- * @author Werner Breuer - bluescreenwerner@gmail.com
+ * Adds the hook for the @ref stukowin_curriculum.js "ckeditor plugin" to insert a curriculum display.
+ * 
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Markus Gutmayr
  * @version 1.0.0 2014-07-16
- * @since Commit b63de89 on 2014-07-01 
+ * @since Commit b63de89ea0d0b45b428d333a4ba5c8d859047ba2 on 2014-07-01 
  */
 function stukowin_ckeditor_plugin() {
 	return array (
@@ -528,14 +604,15 @@ function stukowin_ckeditor_plugin() {
 /**
  * @ingroup Drupal2AGG
  * @brief implements hook_theme_registry_alter
- * Hook for telling the system to use our template on stukowin custom content type
+ * 
+ * Hook for telling the system to use our template on stukowin custom content type.
  * 
  * @param object $theme_registry The entire cache of theme registry information, post-processing.
  * 
- * @author Werner Breuer - bluescreenwerner@gmail.com
- * @author Markus Gutmayr
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Markus Gutmayr
  * @version 1.0.0 2014-07-16
- * @since Commit 9f1f3db on 2014-07-05 
+ * @since Commit 9f1f3db3b94f0c44518af0f58401bac46f41d7cb on 2014-07-05 
  */
 function stukowin_theme_registry_alter(&$theme_registry) {
 	$theme_registry_copy = $theme_registry;

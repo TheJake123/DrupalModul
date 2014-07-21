@@ -6,7 +6,9 @@
  * This file contains all necessary functionality for
  * accessing the curricula data stored in drupal
  * 
- * @author Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-07
  * @since Commit f90560aa796b39853beb42a521d6d94c86051c46 on 2014-06-28
  * 
@@ -20,7 +22,9 @@ include_once dirname ( __FILE__ ) . '/stukowin.install';
  *
  * This class is used to fetch LVA-nodes and vocabulary trees from the drupal database. As it is a utility class, it has mainly @c public functions.
  *
- * @author Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-07
  * @since Commit f90560aa796b39853beb42a521d6d94c86051c46 on 2014-06-28
  */

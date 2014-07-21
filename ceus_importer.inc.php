@@ -5,21 +5,23 @@
  * It also implements the functions for the change management
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
- * @author Markus Gutmayer
- * @author Werner Breuer
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
  * @since d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 
 /**
  * @ingroup CEUS2Drupal
- * @file ceus_importer.inc.php
+ * @file
  * @brief Imports data from CEUS
  *
  * This file manages the import of curricula data from CEUS.
  *
  * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
@@ -34,7 +36,9 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
  * This class is used to import data from the CEUS-API and saving them in the Drupal database. It also provides the change management functionality described in the system documentation.
  *
  * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
  * @version 1.0.0 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  *       
@@ -257,8 +261,8 @@ class ceus_importer {
 	 *        	@retval details 2-dimensional array containing the course details. 1. dimension = language, 2. dimension = details.
 	 *        	@retval false An error occured while fetching the details
 	 *        	
-	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @authors Konstantinos Dafalias - kdafalias@gmail.com
+	 * @authors Jakob Strasser - jakob.strasser@telenet.be
 	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 *       
@@ -294,7 +298,7 @@ class ceus_importer {
 	 * @return Node id of the saved content node
 	 *        
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @author Jakob Strasser - jakob.strasser@telenet.be
+	 * @authors Jakob Strasser - jakob.strasser@telenet.be
 	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
@@ -427,7 +431,7 @@ class ceus_importer {
 	 *
 	 * This function searches for the Drupal content node corresponding to a given course code or course title.
 	 *
-	 * @param string $sFieldType
+	 * @param string $sFieldtype
 	 *        	The name of the field to search in. This can be either "code" or "title".
 	 * @param string $sFieldcontent
 	 *        	The search term to look for
@@ -670,7 +674,7 @@ class ceus_importer {
 	 * @retval "success message" The import was successful. This message contains the @ref $aStats "import statistics".
 	 * @retval false An error has occured and the import was not successful.
 	 *        
-	 * @author Konstantinos Dafalias - kdafalias@gmail.com
+	 * @authors Konstantinos Dafalias - kdafalias@gmail.com
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
 	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28

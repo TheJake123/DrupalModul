@@ -1,21 +1,10 @@
 <?php
 /**
- * @defgroup Stukowin_Module Stukowin_Module
- * @brief This module implements all the function a Drupal module requieres
- * 
- * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
- * @author Markus Gutmayer
- * @author Werner Breuer
- * @since d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
- */
-
-/**
  * @ingroup Stukowin_Module
- * @file stukowin.install
- * @brief install skript
+ * @file
+ * @brief Install script
  * 
- * Drupal install skript for Stukowin module
+ * This file contains the Drupal install script for the stukowin module.
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @version 1.0.0 2014-07-16
@@ -28,12 +17,13 @@
  * @ingroup Stukowin_Module
  * @brief Implements hook_install(). 
  * 
- * Creates the content type for LVA nodes
- * Creates relation types for requirements and recommendations
- * Adds 3 fields to taxonomy nodes for faculty, version and type of curriculum
+ * Sets up drupal for use with the stukowin module.
+ * + Creates the content type for LVA nodes.
+ * + Creates relation types for requirements and recommendations.
+ * + Adds 3 fields to taxonomy nodes for @c faculty, @c version and @c type of curriculum
  * 
- * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @author Jakob Strasser - jakob.strasser@telenet.be
+ * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @version 1.0.0 2014-07-07
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */ 
@@ -93,17 +83,22 @@ function stukowin_install()
 
 /**
  * @ingroup Stukowin_Module
- * @brief capsule for array for additional fields for taxonomies
+ * @brief Contains the array of additional vocabulary fields
  * 
- * Returns a structured array defining the custom fields for taxonomies 
- * Additional fields: faculty, version and type of curriculum as received 
- * from CEUS
+ * Returns a structured array defining the custom fields for vocabularies.  
+ * The additional fields are:
+ * + faculty
+ * + version
+ * + type 
+ * of curriculum as received from CEUS.
  * 
- * @return array Structured array for drupal field generation
+ * @return A structured array for Drupal field generation
  * 
  * @version 1.0.0 2014-07-07
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ * 
+ * @see _stukowin_installed_taxonomy_instances()
  */
 function _stukowin_installed_taxonomy_fields()
 {
@@ -132,24 +127,29 @@ function _stukowin_installed_taxonomy_fields()
 
 /**
  * @ingroup Stukowin_Module
- * @brief capsule for array for additional fields for taxonomies - instances
+ * @brief Contains the array of additional fields for vocabulary instances
  * 
- * Returns a structured array defining the custom fields and input types for taxonomies 
- * Additional fields: faculty, version and type of curriculum as received 
- * from CEUS - instances
+ * Returns a structured array defining and describing in greater detail the custom fields for vocabularies.  
+ * The additional fields are:
+ * + faculty
+ * + version
+ * + type 
+ * of curriculum as received from CEUS.
  * 
- * @return array Structured array for drupal field instance generation
+ * @return A structured array for drupal field instance generation
  * 
  * @version 1.0.0 2014-07-07
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
+ * 
+ * @see _stukowin_installed_taxonomy_fields()
  */
 function _stukowin_installed_taxonomy_instances() 
 { 
     $t = get_t();
     return array(
         'faculty' => array(
-            'label' => $t('FakultÃ¤t'),
+            'label' => $t('Fakultät'),
             'field_name' => 'faculty',
             'type' => 'text', 
             'widget' => array(
@@ -178,14 +178,29 @@ function _stukowin_installed_taxonomy_instances()
 
 /**
  * @ingroup Stukowin_Module
- * @brief capsule for fields for stukowin node type
+ * @brief Contains the array of additional fields for the stukowin content node type
  * 
  * Return a structured array defining the fields created by this content type. 
- * For the job post module there is only one additional field â€“ the company name 
- * Other fields could be added by defining them in this function as additional elements 
- * in the array below 
- * 
- * @return array Structured array for Drupal field generation
+ * The additional fields are:
+ * + ceusid
+ * + code
+ * + ects
+ * + wst
+ * + verantname
+ * + verantemail
+ * + changedate
+ * + lvtypname
+ * + lvtypshort
+ * + lvatype
+ * + typename
+ * + ziele
+ * + lehrinhalte
+ * + voraussetzungen
+ * + voraussetzung
+ * + empfehlung
+ * + term
+ * of the course as received from CEUS and saved in Drupal.
+ * @return A structured array for Drupal field generation
  * 
  * @version 1.0.0 2014-07-07
  * @author Konstantinos Dafalias - kdafalias@gmail.com
@@ -287,17 +302,33 @@ function _stukowin_installed_fields()
 
 /**
  * @ingroup Stukowin_Module
- * @brief capsule for fields for stukowin node type: instances
+ * @brief Contains the array of additional fields for the stukowin content node type
  * 
- * Return a structured array defining the fields and form entry types created by this content type. 
- * For the job post module there is only one additional field â€“ the company name 
- * Other fields could be added by defining them in this function as additional elements 
- * in the array below 
- * 
- * @return array Structured array for Drupal field instance generation
+ * Return a structured array defining and describing in greater detail the fields created by this content type. 
+ * The additional fields are:
+ * + ceusid
+ * + code
+ * + ects
+ * + wst
+ * + verantname
+ * + verantemail
+ * + changedate
+ * + lvtypname
+ * + lvtypshort
+ * + lvatype
+ * + typename
+ * + ziele
+ * + lehrinhalte
+ * + voraussetzungen
+ * + voraussetzung
+ * + empfehlung
+ * + term
+ * of the course as received from CEUS and saved in Drupal.
+ * @return A structured array for Drupal field generation
  * 
  * @version 1.0.0 2014-07-07
  * @author Konstantinos Dafalias - kdafalias@gmail.com
+ * @authors Fabian Pühringer - f.puehringer@24speed.at
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 function _stukowin_installed_instances() 
@@ -565,9 +596,9 @@ function _stukowin_installed_instances()
 
 /**
  * @ingroup Stukowin_Module
- * @brief Custom relation types for recommendations and requirements
+ * @brief Contains custom relation types for recommendations and requirements
  * 
- * Custom relation types for recommendations and requirements
+ * @return An array containing the description for recommended and required prerequisite relations.
  * 
  * @version 1.0.0 2014-07-07
  * @author Konstantinos Dafalias - kdafalias@gmail.com
@@ -577,7 +608,7 @@ function _stukowin_relation_types(){
   return array(
     array(
     'disabled'=>FALSE, 'api_version'=>1,'relation_type'=>'empfehlung','label'=>'Empfohlen',
-      'reverse_label'=>'Empfohlen fÃ¼r','directional'=>1,'transitive'=>0,'r_unique'=>1,
+      'reverse_label'=>'Empfohlen für','directional'=>1,'transitive'=>0,'r_unique'=>1,
       'min_arity'=>2, 'max_arity'=>2, 'source_bundles'=>array('node:stukowin'),'target_bundles'=>array('node:stukowin')),
     array('disabled'=>FALSE, 'api_version'=>1,'relation_type'=>'voraussetzung','label'=>'Voraussetzung',
       'reverse_label'=>'Vorausgesetzt von','directional'=>1,'transitive'=>0,'r_unique'=>1,
@@ -587,9 +618,9 @@ function _stukowin_relation_types(){
 
 /**
  * @ingroup Stukowin_Module
- * @brief Create the relation type
+ * @brief Creates the relation type
  * 
- * Creates the relation type for LVA recommendations and requirements
+ * This method creates the relation type for course recommendations and requirements
  * 
  * @version 1.0.0 2014-07-07
  * @author Konstantinos Dafalias - kdafalias@gmail.com
@@ -617,16 +648,16 @@ function _stukowin_create_relation_types() {
  * @ingroup Stukowin_Module
  * @brief Implements hook_uninstall(). 
  * 
- * Deletes all content nodes
- * Deletes all CEUS taxonomies
- * Deletes content type for LVA nodes
+ * + Deletes all content nodes
+ * + Deletes all CEUS taxonomies
+ * + Deletes the content type for LVA nodes
  * 
  * @version 1.0.0 2014-07-09
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @author Werner Breuer - bluescreenwerner@gmail.com
  * 
- * @since Commit 2506486 on 2014-07-09
+ * @since Commit 2506486a98691dbd0031666d5f932784bd3eede1 on 2014-07-09
  */ 
 function stukowin_uninstall() 
 { 

@@ -3,16 +3,18 @@
  * @ingroup Drupal2AGG
  * @brief The stukowin_curriculum dialog definition
  * 
- * This file contains the dialog definition for our CKEditor Plugin.
- * It is called once a user clicks on the button in the menubar.
+ * This file contains the dialog definition for our CKEditor plugin.
+ * It is called once a user clicks on the button in the CKEditor's menu bar.
+ * 
+ * @remark For this plugin to work, it has to be enabled in the CKEditor configuration.
  * 
  * @author Werner Breuer - bluescreenwerner@gmail.com
- * @author Markus Gutmayr
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @author Jakob Strasser - jakob.strasser@telenet.be
- * @author Fabian PÃ¼hringer - f.puehringer@24speed.at
+ * @author Fabian Pühringer - f.puehringer@24speed.at
  * 
  * @version 1.0.0 2014-07-01
- * @since Commit 6f56770fb9 on 2014-06-30
+ * @since Commit 6f56770fb90b50992ff33f46c323061bf4b2dc4b on 2014-06-30
  */
 CKEDITOR.dialog.add('stukowin_curriculum_Dialog',
     function(editor) {

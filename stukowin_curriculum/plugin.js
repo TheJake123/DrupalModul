@@ -1,16 +1,16 @@
 /**
  * @file 
  * @ingroup Drupal2AGG
- * @brief Registers this CKEditor plugin
+ * @brief Registers the CKEditor plugin
  * 
- * This file contains all commands for registering the CKEditor Plugin.
- * Adds the buttons and dialog box and adds the command behind them.
+ * This file contains the commands for registering the CKEditor Plugin.
+ * It adds the button and the dialog box and adds the commands behind them.
  * 
- * @author Werner Breuer - bluescreenwerner@gmail.com
- * @author Markus Gutmayr
+ * @authors Werner Breuer - bluescreenwerner@gmail.com
+ * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * 
  * @version 1.0.0 2014-07-01
- * @since Commit 6f56770fb9 on 2014-06-30
+ * @since Commit 6f56770fb90b50992ff33f46c323061bf4b2dc4b on 2014-06-30
  * 
  */
 // Register the plugin within the editor.
