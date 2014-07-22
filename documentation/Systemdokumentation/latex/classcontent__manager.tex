@@ -1,0 +1,348 @@
+\hypertarget{classcontent__manager}{\subsection{content\+\_\+manager Class Reference}
+\label{classcontent__manager}\index{content\+\_\+manager@{content\+\_\+manager}}
+}
+
+
+Access to drupal vocabularies and content nodes.  
+
+
+\subsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcontent__manager_a6732db58443e8a0948bcc7705f654c7a}{get\+\_\+return\+\_\+node} (\$i\+Node\+I\+D, \$s\+Lang= 'de')
+\begin{DoxyCompactList}\small\item\em Gets course details. \end{DoxyCompactList}\item 
+\hyperlink{classcontent__manager_acfeb4c387a22e750487e1bee5c73c1f9}{taxonomy\+\_\+get\+\_\+nested\+\_\+tree} (\$vid\+\_\+or\+\_\+terms=array(), \$max\+\_\+depth=N\+U\+L\+L, \$parent=0, \$parents\+\_\+index=array(), \$depth=0)
+\begin{DoxyCompactList}\small\item\em Gets vocabulary tree. \end{DoxyCompactList}\item 
+\hyperlink{classcontent__manager_a4f357170f7656cabf748245c46d7e8be}{json\+\_\+service\+\_\+lva} (\$i\+Node\+I\+D)
+\begin{DoxyCompactList}\small\item\em Returns course as J\+S\+O\+N object. \end{DoxyCompactList}\item 
+\hyperlink{classcontent__manager_a3c6667e24648fecc0ec3751318ac55bd}{get\+Curricula} (\$s\+Curr\+Type= '', \$a\+Vocabulary\+Types=array('curriculum'), \$s\+Lang= 'de')
+\begin{DoxyCompactList}\small\item\em Gets multiple curriculula. \end{DoxyCompactList}\item 
+\hyperlink{classcontent__manager_a5d110b5c929715c771e2d903951ef7ca}{get\+Unique\+Machine\+Name} (\$s\+Core\+Name)
+\begin{DoxyCompactList}\small\item\em Gets a unique and valid machine name. \end{DoxyCompactList}\item 
+\hyperlink{classcontent__manager_a0fccc30120c83ecc35b6a84b4654f2dc}{get\+Curriculum} (\$i\+V\+I\+D)
+\begin{DoxyCompactList}\small\item\em Gets one the curriculum. \end{DoxyCompactList}\item 
+\hyperlink{classcontent__manager_abe8407588c7195d203e7df5ff53fb373}{json\+\_\+service\+\_\+curriculum} (\$i\+V\+I\+D)
+\begin{DoxyCompactList}\small\item\em Returns curriculum tree as J\+S\+O\+N array. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsubsection{Detailed Description}
+Access to drupal vocabularies and content nodes. 
+
+This class is used to fetch L\+V\+A-\/nodes and vocabulary trees from the drupal database. As it is a utility class, it has mainly {\ttfamily public} functions.
+
+\begin{DoxyAuthor}{Authors}
+Werner Breuer -\/ \href{mailto:bluescreenwerner@gmail.com}{\tt bluescreenwerner@gmail.\+com} 
+
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+0 2014-\/07-\/07 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/f90560aa796b39853beb42a521d6d94c86051c46}{\tt f90560a} on 2014-\/06-\/28 
+\end{DoxySince}
+
+
+Definition at line 32 of file content\+\_\+manager.\+inc.\+php.
+
+
+
+\subsubsection{Member Function Documentation}
+\hypertarget{classcontent__manager_a6732db58443e8a0948bcc7705f654c7a}{\index{content\+\_\+manager@{content\+\_\+manager}!get\+\_\+return\+\_\+node@{get\+\_\+return\+\_\+node}}
+\index{get\+\_\+return\+\_\+node@{get\+\_\+return\+\_\+node}!content\+\_\+manager@{content\+\_\+manager}}
+\paragraph[{get\+\_\+return\+\_\+node}]{\setlength{\rightskip}{0pt plus 5cm}get\+\_\+return\+\_\+node (
+\begin{DoxyParamCaption}
+\item[{}]{\$i\+Node\+I\+D, }
+\item[{}]{\$s\+Lang = {\ttfamily 'de'}}
+\end{DoxyParamCaption}
+)}}\label{classcontent__manager_a6732db58443e8a0948bcc7705f654c7a}
+
+
+Gets course details. 
+
+This method returns the drupal content node corresponding to the given {\itshape \$i\+Node\+I\+D} in the given {\itshape \$s\+Lang} with all fields required for displaying the course either in the \hyperlink{pdf__creator_8inc_8php}{P\+D\+F document} or in the \hyperlink{graph_8js}{curriculum display} (i.\+e. the fields set in \hyperlink{group___stukowin___module_ga5eda7b9b561e8a5ad87df0bb50cf80b0}{\+\_\+stukowin\+\_\+installed\+\_\+fields()}).
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$i\+Node\+I\+D} & Drupal id of the content node \\
+\hline
+string & {\em \$s\+Lang} & Language to return. Default is 'de'. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The selected course with all the needed attributes as properties
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/58a583aa830a1e2832126a782621f2ebd390d217}{\tt 58a583a} on 2014-\/06-\/29
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{group___stukowin___module_ga5eda7b9b561e8a5ad87df0bb50cf80b0}{\+\_\+stukowin\+\_\+installed\+\_\+fields()} 
+
+\hyperlink{classcontent__manager_acfeb4c387a22e750487e1bee5c73c1f9}{taxonomy\+\_\+get\+\_\+nested\+\_\+tree()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 54 of file content\+\_\+manager.\+inc.\+php.
+
+
+
+References \+\_\+stukowin\+\_\+installed\+\_\+fields().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=303pt]{classcontent__manager_a6732db58443e8a0948bcc7705f654c7a_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classcontent__manager_a3c6667e24648fecc0ec3751318ac55bd}{\index{content\+\_\+manager@{content\+\_\+manager}!get\+Curricula@{get\+Curricula}}
+\index{get\+Curricula@{get\+Curricula}!content\+\_\+manager@{content\+\_\+manager}}
+\paragraph[{get\+Curricula}]{\setlength{\rightskip}{0pt plus 5cm}get\+Curricula (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\+Curr\+Type = {\ttfamily ''}, }
+\item[{}]{\$a\+Vocabulary\+Types = {\ttfamily array('curriculum')}, }
+\item[{}]{\$s\+Lang = {\ttfamily 'de'}}
+\end{DoxyParamCaption}
+)}}\label{classcontent__manager_a3c6667e24648fecc0ec3751318ac55bd}
+
+
+Gets multiple curriculula. 
+
+This method reads all curricula of curriculum type {\itshape \$s\+Curr\+Type} and vocabulary types {\itshape \$a\+Vocabulary\+Types} in the language {\itshape \$s\+Lang} from the drupal database and returns them as an associative array.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\+Curr\+Type} & The type of curriculum to get. Valid values are
+\begin{DoxyItemize}
+\item Bachelorstudium
+\item Masterstudium 
+\end{DoxyItemize}\\
+\hline
+array & {\em \$a\+Vocabulary\+Types} & The taxonomy types to get. Default is 'curriculum'. Valid values are
+\begin{DoxyItemize}
+\item curriculum
+\item itsv
+\item schwerpunkt 
+\end{DoxyItemize}\\
+\hline
+string & {\em \$s\+Lang} & The language to get the curricula in. Default is 'de' \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Associative array of selected curricula
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/190577568295b7682dc74a79c4fd478e9e33c639}{\tt 1905775} on 2014-\/07-\/02 
+\end{DoxySince}
+
+
+Definition at line 189 of file content\+\_\+manager.\+inc.\+php.
+
+\hypertarget{classcontent__manager_a0fccc30120c83ecc35b6a84b4654f2dc}{\index{content\+\_\+manager@{content\+\_\+manager}!get\+Curriculum@{get\+Curriculum}}
+\index{get\+Curriculum@{get\+Curriculum}!content\+\_\+manager@{content\+\_\+manager}}
+\paragraph[{get\+Curriculum}]{\setlength{\rightskip}{0pt plus 5cm}get\+Curriculum (
+\begin{DoxyParamCaption}
+\item[{}]{\$i\+V\+I\+D}
+\end{DoxyParamCaption}
+)}}\label{classcontent__manager_a0fccc30120c83ecc35b6a84b4654f2dc}
+
+
+Gets one the curriculum. 
+
+This function fetches the curriculum object with the given vocabulary id ({\itshape \$i\+V\+I\+D}) from the database.
+
+{\bfseries Note\+:} it does not fetch the vocabulary tree, just its meta-\/information.
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$i\+V\+I\+D} & The vid of the curriculum vocabulary \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An associative array representing the curriculum object
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/190577568295b7682dc74a79c4fd478e9e33c639}{\tt 1905775} on 2014-\/07-\/02 
+\end{DoxySince}
+
+
+Definition at line 268 of file content\+\_\+manager.\+inc.\+php.
+
+\hypertarget{classcontent__manager_a5d110b5c929715c771e2d903951ef7ca}{\index{content\+\_\+manager@{content\+\_\+manager}!get\+Unique\+Machine\+Name@{get\+Unique\+Machine\+Name}}
+\index{get\+Unique\+Machine\+Name@{get\+Unique\+Machine\+Name}!content\+\_\+manager@{content\+\_\+manager}}
+\paragraph[{get\+Unique\+Machine\+Name}]{\setlength{\rightskip}{0pt plus 5cm}get\+Unique\+Machine\+Name (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\+Core\+Name}
+\end{DoxyParamCaption}
+)}}\label{classcontent__manager_a5d110b5c929715c771e2d903951ef7ca}
+
+
+Gets a unique and valid machine name. 
+
+This function asserts that a machine name is valid and adds incrementing numbers at the end until it is also unique.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\+Core\+Name} & The initial name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The unique and valid machine name
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/190577568295b7682dc74a79c4fd478e9e33c639}{\tt 1905775} on 2014-\/07-\/02
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{group___drupal2_i_t_s_v_ga5fb85a53362f6fef40035a6c350c11ea}{stukowin\+\_\+taxonomy\+\_\+menu\+\_\+submit()} 
+
+\hyperlink{classceus__importer_a5cd89fd2b1560b25eb4300ea6662a1b7}{ceus\+\_\+importer\+::check\+\_\+vocabulary()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 230 of file content\+\_\+manager.\+inc.\+php.
+
+\hypertarget{classcontent__manager_abe8407588c7195d203e7df5ff53fb373}{\index{content\+\_\+manager@{content\+\_\+manager}!json\+\_\+service\+\_\+curriculum@{json\+\_\+service\+\_\+curriculum}}
+\index{json\+\_\+service\+\_\+curriculum@{json\+\_\+service\+\_\+curriculum}!content\+\_\+manager@{content\+\_\+manager}}
+\paragraph[{json\+\_\+service\+\_\+curriculum}]{\setlength{\rightskip}{0pt plus 5cm}json\+\_\+service\+\_\+curriculum (
+\begin{DoxyParamCaption}
+\item[{}]{\$i\+V\+I\+D}
+\end{DoxyParamCaption}
+)}}\label{classcontent__manager_abe8407588c7195d203e7df5ff53fb373}
+
+
+Returns curriculum tree as J\+S\+O\+N array. 
+
+This method gets the entire tree of the curriculum with the vocabulary id {\ttfamily \$i\+V\+I\+D} and returns it as a J\+S\+O\+N array.
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$i\+V\+I\+D} & Drupal vocabulary id of the desired curriculum\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/f90560aa796b39853beb42a521d6d94c86051c46}{\tt f90560a} on 2014-\/06-\/28
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classcontent__manager_acfeb4c387a22e750487e1bee5c73c1f9}{taxonomy\+\_\+get\+\_\+nested\+\_\+tree()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 294 of file content\+\_\+manager.\+inc.\+php.
+
+\hypertarget{classcontent__manager_a4f357170f7656cabf748245c46d7e8be}{\index{content\+\_\+manager@{content\+\_\+manager}!json\+\_\+service\+\_\+lva@{json\+\_\+service\+\_\+lva}}
+\index{json\+\_\+service\+\_\+lva@{json\+\_\+service\+\_\+lva}!content\+\_\+manager@{content\+\_\+manager}}
+\paragraph[{json\+\_\+service\+\_\+lva}]{\setlength{\rightskip}{0pt plus 5cm}json\+\_\+service\+\_\+lva (
+\begin{DoxyParamCaption}
+\item[{}]{\$i\+Node\+I\+D}
+\end{DoxyParamCaption}
+)}}\label{classcontent__manager_a4f357170f7656cabf748245c46d7e8be}
+
+
+Returns course as J\+S\+O\+N object. 
+
+This method fetches a single course from the drupal database and returns it as J\+S\+O\+N.
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$i\+Node\+I\+D} & Content node id of the desired course\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/f90560aa796b39853beb42a521d6d94c86051c46}{\tt f90560a} on 2014-\/06-\/28
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{group___drupal2_a_g_g_ga7522e206f1a87971b916a7a0be0098c6}{stukowin\+\_\+get\+\_\+lva()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 155 of file content\+\_\+manager.\+inc.\+php.
+
+\hypertarget{classcontent__manager_acfeb4c387a22e750487e1bee5c73c1f9}{\index{content\+\_\+manager@{content\+\_\+manager}!taxonomy\+\_\+get\+\_\+nested\+\_\+tree@{taxonomy\+\_\+get\+\_\+nested\+\_\+tree}}
+\index{taxonomy\+\_\+get\+\_\+nested\+\_\+tree@{taxonomy\+\_\+get\+\_\+nested\+\_\+tree}!content\+\_\+manager@{content\+\_\+manager}}
+\paragraph[{taxonomy\+\_\+get\+\_\+nested\+\_\+tree}]{\setlength{\rightskip}{0pt plus 5cm}taxonomy\+\_\+get\+\_\+nested\+\_\+tree (
+\begin{DoxyParamCaption}
+\item[{}]{\$vid\+\_\+or\+\_\+terms = {\ttfamily array()}, }
+\item[{}]{\$max\+\_\+depth = {\ttfamily NULL}, }
+\item[{}]{\$parent = {\ttfamily 0}, }
+\item[{}]{\$parents\+\_\+index = {\ttfamily array()}, }
+\item[{}]{\$depth = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{classcontent__manager_acfeb4c387a22e750487e1bee5c73c1f9}
+
+
+Gets vocabulary tree. 
+
+This is a recursive function that reads an entire drupal vocabulary into a nested array. It can be called externally by giving the vocabulary id (vid) as the first parameter and leaving the other parameters empty.
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer | array & {\em \$vid\+\_\+or\+\_\+terms} & The vid of the curriculum to get. Default is an empty {\ttfamily array} \\
+\hline
+integer & {\em \$max\+\_\+depth} & The maximum depth of the nested array. Default is {\ttfamily N\+U\+L\+L} \\
+\hline
+integer & {\em \$parent} & The drupal term id (tid) of the next term's parent term. Default is {\ttfamily 0} \\
+\hline
+array & {\em \$parents\+\_\+index} & An array of all parents that have been traversed by the method in earlier recursion steps. Default is an empty {\ttfamily array} \\
+\hline
+integer & {\em \$depth} & The current recursion depth. Defaul is {\ttfamily 0} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The nested array of all courses in the vocabulary
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/f90560aa796b39853beb42a521d6d94c86051c46}{\tt f90560a} on 2014-\/06-\/28 
+\end{DoxySince}
+
+
+Definition at line 106 of file content\+\_\+manager.\+inc.\+php.
+
+
+
+References \+\_\+stukowin\+\_\+installed\+\_\+fields().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classcontent__manager_acfeb4c387a22e750487e1bee5c73c1f9_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{content__manager_8inc_8php}{content\+\_\+manager.\+inc.\+php}\end{DoxyCompactItemize}

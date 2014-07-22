@@ -1,0 +1,6 @@
+<map id="_stukowin_installed_fields" name="_stukowin_installed_fields">
+<area shape="rect" id="node2" href="$classcontent__manager.html#a6732db58443e8a0948bcc7705f654c7a" title="Gets course details. " alt="" coords="207,5,351,47"/>
+<area shape="rect" id="node3" href="$group___stukowin___module.html#ga67989d3a763f2efa2fc0b07460639558" title="Implements hook_install(). " alt="" coords="222,71,337,98"/>
+<area shape="rect" id="node4" href="$group___stukowin___module.html#gad831696eae7eb1a0e48c4e9621323bca" title="Implements hook_uninstall(). " alt="" coords="215,122,343,149"/>
+<area shape="rect" id="node5" href="$classcontent__manager.html#acfeb4c387a22e750487e1bee5c73c1f9" title="Gets vocabulary tree. " alt="" coords="188,173,371,215"/>
+</map>

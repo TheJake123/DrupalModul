@@ -1,0 +1,5 @@
+<map id="printHeading" name="printHeading">
+<area shape="rect" id="node2" href="$classoverview_p_d_f.html#a1871e6880b3bb67d0a49cdcab4cd680d" title="Prints a curriculum object and all its courses to the PDF document. " alt="" coords="417,5,527,32"/>
+<area shape="rect" id="node3" href="$classoverview_p_d_f.html#abf0674d88080affc25c472fbd0525896" title="Prints a subject to the PDF document. " alt="" coords="148,31,224,57"/>
+<area shape="rect" id="node4" href="$classoverview_p_d_f.html#a23c7451efb8c436590fbad032bc6788b" title="Decides whether to print a structural element or a subject. " alt="" coords="272,31,369,57"/>
+</map>

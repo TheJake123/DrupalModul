@@ -1,0 +1,1144 @@
+\hypertarget{classoverview_p_d_f}{\subsection{overview\+P\+D\+F Class Reference}
+\label{classoverview_p_d_f}\index{overview\+P\+D\+F@{overview\+P\+D\+F}}
+}
+
+
+Class for P\+D\+F document generation from curricula data.  
+
+
+
+
+Inheritance diagram for overview\+P\+D\+F\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=237pt]{classoverview_p_d_f__inherit__graph}
+\end{center}
+\end{figure}
+\subsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classoverview_p_d_f_a2f39533ba0786237090683635ef01c49}{Footer} ()
+\begin{DoxyCompactList}\small\item\em Generates Footer for each page. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_a30ddd92aaf87bca0825c149bd3a7d43f}{create\+P\+D\+F} (\$i\+V\+I\+D)
+\begin{DoxyCompactList}\small\item\em Creates the P\+D\+F document. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_a5afab85a7aaf19395f9a0e86cae76928}{Error} (\$msg)
+\begin{DoxyCompactList}\small\item\em Throws exception in case of an error. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classoverview_p_d_f_aedc9466cae51e07e57ba865a69c92efc}{get\+Next\+Index} (\$i\+Level)
+\begin{DoxyCompactList}\small\item\em Gets index of the desired level. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_adca20f06977ea2b3b8737b1d465a1606}{get\+Total\+Y} ()
+\begin{DoxyCompactList}\small\item\em Gets the full y-\/position in the document. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_acf4bdf38a6e11c036b076a16c3516f75}{create\+T\+O\+C\+Page} ()
+\begin{DoxyCompactList}\small\item\em Adds a table of contents page to the P\+D\+F document. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_a10c644f1f84ae1b261a8b198a66b5cb1}{get\+Unique\+Filename} (\$s\+Curr\+Type, \$s\+Curr\+Version)
+\begin{DoxyCompactList}\small\item\em Creates a unique filename. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_a1871e6880b3bb67d0a49cdcab4cd680d}{print\+Curriculum} (\$o\+Curriculum)
+\begin{DoxyCompactList}\small\item\em Prints a curriculum object and all its courses to the P\+D\+F document. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_a23c7451efb8c436590fbad032bc6788b}{print\+Top\+Level} (\$o\+Top\+Level)
+\begin{DoxyCompactList}\small\item\em Decides whether to print a structural element or a subject. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896}{print\+Fach} (\$o\+Fach)
+\begin{DoxyCompactList}\small\item\em Prints a subject to the P\+D\+F document. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_ad0ea6c6476d690b08161300e40926dc6}{generate\+Table\+Rec\+Helper} (\$o\+Course)
+\begin{DoxyCompactList}\small\item\em Recursive function for generating overview table. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d}{split\+Bold\+Text\+Into\+Lines} (\$s\+Text, \$i\+Max\+Width)
+\begin{DoxyCompactList}\small\item\em Inserts line breaks into bold text. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_af3f9a49de14251ba45bd046879f27aa2}{split\+Rec\+Helper} (\$a\+Words, \$i\+Curr\+Index, \$i\+Max\+Width)
+\begin{DoxyCompactList}\small\item\em Recursive helper function for \hyperlink{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d}{split\+Bold\+Text\+Into\+Lines()} \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_af0b14d64b47fe81df7965b8259ccb762}{print\+Ziele\+Inhalte} (\$o\+Course)
+\begin{DoxyCompactList}\small\item\em Prints the course goals and content of teaching and their respecitve headings to the document. \end{DoxyCompactList}\item 
+\hyperlink{classoverview_p_d_f_ad6b57d30526fb658521faddce7595dc4}{print\+Heading} (\$s\+Text, \$i\+Level, \$b\+Show\+Index=true, \$s\+Align= 'L', \$b\+Add\+Bookmark=true)
+\begin{DoxyCompactList}\small\item\em Prints a heading to the P\+D\+F document. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classoverview_p_d_f_af41675b946292789cecd9416ca809bcc}{get\+H\+T\+M\+L\+Height} (\$s\+H\+T\+M\+L)
+\begin{DoxyCompactList}\small\item\em Determines height of H\+T\+M\+L Code. \end{DoxyCompactList}\item 
+static \hyperlink{classoverview_p_d_f_a921bc685431e16db85dc8ef8491f90a4}{get\+Courses} (\$curr\+Id)
+\begin{DoxyCompactList}\small\item\em Gets all courses for a given curriculum id. \end{DoxyCompactList}\item 
+static \hyperlink{classoverview_p_d_f_a56f3ef341ae39bb7b4c34a700b33eac1}{assert\+Attributes} (\$o\+Course)
+\begin{DoxyCompactList}\small\item\em Guarantees the existence of the specified attributes in the course and all its children. \end{DoxyCompactList}\item 
+static \hyperlink{classoverview_p_d_f_ab867930d00ec2effc61f252de44b04fe}{convert\+String\+To\+Valid\+Filename} (\$s\+String)
+\begin{DoxyCompactList}\small\item\em Utility method that formats a string into a valid file name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classoverview_p_d_f_a7d055132da646af2b192923c6a864e97}{\$a\+Indices} = array ()
+\begin{DoxyCompactList}\small\item\em Array of indices for continuous indexation of headings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsubsection{Detailed Description}
+Class for P\+D\+F document generation from curricula data. 
+
+This class provides the functionality for automatically generating a P\+D\+F document from a curriculum.
+
+It is publicly accessible through the \hyperlink{classoverview_p_d_f_a30ddd92aaf87bca0825c149bd3a7d43f}{create\+P\+D\+F()} method, which initiates and guides the P\+D\+F generation.
+
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxyAuthor}{Authors}
+Fabian Puehringer -\/ \href{mailto:f.puehringer@24speed.at}{\tt f.\+puehringer@24speed.\+at} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+2 2014-\/07-\/22 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classoverview_p_d_f_a30ddd92aaf87bca0825c149bd3a7d43f}{create\+P\+D\+F()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 62 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+\subsubsection{Member Function Documentation}
+\hypertarget{classoverview_p_d_f_a56f3ef341ae39bb7b4c34a700b33eac1}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!assert\+Attributes@{assert\+Attributes}}
+\index{assert\+Attributes@{assert\+Attributes}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{assert\+Attributes}]{\setlength{\rightskip}{0pt plus 5cm}static assert\+Attributes (
+\begin{DoxyParamCaption}
+\item[{}]{\$o\+Course}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}}\label{classoverview_p_d_f_a56f3ef341ae39bb7b4c34a700b33eac1}
+
+
+Guarantees the existence of the specified attributes in the course and all its children. 
+
+This is a recursive helper method which asserts that the following attributes exist in the course object\+:
+\begin{DoxyItemize}
+\item title
+\item ects
+\item wst
+\item lvatype
+\item typename
+\item ziele
+\item lehrinhalte
+\item lvtypshort
+\item typename
+\end{DoxyItemize}
+
+Needed so that the other methods do not have to check everytime an attribute is accessed.
+
+
+\begin{DoxyParams}[1]{Parameters}
+object & {\em \$o\+Course} & The course to assert the attributes for\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30 
+\end{DoxySince}
+
+
+Definition at line 653 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+Referenced by get\+Courses().
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=268pt]{classoverview_p_d_f_a56f3ef341ae39bb7b4c34a700b33eac1_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_ab867930d00ec2effc61f252de44b04fe}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!convert\+String\+To\+Valid\+Filename@{convert\+String\+To\+Valid\+Filename}}
+\index{convert\+String\+To\+Valid\+Filename@{convert\+String\+To\+Valid\+Filename}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{convert\+String\+To\+Valid\+Filename}]{\setlength{\rightskip}{0pt plus 5cm}static convert\+String\+To\+Valid\+Filename (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\+String}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}}\label{classoverview_p_d_f_ab867930d00ec2effc61f252de44b04fe}
+
+
+Utility method that formats a string into a valid file name. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\+String} & The file name to validate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The valid file name created from the input
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/f157d51285e8cc638db4a8f62c7635e5ed2bb2fd}{\tt f157d51} on 2014-\/07-\/06 
+\end{DoxySince}
+
+
+Definition at line 687 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+Referenced by get\+Unique\+Filename().
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classoverview_p_d_f_ab867930d00ec2effc61f252de44b04fe_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_a30ddd92aaf87bca0825c149bd3a7d43f}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!create\+P\+D\+F@{create\+P\+D\+F}}
+\index{create\+P\+D\+F@{create\+P\+D\+F}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{create\+P\+D\+F}]{\setlength{\rightskip}{0pt plus 5cm}create\+P\+D\+F (
+\begin{DoxyParamCaption}
+\item[{}]{\$i\+V\+I\+D}
+\end{DoxyParamCaption}
+)}}\label{classoverview_p_d_f_a30ddd92aaf87bca0825c149bd3a7d43f}
+
+
+Creates the P\+D\+F document. 
+
+This method is the main public method of the \hyperlink{classoverview_p_d_f}{overview\+P\+D\+F} class. It manages the entire document generation and saves the P\+D\+F to the preconfigured path. The steps for creating the document are as follows\+:
+\begin{DoxyEnumerate}
+\item Set up P\+D\+F document
+\item Set document meta information
+\item Set up title page
+\item Initiate printing of individual subjects
+\item Add index page
+\item Save the document
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$i\+V\+I\+D} & Drupal vocabulary id of the desired Curriculum \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Success message\+: 'P\+D\+F successfully created at ' and the filepath
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{group___drupal2_p_d_f_ga3649714a54a489d8c0096116fd9cb367}{stukowin\+\_\+pdf\+\_\+menu()} 
+
+\hyperlink{group___drupal2_p_d_f_ga7fd34094c899b5a82949f401e30139a1}{stukowin\+\_\+pdf\+\_\+menu\+\_\+submit()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 195 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References create\+T\+O\+C\+Page(), and print\+Curriculum().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{classoverview_p_d_f_a30ddd92aaf87bca0825c149bd3a7d43f_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_acf4bdf38a6e11c036b076a16c3516f75}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!create\+T\+O\+C\+Page@{create\+T\+O\+C\+Page}}
+\index{create\+T\+O\+C\+Page@{create\+T\+O\+C\+Page}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{create\+T\+O\+C\+Page}]{\setlength{\rightskip}{0pt plus 5cm}create\+T\+O\+C\+Page (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_acf4bdf38a6e11c036b076a16c3516f75}
+
+
+Adds a table of contents page to the P\+D\+F document. 
+
+This method is called at the end of the document creation, after all subjects have been printed to the document, and inserts a table of contents (index) page as the second page in the document.
+
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+T\+C\+P\+D\+F\+::add\+T\+O\+C\+Page() 
+
+\hyperlink{classoverview_p_d_f_ad6b57d30526fb658521faddce7595dc4}{print\+Heading()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 262 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+Referenced by create\+P\+D\+F().
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{classoverview_p_d_f_acf4bdf38a6e11c036b076a16c3516f75_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_a5afab85a7aaf19395f9a0e86cae76928}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!Error@{Error}}
+\index{Error@{Error}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{Error}]{\setlength{\rightskip}{0pt plus 5cm}Error (
+\begin{DoxyParamCaption}
+\item[{}]{\$msg}
+\end{DoxyParamCaption}
+)}}\label{classoverview_p_d_f_a5afab85a7aaf19395f9a0e86cae76928}
+
+
+Throws exception in case of an error. 
+
+This method is needed for displaying errors as drupal messages, due to \hyperlink{class_t_c_p_d_f}{T\+C\+P\+D\+F} normally displaying errors by itself and the dying.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$msg} & The error message to throw the ecxeption with \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & A new exception with the given message\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/e4fa523cc03bdc9453581c7a43d23a09d4ee5688}{\tt e4fa523} on 2014-\/07-\/02
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+T\+C\+P\+D\+F\+::\+Error() 
+\end{DoxySeeAlso}
+
+
+Definition at line 245 of file pdf\+\_\+creator.\+inc.\+php.
+
+\hypertarget{classoverview_p_d_f_a2f39533ba0786237090683635ef01c49}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!Footer@{Footer}}
+\index{Footer@{Footer}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{Footer}]{\setlength{\rightskip}{0pt plus 5cm}Footer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classoverview_p_d_f_a2f39533ba0786237090683635ef01c49}
+
+
+Generates Footer for each page. 
+
+This method draws a 1px line across the entire page 15mm above the bottom and writes the page number in the format \char`\"{}current page/total pages\char`\"{} into the bottom right corner.
+
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+T\+C\+P\+D\+F\+::\+Footer() 
+\end{DoxySeeAlso}
+
+
+Definition at line 86 of file pdf\+\_\+creator.\+inc.\+php.
+
+\hypertarget{classoverview_p_d_f_ad0ea6c6476d690b08161300e40926dc6}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!generate\+Table\+Rec\+Helper@{generate\+Table\+Rec\+Helper}}
+\index{generate\+Table\+Rec\+Helper@{generate\+Table\+Rec\+Helper}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{generate\+Table\+Rec\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}generate\+Table\+Rec\+Helper (
+\begin{DoxyParamCaption}
+\item[{}]{\$o\+Course}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_ad0ea6c6476d690b08161300e40926dc6}
+
+
+Recursive function for generating overview table. 
+
+This is a recursive helper function for generating a subject overview table. It traverses the nested array of courses down to the leaves and creates a table row for each course.
+\begin{DoxyItemize}
+\item Subjects are printed in bold
+\item Modules are printed in italics
+\item Courses are printed in normal text
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}[1]{Parameters}
+object & {\em \$o\+Course} & The course to generate the table H\+T\+M\+L code for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The H\+T\+M\+L code of the table rows for this course and all its children
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896}{print\+Fach()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 452 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References split\+Bold\+Text\+Into\+Lines().
+
+
+
+Referenced by print\+Fach().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classoverview_p_d_f_ad0ea6c6476d690b08161300e40926dc6_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{classoverview_p_d_f_ad0ea6c6476d690b08161300e40926dc6_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_a921bc685431e16db85dc8ef8491f90a4}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!get\+Courses@{get\+Courses}}
+\index{get\+Courses@{get\+Courses}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{get\+Courses}]{\setlength{\rightskip}{0pt plus 5cm}static get\+Courses (
+\begin{DoxyParamCaption}
+\item[{}]{\$curr\+Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}}\label{classoverview_p_d_f_a921bc685431e16db85dc8ef8491f90a4}
+
+
+Gets all courses for a given curriculum id. 
+
+This method gets all the courses in a curriculum and prepares them for further processing in the P\+D\+F creation process.
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$curr\+Id} & The vocabulary id of the curriculum to get the courses from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The nested array of all courses in the given curriculum
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30 
+\end{DoxySince}
+
+
+Definition at line 623 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References assert\+Attributes().
+
+
+
+Referenced by print\+Curriculum().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=268pt]{classoverview_p_d_f_a921bc685431e16db85dc8ef8491f90a4_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=264pt]{classoverview_p_d_f_a921bc685431e16db85dc8ef8491f90a4_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_af41675b946292789cecd9416ca809bcc}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!get\+H\+T\+M\+L\+Height@{get\+H\+T\+M\+L\+Height}}
+\index{get\+H\+T\+M\+L\+Height@{get\+H\+T\+M\+L\+Height}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{get\+H\+T\+M\+L\+Height}]{\setlength{\rightskip}{0pt plus 5cm}static get\+H\+T\+M\+L\+Height (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\+H\+T\+M\+L}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}}\label{classoverview_p_d_f_af41675b946292789cecd9416ca809bcc}
+
+
+Determines height of H\+T\+M\+L Code. 
+
+This utility method prints {\itshape \$s\+H\+T\+M\+L} to a test instance of \hyperlink{classoverview_p_d_f}{overview\+P\+D\+F} and determines what height the H\+T\+M\+L code has if printed.
+
+This method is needed for evaluating whether an H\+T\+M\+L table would fit into the remaining space on the page or if it would be broken into two pages.
+
+\begin{DoxyReturn}{Returns}
+The height of the H\+T\+M\+L code
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896}{print\+Fach()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 141 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+Referenced by print\+Fach().
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=256pt]{classoverview_p_d_f_af41675b946292789cecd9416ca809bcc_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_aedc9466cae51e07e57ba865a69c92efc}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!get\+Next\+Index@{get\+Next\+Index}}
+\index{get\+Next\+Index@{get\+Next\+Index}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{get\+Next\+Index}]{\setlength{\rightskip}{0pt plus 5cm}get\+Next\+Index (
+\begin{DoxyParamCaption}
+\item[{}]{\$i\+Level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_aedc9466cae51e07e57ba865a69c92efc}
+
+
+Gets index of the desired level. 
+
+This utility method manages the \hyperlink{classoverview_p_d_f_a7d055132da646af2b192923c6a864e97}{\$a\+Indices} array and determines what heading index comes next in the given {\ttfamily \$i\+Level} (e.\+g. 1, 2, 3 etc.).
+
+If some levels have been skipped (e.\+g. the first call to this method is with {\ttfamily \$i\+Level = 3}), it fills up the missing array values with 1.
+
+After it has determined the correct index, it increments the corresponding value in the array by 1.
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$i\+Level} & Level for which the index is wanted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The next index on the given level. One single integer (i.\+e. not \char`\"{}1.\+1.\+2\char`\"{})
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be}
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30 
+\end{DoxySince}
+
+
+Definition at line 113 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+Referenced by print\+Heading().
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{classoverview_p_d_f_aedc9466cae51e07e57ba865a69c92efc_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_adca20f06977ea2b3b8737b1d465a1606}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!get\+Total\+Y@{get\+Total\+Y}}
+\index{get\+Total\+Y@{get\+Total\+Y}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{get\+Total\+Y}]{\setlength{\rightskip}{0pt plus 5cm}get\+Total\+Y (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_adca20f06977ea2b3b8737b1d465a1606}
+
+
+Gets the full y-\/position in the document. 
+
+This utility method determines the current y position in relation to the beginning of the document, not just the current page (like T\+C\+P\+D\+F\+::\+Get\+Y()), excluding top and bottom margins.
+
+This method is needed to compare positions in the document across pages.
+
+\begin{DoxyReturn}{Returns}
+Full y-\/position in the entire document (not just on this page), excluding margins
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classoverview_p_d_f_af41675b946292789cecd9416ca809bcc}{get\+H\+T\+M\+L\+Height()} 
+
+T\+C\+P\+D\+F\+::\+Get\+Y() 
+\end{DoxySeeAlso}
+
+
+Definition at line 168 of file pdf\+\_\+creator.\+inc.\+php.
+
+\hypertarget{classoverview_p_d_f_a10c644f1f84ae1b261a8b198a66b5cb1}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!get\+Unique\+Filename@{get\+Unique\+Filename}}
+\index{get\+Unique\+Filename@{get\+Unique\+Filename}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{get\+Unique\+Filename}]{\setlength{\rightskip}{0pt plus 5cm}get\+Unique\+Filename (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\+Curr\+Type, }
+\item[{}]{\$s\+Curr\+Version}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_a10c644f1f84ae1b261a8b198a66b5cb1}
+
+
+Creates a unique filename. 
+
+Determines if a file with the standard filename as defined in the module settings already exists. If one exists, it appends a number and increases it until the name is not already taken.
+
+Also, it creates the directory into which the document should be saved according to the module settings (if it does not already exist).
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\+Curr\+Type} & The type of the curriculum (Bachelorstudium, Masterstudium) \\
+\hline
+string & {\em \$s\+Curr\+Version} & The version of the curriculum (e.\+g. 2013\+W) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The unique filename
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/e8704fdc454e3db61b5be799b2d4928b7bfb6686}{\tt e8704fd} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{group___stukowin___module_ga55d453d5b6f8ae4e643308d8814e67a5}{stukowin\+\_\+admin()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 291 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References convert\+String\+To\+Valid\+Filename().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classoverview_p_d_f_a10c644f1f84ae1b261a8b198a66b5cb1_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_a1871e6880b3bb67d0a49cdcab4cd680d}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!print\+Curriculum@{print\+Curriculum}}
+\index{print\+Curriculum@{print\+Curriculum}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{print\+Curriculum}]{\setlength{\rightskip}{0pt plus 5cm}print\+Curriculum (
+\begin{DoxyParamCaption}
+\item[{}]{\$o\+Curriculum}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_a1871e6880b3bb67d0a49cdcab4cd680d}
+
+
+Prints a curriculum object and all its courses to the P\+D\+F document. 
+
+This method does the following things\+:
+\begin{DoxyEnumerate}
+\item Print the curriculum name as a heading
+\item Create an overview table with all the subjects it contains
+\item Print the details of each subject to the document
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}[1]{Parameters}
+object & {\em \$o\+Curriculum} & The curriculum object to print\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30 
+\end{DoxySince}
+
+
+Definition at line 328 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References get\+Courses(), print\+Heading(), and print\+Top\+Level().
+
+
+
+Referenced by create\+P\+D\+F().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classoverview_p_d_f_a1871e6880b3bb67d0a49cdcab4cd680d_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{classoverview_p_d_f_a1871e6880b3bb67d0a49cdcab4cd680d_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!print\+Fach@{print\+Fach}}
+\index{print\+Fach@{print\+Fach}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{print\+Fach}]{\setlength{\rightskip}{0pt plus 5cm}print\+Fach (
+\begin{DoxyParamCaption}
+\item[{}]{\$o\+Fach}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896}
+
+
+Prints a subject to the P\+D\+F document. 
+
+This method prints the subject title and details, an overview of all its subcourses and their details to the document.
+
+
+\begin{DoxyParams}[1]{Parameters}
+object & {\em \$o\+Fach} & The course object to print\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30 
+\end{DoxySince}
+
+
+Definition at line 396 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References generate\+Table\+Rec\+Helper(), get\+H\+T\+M\+L\+Height(), print\+Heading(), and print\+Ziele\+Inhalte().
+
+
+
+Referenced by print\+Top\+Level().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_ad6b57d30526fb658521faddce7595dc4}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!print\+Heading@{print\+Heading}}
+\index{print\+Heading@{print\+Heading}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{print\+Heading}]{\setlength{\rightskip}{0pt plus 5cm}print\+Heading (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\+Text, }
+\item[{}]{\$i\+Level, }
+\item[{}]{\$b\+Show\+Index = {\ttfamily true}, }
+\item[{}]{\$s\+Align = {\ttfamily 'L'}, }
+\item[{}]{\$b\+Add\+Bookmark = {\ttfamily true}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_ad6b57d30526fb658521faddce7595dc4}
+
+
+Prints a heading to the P\+D\+F document. 
+
+This method manages headings in the document. It automatically indexes the headings using \hyperlink{classoverview_p_d_f_aedc9466cae51e07e57ba865a69c92efc}{get\+Next\+Index()} and optionally adds a bookmark for it.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\+Text} & The heading text \\
+\hline
+int & {\em \$i\+Level} & The level at which the heading should be created and the bookmark set \\
+\hline
+boolean & {\em \$b\+Show\+Index} & {\ttfamily true} if the index should be shown in the heading \\
+\hline
+string & {\em \$s\+Align} & Alignment of the heading. For allowed values see T\+C\+P\+D\+F\+::\+Multi\+Cell() \\
+\hline
+boolean & {\em \$b\+Add\+Bookmark} & {\ttfamily true} if heading should be shown on the index page and bookmarked\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classoverview_p_d_f_acf4bdf38a6e11c036b076a16c3516f75}{create\+T\+O\+C\+Page()} 
+
+\hyperlink{classoverview_p_d_f_aedc9466cae51e07e57ba865a69c92efc}{get\+Next\+Index()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 585 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References get\+Next\+Index().
+
+
+
+Referenced by print\+Curriculum(), print\+Fach(), and print\+Top\+Level().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{classoverview_p_d_f_ad6b57d30526fb658521faddce7595dc4_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classoverview_p_d_f_ad6b57d30526fb658521faddce7595dc4_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_a23c7451efb8c436590fbad032bc6788b}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!print\+Top\+Level@{print\+Top\+Level}}
+\index{print\+Top\+Level@{print\+Top\+Level}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{print\+Top\+Level}]{\setlength{\rightskip}{0pt plus 5cm}print\+Top\+Level (
+\begin{DoxyParamCaption}
+\item[{}]{\$o\+Top\+Level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_a23c7451efb8c436590fbad032bc6788b}
+
+
+Decides whether to print a structural element or a subject. 
+
+This is a dispatcher method that checks if an object is a structural element (1. Semester, 2. Semester etc.) or a course. If calls \hyperlink{classoverview_p_d_f_ad6b57d30526fb658521faddce7595dc4}{print\+Heading()} if it is a structural element and then \hyperlink{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896}{print\+Fach()} for all its children or just \hyperlink{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896}{print\+Fach()} if it is a course object.
+
+
+\begin{DoxyParams}[1]{Parameters}
+object & {\em \$o\+Top\+Level} & The object to check\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/a311596e0d6f1d08314cfcbc9f4f878a131a3f61}{\tt a311596} on 2014-\/07-\/02 
+\end{DoxySince}
+
+
+Definition at line 374 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References print\+Fach(), and print\+Heading().
+
+
+
+Referenced by print\+Curriculum().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classoverview_p_d_f_a23c7451efb8c436590fbad032bc6788b_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=271pt]{classoverview_p_d_f_a23c7451efb8c436590fbad032bc6788b_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_af0b14d64b47fe81df7965b8259ccb762}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!print\+Ziele\+Inhalte@{print\+Ziele\+Inhalte}}
+\index{print\+Ziele\+Inhalte@{print\+Ziele\+Inhalte}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{print\+Ziele\+Inhalte}]{\setlength{\rightskip}{0pt plus 5cm}print\+Ziele\+Inhalte (
+\begin{DoxyParamCaption}
+\item[{}]{\$o\+Course}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_af0b14d64b47fe81df7965b8259ccb762}
+
+
+Prints the course goals and content of teaching and their respecitve headings to the document. 
+
+If one of them is not set or empty, their heading is not printed either.
+
+
+\begin{DoxyParams}[1]{Parameters}
+object & {\em \$o\+Course} & The course to print the goals and contents for\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classoverview_p_d_f_abf0674d88080affc25c472fbd0525896}{print\+Fach()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 544 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+Referenced by print\+Fach().
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=257pt]{classoverview_p_d_f_af0b14d64b47fe81df7965b8259ccb762_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!split\+Bold\+Text\+Into\+Lines@{split\+Bold\+Text\+Into\+Lines}}
+\index{split\+Bold\+Text\+Into\+Lines@{split\+Bold\+Text\+Into\+Lines}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{split\+Bold\+Text\+Into\+Lines}]{\setlength{\rightskip}{0pt plus 5cm}split\+Bold\+Text\+Into\+Lines (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\+Text, }
+\item[{}]{\$i\+Max\+Width}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d}
+
+
+Inserts line breaks into bold text. 
+
+This method breaks the {\itshape \$s\+Text} into separate lines which are shorter than {\itshape \$i\+Max\+Width} if printed as bold text. If one word alone is too long or the entire string is shorter than {\itshape \$i\+Max\+Width}, it is not splitted.
+
+This method is needed in \hyperlink{classoverview_p_d_f_ad0ea6c6476d690b08161300e40926dc6}{generate\+Table\+Rec\+Helper()} because \hyperlink{class_t_c_p_d_f}{T\+C\+P\+D\+F} does not break the words correctly in a table if the text is written in a $<$B$>$ tag. This caused issues where text would overflow its table cell to the right by a few cm.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\+Text} & The text to split \\
+\hline
+ & {\em \$i\+Max\+Width} & The The maximum width a line is allowed to have \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The {\itshape \$s\+Text} with $<$br$>$ tags inserted whenever necessary
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/7e5b545971fbee0bb6140cf3fef51185bf86c94e}{\tt 7e5b545} on 2014-\/07-\/06 
+\end{DoxySince}
+
+
+Definition at line 496 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+References split\+Rec\+Helper().
+
+
+
+Referenced by generate\+Table\+Rec\+Helper().
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classoverview_p_d_f_af3f9a49de14251ba45bd046879f27aa2}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!split\+Rec\+Helper@{split\+Rec\+Helper}}
+\index{split\+Rec\+Helper@{split\+Rec\+Helper}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{split\+Rec\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}split\+Rec\+Helper (
+\begin{DoxyParamCaption}
+\item[{}]{\$a\+Words, }
+\item[{}]{\$i\+Curr\+Index, }
+\item[{}]{\$i\+Max\+Width}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_af3f9a49de14251ba45bd046879f27aa2}
+
+
+Recursive helper function for \hyperlink{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d}{split\+Bold\+Text\+Into\+Lines()} 
+
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$a\+Words} & The array of words as split in \hyperlink{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d}{split\+Bold\+Text\+Into\+Lines()} \\
+\hline
+integer & {\em \$i\+Curr\+Index} & The current index in the array \\
+\hline
+integer & {\em \$i\+Max\+Width} & The maximum width a line is allowed to have\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/7e5b545971fbee0bb6140cf3fef51185bf86c94e}{\tt 7e5b545} on 2014-\/07-\/06
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classoverview_p_d_f_aa12feabadc0d4aa85bb4da7454f8245d}{split\+Bold\+Text\+Into\+Lines()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 518 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+Referenced by split\+Bold\+Text\+Into\+Lines().
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{classoverview_p_d_f_af3f9a49de14251ba45bd046879f27aa2_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsubsection{Field Documentation}
+\hypertarget{classoverview_p_d_f_a7d055132da646af2b192923c6a864e97}{\index{overview\+P\+D\+F@{overview\+P\+D\+F}!\$a\+Indices@{\$a\+Indices}}
+\index{\$a\+Indices@{\$a\+Indices}!overview\+P\+D\+F@{overview\+P\+D\+F}}
+\paragraph[{\$a\+Indices}]{\setlength{\rightskip}{0pt plus 5cm}\$a\+Indices = array ()\hspace{0.3cm}{\ttfamily [private]}}}\label{classoverview_p_d_f_a7d055132da646af2b192923c6a864e97}
+
+
+Array of indices for continuous indexation of headings. 
+
+Every key in this array represents an indexation level (e.\+g. level 2 for 1.\+1, level 3 for 1.\+1.\+1) and every value in the array the current index for that level.
+
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b9342d941b3f93e212f3f6af0823a07524dd5954}{\tt b9342d9} on 2014-\/06-\/30 
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classoverview_p_d_f_aedc9466cae51e07e57ba865a69c92efc}{get\+Next\+Index()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 73 of file pdf\+\_\+creator.\+inc.\+php.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{pdf__creator_8inc_8php}{pdf\+\_\+creator.\+inc.\+php}\end{DoxyCompactItemize}

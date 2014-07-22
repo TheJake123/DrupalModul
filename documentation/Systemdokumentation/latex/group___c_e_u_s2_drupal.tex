@@ -1,0 +1,127 @@
+\hypertarget{group___c_e_u_s2_drupal}{\subsection{C\+E\+U\+S2\+Drupal}
+\label{group___c_e_u_s2_drupal}\index{C\+E\+U\+S2\+Drupal@{C\+E\+U\+S2\+Drupal}}
+}
+
+
+Module for importing data from C\+E\+U\+S.  
+
+
+\subsubsection*{Files}
+\begin{DoxyCompactItemize}
+\item 
+file \hyperlink{ceus__importer_8inc_8php}{ceus\+\_\+importer.\+inc.\+php}
+\begin{DoxyCompactList}\small\item\em Imports data from C\+E\+U\+S. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classceus__importer}{ceus\+\_\+importer}
+\begin{DoxyCompactList}\small\item\em Imports data from C\+E\+U\+S and stores it in the Drupal database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{group___c_e_u_s2_drupal_ga481789ce9904fc10aefb8eaf7534133b}{stukowin\+\_\+pre\+\_\+retreive} (\$form, \&\$form\+\_\+state)
+\begin{DoxyCompactList}\small\item\em Menu callback for import (\char`\"{}admin/settings/stukowin/import\char`\"{}) \end{DoxyCompactList}\item 
+\hyperlink{group___c_e_u_s2_drupal_ga433b18d1cf617b28cca3fc0dd47d8062}{stukowin\+\_\+pre\+\_\+retreive\+\_\+submit} (\$form, \&\$form\+\_\+state)
+\begin{DoxyCompactList}\small\item\em Submit handler for \hyperlink{group___c_e_u_s2_drupal_ga481789ce9904fc10aefb8eaf7534133b}{stukowin\+\_\+pre\+\_\+retreive()} \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsubsection{Detailed Description}
+Module for importing data from C\+E\+U\+S. 
+
+This module is reponsible for requesting the data from the C\+E\+U\+S A\+P\+I and storing it in the drupal database. It also implements the functions for the change management.
+
+For a more detailed description see \hyperlink{index_CEUS2Drupal}{C\+E\+U\+S2\+Drupal}
+
+\begin{DoxyAuthor}{Author}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxyAuthor}{Authors}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+
+Markus Gutmayer -\/ \href{mailto:m.gutmayer@gmail.com}{\tt m.\+gutmayer@gmail.\+com} 
+
+Werner Breuer -\/ \href{mailto:bluescreenwerner@gmail.com}{\tt bluescreenwerner@gmail.\+com} 
+\end{DoxyAuthor}
+
+
+\subsubsection{Function Documentation}
+\hypertarget{group___c_e_u_s2_drupal_ga481789ce9904fc10aefb8eaf7534133b}{\index{C\+E\+U\+S2\+Drupal@{C\+E\+U\+S2\+Drupal}!stukowin\+\_\+pre\+\_\+retreive@{stukowin\+\_\+pre\+\_\+retreive}}
+\index{stukowin\+\_\+pre\+\_\+retreive@{stukowin\+\_\+pre\+\_\+retreive}!C\+E\+U\+S2\+Drupal@{C\+E\+U\+S2\+Drupal}}
+\paragraph[{stukowin\+\_\+pre\+\_\+retreive}]{\setlength{\rightskip}{0pt plus 5cm}stukowin\+\_\+pre\+\_\+retreive (
+\begin{DoxyParamCaption}
+\item[{}]{\$form, }
+\item[{\&}]{\$form\+\_\+state}
+\end{DoxyParamCaption}
+)}}\label{group___c_e_u_s2_drupal_ga481789ce9904fc10aefb8eaf7534133b}
+
+
+Menu callback for import (\char`\"{}admin/settings/stukowin/import\char`\"{}) 
+
+Used as a warning before starting the import, as the process usually takes a long time to complete.
+
+\begin{DoxyRemark}{Remarks}
+There is nothing to do in this menu except click \char`\"{}\+Ok\char`\"{}.
+\end{DoxyRemark}
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$form} & Form structure as given by Drupal \\
+\hline
+array & {\em \$form\+\_\+state} & Form state as given by Drupal \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The filled out form structure
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+0 2014-\/07-\/16 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/bcdb4bad5d0a81dbf12a98c54f8512035a8661d4}{\tt bcdb4ba} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+stukowin\+\_\+re\+\_\+retrieve\+\_\+submit() 
+\end{DoxySeeAlso}
+
+
+Definition at line 248 of file stukowin.\+module.
+
+\hypertarget{group___c_e_u_s2_drupal_ga433b18d1cf617b28cca3fc0dd47d8062}{\index{C\+E\+U\+S2\+Drupal@{C\+E\+U\+S2\+Drupal}!stukowin\+\_\+pre\+\_\+retreive\+\_\+submit@{stukowin\+\_\+pre\+\_\+retreive\+\_\+submit}}
+\index{stukowin\+\_\+pre\+\_\+retreive\+\_\+submit@{stukowin\+\_\+pre\+\_\+retreive\+\_\+submit}!C\+E\+U\+S2\+Drupal@{C\+E\+U\+S2\+Drupal}}
+\paragraph[{stukowin\+\_\+pre\+\_\+retreive\+\_\+submit}]{\setlength{\rightskip}{0pt plus 5cm}stukowin\+\_\+pre\+\_\+retreive\+\_\+submit (
+\begin{DoxyParamCaption}
+\item[{}]{\$form, }
+\item[{\&}]{\$form\+\_\+state}
+\end{DoxyParamCaption}
+)}}\label{group___c_e_u_s2_drupal_ga433b18d1cf617b28cca3fc0dd47d8062}
+
+
+Submit handler for \hyperlink{group___c_e_u_s2_drupal_ga481789ce9904fc10aefb8eaf7534133b}{stukowin\+\_\+pre\+\_\+retreive()} 
+
+Starts the import process and displays the outcome to the user.
+
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$form} & Form structure as given by Drupal \\
+\hline
+array & {\em \$form\+\_\+state} & Form state as given by Drupal\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+0 2014-\/07-\/16 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/bcdb4bad5d0a81dbf12a98c54f8512035a8661d4}{\tt bcdb4ba} on 2014-\/06-\/30
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{group___c_e_u_s2_drupal_ga481789ce9904fc10aefb8eaf7534133b}{stukowin\+\_\+pre\+\_\+retreive()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 275 of file stukowin.\+module.
+

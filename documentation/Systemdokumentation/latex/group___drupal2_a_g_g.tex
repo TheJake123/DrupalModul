@@ -1,0 +1,233 @@
+\hypertarget{group___drupal2_a_g_g}{\subsection{Drupal2\+A\+G\+G}
+\label{group___drupal2_a_g_g}\index{Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}}
+}
+
+
+Module for transforming C\+E\+U\+S data to a proper graphical representation.  
+
+
+\subsubsection*{Files}
+\begin{DoxyCompactItemize}
+\item 
+file \hyperlink{graph_8js}{graph.\+js}
+\begin{DoxyCompactList}\small\item\em Script for nicely displaying C\+E\+U\+S data. \end{DoxyCompactList}\item 
+file \hyperlink{stukowin__curriculum_8js}{stukowin\+\_\+curriculum.\+js}
+\begin{DoxyCompactList}\small\item\em The stukowin\+\_\+curriculum dialog definition. \end{DoxyCompactList}\item 
+file \hyperlink{plugin_8js}{plugin.\+js}
+\begin{DoxyCompactList}\small\item\em Registers the C\+K\+Editor plugin. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{group___drupal2_a_g_g_gaf137f10bef98707dacaf33d6581773d0}{stukowin\+\_\+get\+\_\+crclm\+\_\+taxonomy} (\$i\+V\+I\+D)
+\begin{DoxyCompactList}\small\item\em J\+S\+O\+N service for the nested array of courses details for one curriculum. \end{DoxyCompactList}\item 
+\hyperlink{group___drupal2_a_g_g_gad0cb4d7faa68097f5b7df8311e36b22e}{stukowin\+\_\+get\+\_\+crclm\+\_\+list} ()
+\begin{DoxyCompactList}\small\item\em J\+S\+O\+N service for a list of all currently published curricula. \end{DoxyCompactList}\item 
+\hyperlink{group___drupal2_a_g_g_ga7522e206f1a87971b916a7a0be0098c6}{stukowin\+\_\+get\+\_\+lva} (\$i\+Node\+I\+D)
+\begin{DoxyCompactList}\small\item\em J\+S\+O\+N service for the details of a single course. \end{DoxyCompactList}\item 
+\hyperlink{group___drupal2_a_g_g_gae3c906d1ab9c3d8ed245d58c1ebf2a4a}{stukowin\+\_\+ckeditor\+\_\+plugin} ()
+\begin{DoxyCompactList}\small\item\em implements hook\+\_\+ckeditor\+\_\+plugin \end{DoxyCompactList}\item 
+\hyperlink{group___drupal2_a_g_g_ga3bf2203298453c41bf9a5ec48d3c2de3}{stukowin\+\_\+theme\+\_\+registry\+\_\+alter} (\&\$theme\+\_\+registry)
+\begin{DoxyCompactList}\small\item\em implements hook\+\_\+theme\+\_\+registry\+\_\+alter \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsubsection{Detailed Description}
+Module for transforming C\+E\+U\+S data to a proper graphical representation. 
+
+This module contains all files, classes and methods that provide the functionality for automatically generating a visual representation of the imported curricula data.\hypertarget{group___drupal2_a_g_g_aggjson}{}\subsubsection{Drupal J\+S\+O\+N Interface}\label{group___drupal2_a_g_g_aggjson}
+To make the curricula data available to clients, several J\+S\+O\+N interfaces have been implemented that make curricula publicly reachable. This is needed so that the client browser can properly display the curricula.
+
+The following interfaces are available\+: \begin{TabularC}{4}
+\hline
+\rowcolor{lightgray}{\bf Name }&{\bf Path }&{\bf Input Parameter }&{\bf Description  }\\\cline{1-4}
+Curriculum List &stukowin/crclmlst &\char`\"{}currtype\char`\"{} \+: Type of curriculum to get (\char`\"{}\+Bachelorstudium\char`\"{} or \char`\"{}\+Masterstudium\char`\"{})~\newline
+\char`\"{}taxtypes\char`\"{} \+: Types of vocabularies to get (\char`\"{}curriculum\char`\"{}, \char`\"{}itsv\char`\"{} and/or \char`\"{}specialisation\char`\"{}) &Returns a list of all curricula currently published (weight $<$ 0), like \hyperlink{index_list}{list.\+php} \\\cline{1-4}
+Curriculum Tree &stukowin/crclm &Vocabulary id of the curriculum to get &Returns the curriculum tree of one curriculum, containing all courses and their details \\\cline{1-4}
+Single course &stukowin/lva &Node id of the course to get &Returns the details of a single course \\\cline{1-4}
+\end{TabularC}
+All of these interfaces are defined in the \hyperlink{stukowin_8module}{stukowin.\+module} file.\hypertarget{group___drupal2_a_g_g_aggplugin}{}\subsubsection{C\+K\+Editor Plug-\/in}\label{group___drupal2_a_g_g_aggplugin}
+As the dynamic display of curricula in the browser requires a strict H\+T\+M\+L document structure, we refrained from letting the administrator insert the code himself wherever a curriculum display was needed and instead implemented a plug-\/in for the C\+K\+Editor (\href{https://www.drupal.org/project/ckeditor}{\tt https\+://www.\+drupal.\+org/project/ckeditor}) which inserts the code automatically on the click of a button. The plug-\/in is registered with drupal in the \hyperlink{group___drupal2_a_g_g_gae3c906d1ab9c3d8ed245d58c1ebf2a4a}{stukowin\+\_\+ckeditor\+\_\+plugin()} method. It is then defined in the \hyperlink{plugin_8js}{plugin.\+js} file and the dialog for inserting a curriculum view is defined in the \hyperlink{stukowin__curriculum_8js}{stukowin\+\_\+curriculum.\+js} file.
+
+\begin{DoxyNote}{Note}
+In order for this plug-\/in to work properly, some settings have to be made in the C\+K\+Editor. This is described in the operator manual.
+\end{DoxyNote}
+\hypertarget{group___drupal2_a_g_g_agggraph}{}\subsubsection{Graph.\+js}\label{group___drupal2_a_g_g_agggraph}
+The main task of displaying the curricula in the client's browser is performed by this file. It fetches the data from the J\+S\+O\+N interfaces described \hyperlink{index_json}{above} and creates the D\+O\+M elements in the browser. It also registers click handlers for things such as expanding/reducing a course, showing prerequisites and selecting a different curriculum. \begin{DoxyNote}{Note}
+The display layout is configured in the curriculum\+\_\+stlye.\+css file (not included in this documentation)
+\end{DoxyNote}
+As an example, the output could look like this\+:
+
+
+\begin{DoxyImage}
+\includegraphics[width=\textwidth]{Drupal2AGG}
+\caption{Graphical Representation}
+\end{DoxyImage}
+
+
+\begin{DoxyAuthor}{Authors}
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+
+Markus Gutmayer -\/ \href{mailto:m.gutmayer@gmail.com}{\tt m.\+gutmayer@gmail.\+com} 
+
+Werner Breuer -\/ \href{mailto:bluescreenwerner@gmail.com}{\tt bluescreenwerner@gmail.\+com} 
+
+Manuel Muehlburger -\/ \href{mailto:Hansbert92@googlemail.com}{\tt Hansbert92@googlemail.\+com} 
+\end{DoxyAuthor}
+
+
+\subsubsection{Function Documentation}
+\hypertarget{group___drupal2_a_g_g_gae3c906d1ab9c3d8ed245d58c1ebf2a4a}{\index{Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}!stukowin\+\_\+ckeditor\+\_\+plugin@{stukowin\+\_\+ckeditor\+\_\+plugin}}
+\index{stukowin\+\_\+ckeditor\+\_\+plugin@{stukowin\+\_\+ckeditor\+\_\+plugin}!Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}}
+\paragraph[{stukowin\+\_\+ckeditor\+\_\+plugin}]{\setlength{\rightskip}{0pt plus 5cm}stukowin\+\_\+ckeditor\+\_\+plugin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{group___drupal2_a_g_g_gae3c906d1ab9c3d8ed245d58c1ebf2a4a}
+
+
+implements hook\+\_\+ckeditor\+\_\+plugin 
+
+Adds the hook for the \hyperlink{stukowin__curriculum_8js}{ckeditor plugin} to insert a curriculum display.
+
+\begin{DoxyAuthor}{Authors}
+Werner Breuer -\/ \href{mailto:bluescreenwerner@gmail.com}{\tt bluescreenwerner@gmail.\+com} 
+
+Markus Gutmayer -\/ \href{mailto:m.gutmayer@gmail.com}{\tt m.\+gutmayer@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+0 2014-\/07-\/16 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/b63de89ea0d0b45b428d333a4ba5c8d859047ba2}{\tt b63de89} on 2014-\/07-\/01 
+\end{DoxySince}
+
+
+Definition at line 599 of file stukowin.\+module.
+
+\hypertarget{group___drupal2_a_g_g_gad0cb4d7faa68097f5b7df8311e36b22e}{\index{Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}!stukowin\+\_\+get\+\_\+crclm\+\_\+list@{stukowin\+\_\+get\+\_\+crclm\+\_\+list}}
+\index{stukowin\+\_\+get\+\_\+crclm\+\_\+list@{stukowin\+\_\+get\+\_\+crclm\+\_\+list}!Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}}
+\paragraph[{stukowin\+\_\+get\+\_\+crclm\+\_\+list}]{\setlength{\rightskip}{0pt plus 5cm}stukowin\+\_\+get\+\_\+crclm\+\_\+list (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{group___drupal2_a_g_g_gad0cb4d7faa68097f5b7df8311e36b22e}
+
+
+J\+S\+O\+N service for a list of all currently published curricula. 
+
+The type of curriculum (e.\+g. \char`\"{}\+Bachelorstudium\char`\"{}, \char`\"{}\+Masterstudium\char`\"{}), types of taxonomies (e.\+g. \char`\"{}curriculum\char`\"{}, \char`\"{}itsv\char`\"{} or \char`\"{}specialisation\char`\"{}) and the language (e.\+g. \char`\"{}de\char`\"{}) can be given as H\+T\+T\+P G\+E\+T parameters through the respective parameter names {\ttfamily \char`\"{}currtype\char`\"{}}, {\ttfamily taxtypes} and {\ttfamily lang}.
+
+\begin{DoxyAuthor}{Authors}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+
+Jakob Strasser -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+0 2014-\/07-\/16 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/d179abcc5e05743086cd67cf1ce30b08923a7183}{\tt d179abc} on 2014-\/06-\/28
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classcontent__manager_a3c6667e24648fecc0ec3751318ac55bd}{content\+\_\+manager\+::get\+Curricula()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 317 of file stukowin.\+module.
+
+\hypertarget{group___drupal2_a_g_g_gaf137f10bef98707dacaf33d6581773d0}{\index{Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}!stukowin\+\_\+get\+\_\+crclm\+\_\+taxonomy@{stukowin\+\_\+get\+\_\+crclm\+\_\+taxonomy}}
+\index{stukowin\+\_\+get\+\_\+crclm\+\_\+taxonomy@{stukowin\+\_\+get\+\_\+crclm\+\_\+taxonomy}!Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}}
+\paragraph[{stukowin\+\_\+get\+\_\+crclm\+\_\+taxonomy}]{\setlength{\rightskip}{0pt plus 5cm}stukowin\+\_\+get\+\_\+crclm\+\_\+taxonomy (
+\begin{DoxyParamCaption}
+\item[{}]{\$i\+V\+I\+D}
+\end{DoxyParamCaption}
+)}}\label{group___drupal2_a_g_g_gaf137f10bef98707dacaf33d6581773d0}
+
+
+J\+S\+O\+N service for the nested array of courses details for one curriculum. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$i\+V\+I\+D} & The Drupal vocabulary id of the curriculum to get\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+0 2014-\/07-\/16 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/d179abcc5e05743086cd67cf1ce30b08923a7183}{\tt d179abc} on 2014-\/06-\/28
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classcontent__manager_abe8407588c7195d203e7df5ff53fb373}{content\+\_\+manager\+::json\+\_\+service\+\_\+curriculum()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 297 of file stukowin.\+module.
+
+\hypertarget{group___drupal2_a_g_g_ga7522e206f1a87971b916a7a0be0098c6}{\index{Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}!stukowin\+\_\+get\+\_\+lva@{stukowin\+\_\+get\+\_\+lva}}
+\index{stukowin\+\_\+get\+\_\+lva@{stukowin\+\_\+get\+\_\+lva}!Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}}
+\paragraph[{stukowin\+\_\+get\+\_\+lva}]{\setlength{\rightskip}{0pt plus 5cm}stukowin\+\_\+get\+\_\+lva (
+\begin{DoxyParamCaption}
+\item[{}]{\$i\+Node\+I\+D}
+\end{DoxyParamCaption}
+)}}\label{group___drupal2_a_g_g_ga7522e206f1a87971b916a7a0be0098c6}
+
+
+J\+S\+O\+N service for the details of a single course. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$i\+Node\+I\+D} & The Drupal content node id of the course to get\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Konstantinos Dafalias -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+0 2014-\/07-\/16 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/d179abcc5e05743086cd67cf1ce30b08923a7183}{\tt d179abc} on 2014-\/06-\/28
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classcontent__manager_a4f357170f7656cabf748245c46d7e8be}{content\+\_\+manager\+::json\+\_\+service\+\_\+lva()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 351 of file stukowin.\+module.
+
+\hypertarget{group___drupal2_a_g_g_ga3bf2203298453c41bf9a5ec48d3c2de3}{\index{Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}!stukowin\+\_\+theme\+\_\+registry\+\_\+alter@{stukowin\+\_\+theme\+\_\+registry\+\_\+alter}}
+\index{stukowin\+\_\+theme\+\_\+registry\+\_\+alter@{stukowin\+\_\+theme\+\_\+registry\+\_\+alter}!Drupal2\+A\+G\+G@{Drupal2\+A\+G\+G}}
+\paragraph[{stukowin\+\_\+theme\+\_\+registry\+\_\+alter}]{\setlength{\rightskip}{0pt plus 5cm}stukowin\+\_\+theme\+\_\+registry\+\_\+alter (
+\begin{DoxyParamCaption}
+\item[{\&}]{\$theme\+\_\+registry}
+\end{DoxyParamCaption}
+)}}\label{group___drupal2_a_g_g_ga3bf2203298453c41bf9a5ec48d3c2de3}
+
+
+implements hook\+\_\+theme\+\_\+registry\+\_\+alter 
+
+Hook for telling the system to use our template on stukowin custom content type.
+
+
+\begin{DoxyParams}[1]{Parameters}
+object & {\em \$theme\+\_\+registry} & The entire cache of theme registry information, post-\/processing.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Authors}
+Werner Breuer -\/ \href{mailto:bluescreenwerner@gmail.com}{\tt bluescreenwerner@gmail.\+com} 
+
+Markus Gutmayer -\/ \href{mailto:m.gutmayer@gmail.com}{\tt m.\+gutmayer@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0.\+0 2014-\/07-\/16 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+Commit \href{http://github.com/TheJake123/DrupalModul/commit/9f1f3db3b94f0c44518af0f58401bac46f41d7cb}{\tt 9f1f3db} on 2014-\/07-\/05 
+\end{DoxySince}
+
+
+Definition at line 632 of file stukowin.\+module.
+

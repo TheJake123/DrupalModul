@@ -1,0 +1,6 @@
+<map id="fill_crclm" name="fill_crclm">
+<area shape="rect" id="node2" href="$graph_8js.html#a0c9811785ee3747b64633dd5a6d9490d" title="Empties main &lt;div&gt; " alt="" coords="135,5,201,32"/>
+<area shape="rect" id="node3" href="$graph_8js.html#a5c1c7770c4c44dde3dcba63aa2a48056" title="Gets a list of all courses. " alt="" coords="257,81,317,108"/>
+<area shape="rect" id="node4" href="$graph_8js.html#ac307c11e1cc6808c1ef6ae5a5e22d2bd" title="Creates the &lt;div&gt;s for all courses recursively. " alt="" coords="127,107,209,133"/>
+<area shape="rect" id="node5" href="$graph_8js.html#a55ac568a54e097c62f289c73ef0d8880" title="Reduces all divs. " alt="" coords="127,157,209,184"/>
+</map>

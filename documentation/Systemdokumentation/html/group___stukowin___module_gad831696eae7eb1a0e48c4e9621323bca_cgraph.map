@@ -1,0 +1,5 @@
+<map id="stukowin_uninstall" name="stukowin_uninstall">
+<area shape="rect" id="node2" href="$group___stukowin___module.html#ga5eda7b9b561e8a5ad87df0bb50cf80b0" title="Contains the array of additional fields for the stukowin content node type. " alt="" coords="181,5,316,47"/>
+<area shape="rect" id="node3" href="$group___stukowin___module.html#ga0dbd0252e3db9efdb3cfefbefecf3d2e" title="Contains the array of additional vocabulary fields. " alt="" coords="181,71,316,112"/>
+<area shape="rect" id="node4" href="$group___stukowin___module.html#gae7b4c9b6b19887d0ccc914b2886010ce" title="Contains custom relation types for recommendations and requirements. " alt="" coords="184,136,313,177"/>
+</map>

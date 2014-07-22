@@ -1,0 +1,9 @@
+<map id="jQuery" name="jQuery">
+<area shape="rect" id="node2" href="$graph_8js.html#a0f059d7a7d52e5d870756301132c5d46" title="Adds missing stylesheets and the jQuery effect library. " alt="" coords="152,5,257,32"/>
+<area shape="rect" id="node3" href="$graph_8js.html#aa00b90455b343892a205e45326155d0d" title="Creates the JSON request URL. " alt="" coords="143,56,266,83"/>
+<area shape="rect" id="node4" href="$graph_8js.html#ac6ee0322be8a49fdf390d82d6bf998cf" title="Toggles the expansion/reduction of a course &lt;div&gt; " alt="" coords="344,119,455,145"/>
+<area shape="rect" id="node5" href="$graph_8js.html#a0dd09e25cba850e08e98664cca21b625" title="Expands the curriculum tree down to an element. " alt="" coords="113,181,296,208"/>
+<area shape="rect" id="node6" href="$graph_8js.html#a7c5be5387a50b7e1424c667fdcb2bf3f" title="Extracts curricula from JSON. " alt="" coords="159,232,250,259"/>
+<area shape="rect" id="node7" href="$graph_8js.html#a33066162480e6f749f6688423b7723ad" title="Shows or hides recommended courses. " alt="" coords="148,283,261,309"/>
+<area shape="rect" id="node8" href="$graph_8js.html#a018753126c02ed98b7021f2ceb0518b2" title="Shows or hides required courses. " alt="" coords="128,333,281,360"/>
+</map>

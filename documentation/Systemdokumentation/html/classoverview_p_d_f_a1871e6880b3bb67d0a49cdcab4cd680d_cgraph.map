@@ -1,0 +1,5 @@
+<map id="printCurriculum" name="printCurriculum">
+<area shape="rect" id="node2" href="$classoverview_p_d_f.html#a921bc685431e16db85dc8ef8491f90a4" title="Gets all courses for a given curriculum id. " alt="" coords="167,5,255,32"/>
+<area shape="rect" id="node3" href="$classoverview_p_d_f.html#ad6b57d30526fb658521faddce7595dc4" title="Prints a heading to the PDF document. " alt="" coords="308,81,403,108"/>
+<area shape="rect" id="node4" href="$classoverview_p_d_f.html#a23c7451efb8c436590fbad032bc6788b" title="Decides whether to print a structural element or a subject. " alt="" coords="163,107,260,133"/>
+</map>

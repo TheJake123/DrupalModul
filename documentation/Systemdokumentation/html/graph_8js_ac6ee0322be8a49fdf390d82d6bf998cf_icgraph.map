@@ -1,0 +1,6 @@
+<map id="expand_reduce" name="expand_reduce">
+<area shape="rect" id="node2" href="$graph_8js.html#af2f9db583f5a6060fb6e361e13eb4333" title="Expands all divs. " alt="" coords="503,42,587,69"/>
+<area shape="rect" id="node3" href="$graph_8js.html#a0dd09e25cba850e08e98664cca21b625" title="Expands the curriculum tree down to an element. " alt="" coords="164,38,347,65"/>
+<area shape="rect" id="node4" href="$graph_8js.html#a5c1c7770c4c44dde3dcba63aa2a48056" title="Gets a list of all courses. " alt="" coords="395,70,455,97"/>
+<area shape="rect" id="node5" href="$graph_8js.html#a55ac568a54e097c62f289c73ef0d8880" title="Reduces all divs. " alt="" coords="504,98,585,125"/>
+</map>
