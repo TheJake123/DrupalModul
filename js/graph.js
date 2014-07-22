@@ -19,6 +19,8 @@
  * 
  * This script is responsible for creating the proper html/css/js needed for
  * displaying the graphical representation of CEUS data.
+ * In order for this script to work, a @<div@> with the id "main" and the tags
+ * data-currtype and data-curriculums set needs to be present on the page.
  * 
  * @image html "Studienplan Voraussetzung.png" "The graphical representation
  *        will look approximately like this"
@@ -593,8 +595,7 @@ function clearDiv() {
 /**
  * @brief Adds missing stylesheets and the jQuery effect library
  * 
- * This utility procedure adds the
- * @ref curriculum_style.css stylesheet and the jQuery effect library to the
+ * This utility procedure adds the curriculum_style.css stylesheet and the jQuery effect library to the
  *      document.
  * 
  * @author Markus Gutmayer - m.gutmayer@gmail.com

@@ -562,7 +562,7 @@ EOT;
 	 * @param boolean $bShowIndex
 	 *        	@c true if the index should be shown in the heading
 	 * @param string $sAlign
-	 *        	Alignment of the heading. For allowed values see @ref TCPDF::MultiCell()
+	 *        	Alignment of the heading. For allowed values see TCPDF::MultiCell()
 	 * @param boolean $bAddBookmark
 	 *        	@c true if heading should be shown on the index page and bookmarked
 	 *        	
