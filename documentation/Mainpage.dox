@@ -28,6 +28,7 @@
 -# @ref Included "Included Libraries/Files"
 
 @section Introduction
+@latexonly \textrm{\textbf{Please note that was document is automatically generated without much control over the layout. It is only meant to be used in print or to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}} @endlatexonly
 @subsection Module_Intro Module
 This documentation describes the custom module "stukowin" for <a target="_blank" href="http://drupal.org/">Drupal</a>. 
 Drupal is a free and widely-used content management system (CMS), which provides the possibility to extend it by implementing proprietary modules that hook into the Drupal core system.
