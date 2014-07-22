@@ -6,6 +6,37 @@
  * the functionality for automatically generating a visual representation of the
  * imported curricula data.
  * 
+ * @section aggjson Drupal JSON Interface
+ * To make the curricula data available to clients, several JSON interfaces have been implemented that make curricula publicly reachable.
+ * This is needed so that the client browser can properly display the curricula.
+ * 
+ * The following interfaces are available:
+ * Name            | Path              | Input Parameter                                                                                                                                                         | Description
+ * --------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------
+ * Curriculum List | stukowin/crclmlst | "currtype" : Type of curriculum to get ("Bachelorstudium" or "Masterstudium")<br>"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") | Returns a list of all curricula currently published (weight < 0), like @ref list
+ * Curriculum Tree | stukowin/crclm    | Vocabulary id of the curriculum to get                                                                                                                                  | Returns the curriculum tree of one curriculum, containing all courses and their details
+ * Single course   | stukowin/lva      | Node id of the course to get                                                                                                                                            | Returns the details of a single course
+ * 
+ * All of these interfaces are defined in the @ref stukowin.module file.
+ * 
+ * @section aggplugin CKEditor Plug-in
+ * As the dynamic display of curricula in the browser requires a strict HTML document structure, we refrained from letting the administrator insert the code himself wherever a curriculum display was needed
+ * and instead implemented a plug-in for the CKEditor (<https://www.drupal.org/project/ckeditor>) which inserts the code automatically on the click of a button.
+ * The plug-in is registered with drupal in the @ref stukowin_ckeditor_plugin() method. It is then defined in the @ref plugin.js file
+ * and the dialog for inserting a curriculum view is defined in the @ref stukowin_curriculum.js file.
+ * 
+ * @note In order for this plug-in to work properly, some settings have to be made in the CKEditor. This is described in the operator manual.
+ * 
+ * @section agggraph Graph.js
+ * The main task of displaying the curricula in the client's browser is performed by this file. It fetches the data from the JSON interfaces described @ref json "above" and creates the DOM elements in the browser.
+ * It also registers click handlers for things such as expanding/reducing a course, showing prerequisites and selecting a different curriculum.
+ * @note The display layout is configured in the curriculum_stlye.css file (not included in this documentation)
+ * 
+ * As an example, the output could look like this:
+ * 
+ * @image html "Drupal2AGG.png" "Graphical Representation"
+ * @image latex "Drupal2AGG.eps" "Graphical Representation" width=\textwidth
+ * 
  * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @authors Werner Breuer - bluescreenwerner@gmail.com
@@ -19,12 +50,21 @@
  * 
  * This script is responsible for creating the proper html/css/js needed for
  * displaying the graphical representation of CEUS data.
+ * 
  * In order for this script to work, a @<div@> with the id "main" and the tags
  * data-currtype and data-curriculums set needs to be present on the page.
+ * Example:
+ * @code {.html}
+ * <div id="main" data-currtype="Bachelorstudium" data-curriculums="curriculum itsv specialisation">
+ * </div>
+ * @endcode
  * 
- * @image html "Studienplan Voraussetzung.png" "The graphical representation
- *        will look approximately like this"
  * 
+ * The graphical representation will look approximately like this:
+ * 
+ * @image html "StudienplanVoraussetzung.png" "Graphical Display"
+ * @image latex "StudienplanVoraussetzung.eps" "Graphical Display" width=\textwidth
+
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @authors Werner Breuer - bluescreenwerner@gmail.com

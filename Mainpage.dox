@@ -21,7 +21,7 @@
 		-# @ref plugin
 		-# @ref graph
 	-# @ref Other
--# Development
+-# @ref Development
 	-# @ref Authors
 	-# @ref versionnumbers
 	-# @ref versioncontrol
@@ -171,15 +171,15 @@ The import of data from CEUS to the Drupal environment is implemented in this co
 The data model for the Drupal-internal representation of courses is defined in the module's @ref stukowin.install "install component", the necessary database tables are automatically created during the installation.
 Because the API URL and user credentials are prone to change, they need to be configurable. This is achieved in the @ref stukowin_admin() "admin menu":
 
-@image html "Module Configuration.png" "Module Configuration Page"
-@image latex "Module Configuration.eps" "Module Configuration Page"
+@image html "ModuleConfiguration.png" "Module Configuration Page"
+@image latex "ModuleConfiguration.eps" "Module Configuration Page" width=\textwidth
 
 @note Administrator rights are needed to configure the login details
 
-The communication between this module and CEUS occurs as shown in the sequence diagram below:
+@htmlonly The communication between this module and CEUS occurs as shown in the sequence diagram below: @endhtmlonly
 
-@image html "Sequence Diagram Import.svg" "Communication with CEUS"
-@image latex "Sequence Diagram Import.eps" "Communication with CEUS"
+@image html "SequenceDiagramImport.svg" "Communication with CEUS"
+@latexonly The communication between this module and CEUS occurs as shown in the included \href[pdfnewwindow]{./SequenceDiagramImport.pdf}{SequenceDiagramImport.pdf} file. @endlatexonly
 
 The import from CEUS is performed roughly in the following steps:
 -# The @c auth token is requested from the CEUS API
@@ -189,10 +189,8 @@ The import from CEUS is performed roughly in the following steps:
 -# During the first import, new Drupal vocabularies, vocabulary terms and content nodes are created
 -# We try our best to parse the field @c voraussetzungen and extract relations between courses (recommended/required)
 
-This process is shown in the following flow chart, with the corresponding methods in @ref ceus_importer that perform each step:
-
-@image html "Flowchart CEUS2Drupal.svg" "Import Process"
-@image latex "Flowchart CEUS2Drupal.eps" "Import Process"
+@htmlonly This process is shown in the following flow chart@endhtmlonly@latexonly This process is shown in the included \href[pdfnewwindow]{./FlowchartCEUS2Drupal.pdf}{FlowchartCEUS2Drupal.pdf} file@endlatexonly, with the corresponding methods in @ref ceus_importer that perform each step.
+@image html "FlowchartCEUS2Drupal.svg" "Import Process"
 
 Here is a quick textual description of the process:
 
@@ -221,16 +219,16 @@ The functional requirements of this project make it necessary to periodically ex
 and giving administrators and moderators the ability to overwrite data on the other hand.
 @remark How to overwrite course data is described in the user documentation.
 
-This creates the challenge of properly versioning the CMS content, which is why every import follows these rules:
+@htmlonly This creates the challenge of properly versioning the CMS content, which is why every import follows these rules: @endhtmlonly
 
 @image html "Changemanagement.svg" "Change Management"
-@image latex "Changemanagement.eps" "Change Management"
+@latexonly This creates the challenge of properly versioning the CMS content, which is why every import follows the rules shown in the included \href[pdfnewwindow]{./Changemanagement.pdf}{Changemanagement.pdf} file @endlatexonly
 
 Every time a content node is created or updated, it gets a red @e New tag in the content overview (see image below), through which the administrator can easily see which nodes have been updated.
 In addition to this, the import returns a success message that tells the administrator how many nodes have been created or updated, so that one can easily tell if changes have occurred.
 
-@image html "New Tag.png" "Red @e New Tag"
-@image latex "New Tag.eps" "Red @e New Tag"
+@image html "NewTag.png" "Red @e New Tag"
+@image latex "NewTag.eps" "Red @e New Tag" width=\textwidth
 
 @subsection Drupal2ITSV
 As CEUS does not provide any information about fields of specialisation during the master studies and ideal courses of studies, henceforth called ITSV due to its German name,
@@ -254,10 +252,10 @@ For this component to work properly, the necessary settings have to be made in a
 The administrator is provided with a new menu (at admin/settings/stukowin/pdf) where the curriculum to be archived can be selected. Once he clicks on "Create PDF", the PDF generation in overviewPDF::createPDF() is started.
 (All of the PDF generation code is contained in the @ref pdf_creator.inc.php file)
 
-The PDF generation process will flow as follows:
+@htmlonly The PDF generation process will flow as follows: @endhtmlonly
 
-@image html "Flowchart Drupal2PDF.svg" "PDF Creation"
-@image latex "Flowchart Drupal2PDF.eps" "PDF Creation"
+@image html "FlowchartDrupal2PDF.svg" "PDF Creation"
+@latexonly The PDF generation process will flow as shown in the included \href[pdfnewwindow]{./FlowchartDrupal2PDF.pdf}{FlowchartDrupal2PDF.pdf} file. @endlatexonly
 
 @see Drupal2PDF
 
@@ -295,7 +293,7 @@ It also registers click handlers for things such as expanding/reducing a course,
 As an example, the output could look like this:
 
 @image html "Drupal2AGG.png" "Graphical Representation"
-@image latex "Drupal2AGG.eps" "Graphical Representation"
+@image latex "Drupal2AGG.eps" "Graphical Representation" width=\textwidth
 
 @see Drupal2AGG
 

@@ -7,6 +7,18 @@
  * the functionality for automatically generating PDF documents from the
  * imported curricula data.
  * 
+ * --------------------------------------------
+ * 
+ * In order to permanently and easily archive past curricula there is the option to automatically create a course overview PDF document from the imported courses. 
+ * For this component to work properly, the necessary settings have to be made in advance (see module configuration image above).
+ * The administrator is provided with a new menu (at admin/settings/stukowin/pdf) where the curriculum to be archived can be selected. Once he clicks on "Create PDF", the PDF generation in overviewPDF::createPDF() is started.
+ * (All of the PDF generation code is contained in the @ref pdf_creator.inc.php file)
+ * 
+ * @htmlonly The PDF generation process will flow as follows: @endhtmlonly
+ * 
+ * @image html "FlowchartDrupal2PDF.svg" "PDF Creation"
+ * @latexonly The PDF generation process will flow as shown in the included \href[pdfnewwindow]{./FlowchartDrupal2PDF.pdf}{FlowchartDrupal2PDF.pdf} file. @endlatexonly
+ * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Fabian Puehringer - f.puehringer@24speed.at
  */
@@ -22,7 +34,7 @@
  *
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Fabian Puehringer - f.puehringer@24speed.at
- * @version 1.0.0 2014-07-15
+ * @version 1.0.2 2014-07-22
  * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
  *       
  * @see overviewPDF
@@ -42,11 +54,10 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
  *
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Fabian Puehringer - f.puehringer@24speed.at
- * @version 1.0.0
+ * @version 1.0.2 2014-07-22
  * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
  *       
  * @see createPDF()
- * @todo Add creation date and time to footer
  */
 class overviewPDF extends TCPDF {
 	/**
@@ -76,6 +87,7 @@ class overviewPDF extends TCPDF {
 		$this->setFont ( 'times', '', 12 );
 		$this->setY ( - 15 );
 		$this->Line ( $this->getMargins ()['left'], $this->GetY (), $this->getPageDimensions ()['wk'] - $this->getMargins ()['right'], $this->GetY () );
+		$this->Cell ( 0, 0, date('Y-m-d H:i:s'),0,0,'C');
 		$this->Cell ( 0, 0, $this->getAliasRightShift () . $this->getAliasNumPage () . '/' . $this->getAliasNbPages (), 0, 0, 'R' );
 	}
 	
@@ -140,7 +152,7 @@ class overviewPDF extends TCPDF {
 	 *
 	 * This utility method determines the current y position
 	 * in relation to the beginning of the document, not just
-	 * the current page (like @link TCPDF::GetY() GetY()@endlink),
+	 * the current page (like TCPDF::GetY()),
 	 * excluding top and bottom margins.
 	 *
 	 * This method is needed to compare positions in the document across pages.
@@ -312,8 +324,6 @@ class overviewPDF extends TCPDF {
 	 *        	
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
 	 * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
-	 *       
-	 * @todo Overview table with structural elements
 	 */
 	private function printCurriculum($oCurriculum) {
 		$this->AddPage ();

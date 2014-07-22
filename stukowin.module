@@ -4,7 +4,8 @@
  * @brief Module that contains core functionality
  * 
  * This module contains all files, classes and methods that provide 
- * the core functionality of the Drupal module.
+ * the core functionality of the Drupal module. The members of this group
+ * ensure a working cooperation between all of the components and Drupal.
  * 
  * @authors Konstantinos Dafalias - kdafalias@gmail.com
  * @authors Jakob Strasser - jakob.strasser@telenet.be
@@ -19,6 +20,21 @@
  * This module contains all files, classes and methods that provide 
  * the functionality for supporting the administrator when creating new Drupal vocabularies
  * that represent either an ITSV ("Idealtypischer Studienverlauf") or a specialisation (mainly for Master curricula).
+ * 
+ * ----------------------------------------------
+ * 
+ * As CEUS does not provide any information about fields of specialisation during the master studies and ideal courses of studies, henceforth called ITSV due to its German name,
+ * it was a project requirement that new curricula can be created by the administrator for such purposes.
+ * 
+ * A freely available Drupal module called Taxonomy Manager (<https://www.drupal.org/project/taxonomy_manager>) gives the administrator the ability to copy vocabulary terms from one vocabulary to another, which is most of the work.
+ * Unfortunately, this process cannot be simplified any further. Nevertheless, we tried to at least automate the task of creating a new vocabulary, copying all of the information over from the source curriculum
+ * and creating top-level terms (such as "1. Semester" etc.), tasks which will be performed every time a new ITSV or specialisation has to be created.
+ * 
+ * This component handles exactly that. It inserts a new menu item (at admin/settings/stukowin/taxonomy) where the administrator can select a source curriculum to base the new one on, select whether to create an ITSV or specialisation vocabulary,
+ * enter a name and choose how many top-level terms should be inserted. Once the administrator has filled out the form, the new vocabulary is automatically created and the browser is redirected to the Taxonomy Manager's "Dual View",
+ * where the administrator can begin copying courses into the new vocabulary.
+ * 
+ * @remark This component does not have its own file as it does not contain a lot of code. All of its functionality is in the @ref stukowin.module file.
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Werner Breuer - bluescreenwerner@gmail.com

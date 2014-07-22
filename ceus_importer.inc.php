@@ -4,7 +4,9 @@
  * @brief Module for importing data from CEUS
  * 
  * This module is reponsible for requesting the data from the CEUS API and storing it in the drupal database.
- * It also implements the functions for the change management
+ * It also implements the functions for the change management.
+ * 
+ * For a more detailed description see @ref CEUS2Drupal
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @authors Jakob Strasser - jakob.strasser@telenet.be
