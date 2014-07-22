@@ -1,0 +1,372 @@
+/**
+@mainpage Module Documentation
+@section pageTOC Content
+-# @ref Introduction
+	-# @ref Module_Intro
+	-# @ref Project_Intro
+-# @ref ceusapi "CEUS API"
+	-# @ref auth
+	-# @ref list
+	-# @ref curr
+	-# @ref detail
+	-# @ref Errors
+-# @ref Modules
+	-# @ref CEUS2Drupal
+		-# @ref Import
+		-# @ref change_management
+	-# @ref Drupal2ITSV
+	-# @ref Drupal2PDF
+	-# @ref Drupal2AGG
+		-# @ref json
+		-# @ref plugin
+		-# @ref graph
+	-# @ref Other
+-# Development
+	-# @ref Authors
+	-# @ref versionnumbers
+	-# @ref versioncontrol
+-# @ref Included "Included Libraries/Files"
+
+@section Introduction
+@subsection Module_Intro Module
+This documentation describes the custom module "stukowin" for <a target="_blank" href="http://drupal.org/">Drupal</a>. 
+Drupal is a free and widely-used content management system (CMS), which provides the possibility to extend it by implementing proprietary modules that hook into the Drupal core system.
+The basic idea of this module is to connect the Drupal system with the curricula development and support system (CEUS) provided by the <a target="_blank" href="http://jku.at">Johannes Kepler University in Linz</a>,
+available at https://lss.jku.at/wiki/index.php/Main/CEUS and https://lss.jku.at/studienhandbuch/.
+The main goal of this method was to reduce the maintenance effort needed for keeping the curricula data on a website up to date.
+
+The module is composed of four components, as seen @ref Modules "below", each of which provides different functionalities to reduce the administrative effort and all of which are somehow interconnected.
+
+@subsection Project_Intro Project
+This module was created as a result of the course "IT Project", a part of the bachelor's degree in business informatics at JKU, during the summer semester 2014.
+
+The project name is "Relaunch der Homepage der Studienkommission WIN". The original site can be found at http://stukowin.jku.at/. The project sponsor is Dr. Stefan Berger (stefan.berger@jku.at).
+
+The main functional project requirements include the following:
+-# Automatic import of curricula data from CEUS
+-# Possibility of editing curricula entries after the import
+-# Version management for curricula entries
+-# Automatically displaying different curricula on the site
+-# Possibility to create new ideal courses of studies ("Idealtypischer Studienverlauf", ITSV) and specialisation curricula
+-# Archiving and exporting curricula in the form of PDF documents
+
+@remark This documentation is one of four documents that make up the entire project documentation, namely the operator guide, the user guide and the test documentation.
+
+@section ceusapi CEUS API
+In order to make functional requirements such as displaying curricula and course details possible, it is necessary to extract the required data from CEUS. For this reason,
+JKU offers a JSON API for CEUS at <https://lss.jku.at/studienhandbuch/api/0.1>
+(Note that this URL is not available without authentication credentials).
+This API was developed for this project (hence the version number of @e 0.1) and is still prone to changes. Due to its novelty, no documentation for the API exists,
+which is why we try our best to document it together with our own module documentation.
+@note This is not the official documentation of the CEUS API, it is merely based on our own knowledge about it.
+@note For any questions concerning the API please contact Andreas Roesch (Andreas.Roesch@jku.at) or Mag. Martin Stabauer (martin.stabauer@jku.at)
+
+This API provides four public methods which will be described below.
+
+@subsection auth auth.php
+
+Method | /auth.php
+------ | ---------------------
+Input  | "username","password"
+Output | "authtoken"
+
+The method @c auth serves the purpose of authenticating a user and returns a token which is required for every other API method call.
+The user credentials at the time of development are as follows:
+
+	User: dke2
+	Password: studke2hb
+	
+
+@subsection list list.php
+Method | /list.php
+------ | -------------------------------------------
+Input  | "authtoken"
+Output | Array of Branch objects (see below) in JSON
+
+
+The method @c list returns an array of all curricula to which the user has access. In the scope of this project, these are the bachelor and master studies in business informatics.
+The curricula are returned in the data structure shown below:
+
+@image html Branch.png "Branch Objects"
+@image latex Branch.eps "Branch Objects"
+
+The data structure contains a few elements. For this project, only the following are relevant:
+
+Field     | Description
+--------- | ---------------------------------------------------------------------------------
+id        | CEUS id of the curriculum. This id is needed for the @ref curr "curr.php" method.
+name      | German name of the curriculum
+namme_en  | English name of the curriculum
+faculty   | Faculty of the curriculum
+type      | Bachelor or master studies
+typeshort | Short version of the type (@e B or @e M)
+version   | Semester when the curriculum was introduced (e.g. @e 2013W)
+
+@subsection curr curr.php
+Method | /curr.php
+------ | ---------------------------------------------
+Input  | "authtoken", "id"
+Output | Object of type curriculum (see below) in JSON
+
+The method @c curr returns general information about a curriculum and, more importantly, its structure.
+A curriculum is identified throug the @e id returned by @ref list "list.php" method.
+Curricula are returned in the following structure:
+
+@image html Curriculum.png "Curriculum Objects"
+@image latex Curriculum.eps "Curriculum Objects"
+
+All but the last element have already been described in @ref list "list.php" The last one is described below:
+
+Field     | Description
+--------- | -----------
+tree      | A nested array of @c CurrItems, which represents the curriculum structure. The field @c id of each @c CurrItem is needed for the @ref detail "detail.php" method. The field @c subtree contains the subcourses of each course
+
+@image html CurrItem.png "CurrItem Objects"
+@image latex CurrItem.eps "CurrItem Objects"
+
+@subsection detail detail.php
+Method | /detail.php
+------ | ---------------------------------------------
+Input  | "authtoken", "id" [,"lang"]
+Output | Array of Detail objects (see below) in JSON
+
+The method @c detail returns the details for one @c CurrItem. A @c CurrItem can be a subject (Fach), a module (Modul) or a simple course (Lehrveranstaltung).
+For localised data the optional parameter @c lang with the value "de" (German) or "en" (English) can be given.
+Details are returned in the folling data structure:
+
+@image html Detail.png "Detail Objects"
+@image latex Detail.eps "Detail Objects"
+
+For this project, mainly the following elements are relevant:
+
+Field           | Description
+--------------- | ---------------------------------------------------------------------------------
+ects            | Credits for the course
+verantname      | Name of the person responsible for this course
+verantemail     | Email of the person responsible for this course
+changedate      | Date and time of the last change of this entry (in the format "YYYY-MM-DD hh:mm:ss")
+currname        | Name of the curriculum that contains this course
+wst             | Semester periods per week (Semesterwochenstunden) for this course
+langname        | Language the course is held in
+lvtypshort      | Short type of the course (e.g. VL, UE, KV etc.)
+lvatype         | Long type of the course (Vorlesung, Uebung etc.)
+typename        | Long type of the entry (subject, module or course)
+type            | Number representative of the type of entry (1=subject, 2=module and 3=course)
+title           | Course title
+ziele           | Course goals
+lehrinhalte     | Contents of teaching
+voraussetzungen | Course requirements
+methoden        | Teaching methods
+
+@subsection Errors
+In case of an error, the CEUS API returns a JSON object with the error message contained in the @c error field. Known errors are:
++ Invalid id given
++ Missing parameter
++ Missing authentication token
+
+@section Modules
+@subsection CEUS2Drupal
+@subsubsection Import
+The import of data from CEUS to the Drupal environment is implemented in this component. All its functionality is collected in the @ref CEUS2Drupal component.
+The data model for the Drupal-internal representation of courses is defined in the module's @ref stukowin.install "install component", the necessary database tables are automatically created during the installation.
+Because the API URL and user credentials are prone to change, they need to be configurable. This is achieved in the @ref stukowin_admin() "admin menu":
+
+@image html "Module Configuration.png" "Module Configuration Page"
+@image latex "Module Configuration.eps" "Module Configuration Page"
+
+@note Administrator rights are needed to configure the login details
+
+The communication between this module and CEUS occurs as shown in the sequence diagram below:
+
+@image html "Sequence Diagram Import.svg" "Communication with CEUS"
+@image latex "Sequence Diagram Import.eps" "Communication with CEUS"
+
+The import from CEUS is performed roughly in the following steps:
+-# The @c auth token is requested from the CEUS API
+-# All available curricula are received from the API
+-# For each curriculum, the curriculum tree is requested from the API
+-# For each course in the tree, the details are requested in German and English
+-# During the first import, new Drupal vocabularies, vocabulary terms and content nodes are created
+-# We try our best to parse the field @c voraussetzungen and extract relations between courses (recommended/required)
+
+This process is shown in the following flow chart, with the corresponding methods in @ref ceus_importer that perform each step:
+
+@image html "Flowchart CEUS2Drupal.svg" "Import Process"
+@image latex "Flowchart CEUS2Drupal.eps" "Import Process"
+
+Here is a quick textual description of the process:
+
+The data import is initiated in the file @ref stukowin.module. This file first access ceus_importer::connect() in the file @ref ceus_importer.inc.php and prepares the import process.
+In order for this to work, the necessary settings have to be made in the configuration menu shown above. All methods for the data import are collected in the @ref ceus_importer.inc.php file.
+
+After this, the method ceus_importer::get_curricula() is called, which starts the import process.
+It checks if a Drupal vocabulary for the imported curricula already exists. If none are found, a new one is created. If the curricula's version numbers are different, a new vocabulary is created as well.
+
+After getting the tree for each curriculum, the details for its courses are requested and stored.
+
+Another noteworthy part is the method ceus_importer::process_relations(). This method is responsible for parsing the field @c voraussetzungen, which can contain any text possible.
+The method examines the field in three steps:
+1. Is the field empty? If not, go to Step 2.
+2. Does the field begin with "empfohlen"? If yes, it is a @e recommended relation, if not it is a @e required relation.
+3. Try to find @<li@> and @<a@> tags and extract a course title or code from them.
+
+Requirements are important mostly because they are used and shown in the @ref Drupal2AGG "automatically generated graphic representation".
+
+All of the code for the import is contained in the @ref ceus_importer.inc.php file.
+
+@see CEUS2Drupal
+
+@subsubsection change_management Change Management
+The functional requirements of this project make it necessary to periodically extract data from CEUS on the one hand
+and giving administrators and moderators the ability to overwrite data on the other hand.
+@remark How to overwrite course data is described in the user documentation.
+
+This creates the challenge of properly versioning the CMS content, which is why every import follows these rules:
+
+@image html "Changemanagement.svg" "Change Management"
+@image latex "Changemanagement.eps" "Change Management"
+
+Every time a content node is created or updated, it gets a red @e New tag in the content overview (see image below), through which the administrator can easily see which nodes have been updated.
+In addition to this, the import returns a success message that tells the administrator how many nodes have been created or updated, so that one can easily tell if changes have occurred.
+
+@image html "New Tag.png" "Red @e New Tag"
+@image latex "New Tag.eps" "Red @e New Tag"
+
+@subsection Drupal2ITSV
+As CEUS does not provide any information about fields of specialisation during the master studies and ideal courses of studies, henceforth called ITSV due to its German name,
+it was a project requirement that new curricula can be created by the administrator for such purposes.
+
+A freely available Drupal module called Taxonomy Manager (<https://www.drupal.org/project/taxonomy_manager>) gives the administrator the ability to copy vocabulary terms from one vocabulary to another, which is most of the work.
+Unfortunately, this process cannot be simplified any further. Nevertheless, we tried to at least automate the task of creating a new vocabulary, copying all of the information over from the source curriculum
+and creating top-level terms (such as "1. Semester" etc.), tasks which will be performed every time a new ITSV or specialisation has to be created.
+
+This component handles exactly that. It inserts a new menu item (at admin/settings/stukowin/taxonomy) where the administrator can select a source curriculum to base the new one on, select whether to create an ITSV or specialisation vocabulary,
+enter a name and choose how many top-level terms should be inserted. Once the administrator has filled out the form, the new vocabulary is automatically created and the browser is redirected to the Taxonomy Manager's "Dual View",
+where the administrator can begin copying courses into the new vocabulary.
+
+@remark This component does not have its own file as it does not contain a lot of code. All of its functionality is in the @ref stukowin.module file.
+
+@see Drupal2ITSV
+
+@subsection Drupal2PDF
+In order to permanently and easily archive past curricula there is the option to automatically create a course overview PDF document from the imported courses. 
+For this component to work properly, the necessary settings have to be made in advance (see module configuration image above).
+The administrator is provided with a new menu (at admin/settings/stukowin/pdf) where the curriculum to be archived can be selected. Once he clicks on "Create PDF", the PDF generation in overviewPDF::createPDF() is started.
+(All of the PDF generation code is contained in the @ref pdf_creator.inc.php file)
+
+The PDF generation process will flow as follows:
+
+@image html "Flowchart Drupal2PDF.svg" "PDF Creation"
+@image latex "Flowchart Drupal2PDF.eps" "PDF Creation"
+
+@see Drupal2PDF
+
+@subsection Drupal2AGG
+So far we have described how to import and edit curricula into Drupal. But part of the functional requirements were also being able to automatically display the curricula on the website
+in the form of an automatically generated graphic (AGG).
+This component provides the functionality for doing exactly that. Again, it can be separated into three components:
+
+@subsubsection json Drupal JSON Interface
+To make the curricula data available to clients, several JSON interfaces have been implemented that make curricula publicly reachable.
+This is needed so that the client browser can properly display the curricula.
+
+The following interfaces are available:
+Name            | Path              | Input Parameter                                                                                                                                                         | Description
+--------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------
+Curriculum List | stukowin/crclmlst | "currtype" : Type of curriculum to get ("Bachelorstudium" or "Masterstudium")<br>"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") | Returns a list of all curricula currently published (weight < 0), like @ref list
+Curriculum Tree	| stukowin/crclm    | Vocabulary id of the curriculum to get                                                                                                                                  | Returns the curriculum tree of one curriculum, containing all courses and their details
+Single course	| stukowin/lva      | Node id of the course to get                                                                                                                                            | Returns the details of a single course
+
+All of these interfaces are defined in the @ref stukowin.module file.
+
+@subsubsection plugin CKEditor Plug-in
+As the dynamic display of curricula in the browser requires a strict HTML document structure, we refrained from letting the administrator insert the code himself wherever a curriculum display was needed
+and instead implemented a plug-in for the CKEditor (<https://www.drupal.org/project/ckeditor>) which inserts the code automatically on the click of a button.
+The plug-in is registered with drupal in the @ref stukowin_ckeditor_plugin() method. It is then defined in the @ref plugin.js file
+and the dialog for inserting a curriculum view is defined in the @ref stukowin_curriculum.js file.
+
+@note In order for this plug-in to work properly, some settings have to be made in the CKEditor. This is described in the operator manual.
+
+@subsubsection graph Graph.js
+The main task of displaying the curricula in the client's browser is performed by this file. It fetches the data from the JSON interfaces described @ref json "above" and creates the DOM elements in the browser.
+It also registers click handlers for things such as expanding/reducing a course, showing prerequisites and selecting a different curriculum.
+@note The display layout is configured in the curriculum_stlye.css file (not included in this documentation)
+
+As an example, the output could look like this:
+
+@image html "Drupal2AGG.png" "Graphical Representation"
+@image latex "Drupal2AGG.eps" "Graphical Representation"
+
+@see Drupal2AGG
+
+@subsection Other
+All of the components described above need to work together somehow and at the same time be accessible to Drupal itself.
+For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly:
+- The @ref content_manager class is responsible for accessing the imported curricula data
+- The @ref stukowin.install file is responsible for installing and uninstalling the module and all the data structures that come with it
+- The @ref stukowin_menu() function sets up all the callback URLs
+- The @ref stukowin_admin() function is responsible for the configuration menu
+- The stukowin.info file contains all meta information about the module
+
+
+
+
+@section Development
+@subsection Authors
+@note Every file, class, method and member is documented with an @c @@author tag. The person tagged as @c @@author (thus being shown as the author) is the main/initial author of that file, class, method or member.
+@note All other authors, (people that have helped during initial development, fixed bugs or made changes) are tagged with the @c @@author@b s (plural) tag, thus being shown under Author@b s(plural).
+@note If a file, class, method or member has been authored by multiple people equally, all of them are tagged with the @c @@author@b s tag and there is no @c @@author.
+@note If you have any questions regarding the system, feel free to contact the respective author.
+
+The following list shows an overview of every person that has participated in writing this module, with a quick summary of what they have mostly contributed to:
+- <b>Jakob Strasser</b> - jakob.strasser@telenet.be
+	<br>Main author of the @ref CEUS2Drupal "PDF generation component" and the @ref graph.js file. Participating author in most files/components.
+	
+------------------------------
+
+- <b>Konstantinos Dafalias</b> - kdafalias@gmail.com
+	<br>Mostly responsible for the @ref CEUS2Drupal "CEUS import" and the @ref Stukowin_Module
+	
+------------------------------
+
+- <b>Werner Breuer</b> - bluescreenwerner@gmail.com
+	<br>Co-author of the @ref plugin and the @ref Drupal2AGG component in general, as well as the @ref Drupal2ITSV component. Participated in a lot of debugging.
+
+------------------------------
+
+- <b>Markus Gutmayer</b> - m.gutmayer@gmail.com
+	<br>Co-author of the @ref plugin and the @ref Drupal2AGG component in general, as well as the @ref Drupal2ITSV component. Participated in a lot of debugging.
+
+------------------------------
+
+- <b>Fabian Puehringer</b> - f.puehringer@24speed.at
+	<br>Assistance with @ref Drupal2PDF and @ref Drupal2AGG
+	
+------------------------------
+
+- <b>Manuel Muehlburger</b> - Hansbert92@googlemail.com
+	<br>Layout and design for the @ref Drupal2AGG component (mainly the @ref graph)
+		
+@subsection versionnumbers Version Numbers
+Every file and class has a version number, composed of four parts: @e major.minor.revision @e date
+- @e Major signifies a major release, such as the initial release
+- @e Minor signifies the addition of a new feature
+- @e Revision signifies a bug fix or something similarly small
+- @e Date shows when the last change was made to the source code (in the format "YYYY-MM-DD")
+
+@subsection versioncontrol Version Control
+When the project started, there were two groups, each of which used a different version control system.
+Group 1 used SVN on <http://cloudforge.com> while group 2 used <http://bitbucket.org>.
+When the two groups were merged, the SVN repository was dropped.
+Due to privilege problems with bitbucket, it was decided to move the entire repository to <http://github.com>, as everyone had access there.
+At the time writing this documentation, the repository is available at <http://github.com/TheJake123/DrupalModul>.
+
+As the repository is open source, the commit, issue and change history can be publicly viewed.
+Additionally, every file, class, method and member has been documented with a @c @@since tag with the following format: "Commit <hash> on YYYY-MM-DD", so that it is easily visible when a file, class, method or member has been added.
+
+@section Included Included Libraries/Files
+
+For the PDF generation, the free and open source library [TCPDF](http://www.tcpdf.org/) is used and included in the project.
+
+For parsing course relationships, the [simple_html_dom.php](http://simplehtmldom.sourceforge.net/) file is used
+*/
