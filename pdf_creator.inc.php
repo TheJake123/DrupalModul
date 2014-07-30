@@ -347,7 +347,7 @@ EOT;
 				$sHTML .= '<tr nobr="true"><td><I>' . $oCourse->name . '</I></td><td align="center"></td></tr>';
 				if (property_exists($oCourse,'children') && !empty($oCourse->children)) {
 					foreach ( $oCourse->children as $oChild ) {
-						$sHTML .= '<tr nobr="true"><td>' . $oChild->lva->title . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
+						$sHTML .= '<tr nobr="true"><td>' . $oChild->lva->title . '</td><td align="center">' . $oChild->lva->ects . '</td></tr>';
 					}
 				}
 			}
