@@ -587,7 +587,7 @@ function stukowin_menu() {
 
 /**
  * @ingroup Drupal2AGG
- * @brief implements hook_ckeditor_plugin
+ * @brief Implements hook_ckeditor_plugin
  * 
  * Adds the hook for the @ref stukowin_curriculum.js "ckeditor plugin" to insert a curriculum display.
  * 
@@ -618,11 +618,11 @@ function stukowin_ckeditor_plugin() {
 
 /**
  * @ingroup Drupal2AGG
- * @brief implements hook_theme_registry_alter
+ * @brief Implements hook_theme_registry_alter
  * 
- * Hook for telling the system to use our template on stukowin custom content type.
+ * Hook for telling the system to use our template on the stukowin custom content type.
  * 
- * @param object $theme_registry The entire cache of theme registry information, post-processing.
+ * @param object $theme_registry The entire cache of theme registry information, post-processing
  * 
  * @authors Werner Breuer - bluescreenwerner@gmail.com
  * @authors Markus Gutmayer - m.gutmayer@gmail.com

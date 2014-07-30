@@ -34,7 +34,7 @@
  *
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Fabian Puehringer - f.puehringer@24speed.at
- * @version 1.0.2 2014-07-22
+ * @version 1.0.3 2014-07-22
  * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
  *       
  * @see overviewPDF
@@ -54,7 +54,7 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
  *
  * @author Jakob Strasser - jakob.strasser@telenet.be
  * @authors Fabian Puehringer - f.puehringer@24speed.at
- * @version 1.0.2 2014-07-22
+ * @version 1.0.3 2014-07-22
  * @since Commit b9342d941b3f93e212f3f6af0823a07524dd5954 on 2014-06-30
  *       
  * @see createPDF()
@@ -345,8 +345,10 @@ EOT;
 				$sHTML .= '<tr nobr="true"><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
 			else {
 				$sHTML .= '<tr nobr="true"><td><I>' . $oCourse->name . '</I></td><td align="center"></td></tr>';
-				foreach ( $oCourse->children as $oChild ) {
-					$sHTML .= '<tr nobr="true"><td>' . $oCourse->lva->title . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
+				if (property_exists($oCourse,'children') && !empty($oCourse->children)) {
+					foreach ( $oCourse->children as $oChild ) {
+						$sHTML .= '<tr nobr="true"><td>' . $oChild->lva->title . '</td><td align="center">' . $oCourse->lva->ects . '</td></tr>';
+					}
 				}
 			}
 		}
