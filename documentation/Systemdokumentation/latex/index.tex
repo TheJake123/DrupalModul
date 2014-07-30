@@ -5,6 +5,7 @@
 \begin{DoxyEnumerate}
 \item \hyperlink{index_Module_Intro}{Module}
 \item \hyperlink{index_Project_Intro}{Project}
+\item \hyperlink{index_Language}{Language}
 \end{DoxyEnumerate}
 \item \hyperlink{index_ceusapi}{C\+E\+U\+S A\+P\+I}
 \begin{DoxyEnumerate}
@@ -29,7 +30,7 @@
 \item \hyperlink{index_plugin}{C\+K\+Editor Plug-\/in}
 \item \hyperlink{index_graph}{Graph.\+js}
 \end{DoxyEnumerate}
-\item \hyperlink{index_Other}{Other}
+\item \hyperlink{index_Integration}{Module Integration into Drupal}
 \end{DoxyEnumerate}
 \item \hyperlink{index_Development}{Development}
 \begin{DoxyEnumerate}
@@ -39,7 +40,7 @@
 \end{DoxyEnumerate}
 \item \hyperlink{index_Included}{Included Libraries/\+Files}
 \end{DoxyEnumerate}\hypertarget{index_Introduction}{}\subsection{Introduction}\label{index_Introduction}
- \textrm{\textbf{Please note that was document is automatically generated without much control over the layout. It is only meant to be used in print or to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}}  \hypertarget{index_Module_Intro}{}\subsubsection{Module}\label{index_Module_Intro}
+ \textrm{\textbf{Please note that was document is automatically generated without much control over the layout. It is only meant to be used in print or if it is necessary to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}}  \hypertarget{index_Module_Intro}{}\subsubsection{Module}\label{index_Module_Intro}
 This documentation describes the custom module \char`\"{}stukowin\char`\"{} for \href{http://drupal.org/}{\tt Drupal}. Drupal is a free and widely-\/used content management system (C\+M\+S), which provides the possibility to extend it by implementing proprietary modules that hook into the Drupal core system. The basic idea of this module is to connect the Drupal system with the curricula development and support system (C\+E\+U\+S) provided by the \href{http://jku.at}{\tt Johannes Kepler University in Linz}, available at \href{https://lss.jku.at/wiki/index.php/Main/CEUS}{\tt https\+://lss.\+jku.\+at/wiki/index.\+php/\+Main/\+C\+E\+U\+S} and \href{https://lss.jku.at/studienhandbuch/}{\tt https\+://lss.\+jku.\+at/studienhandbuch/}. The main goal of this method was to reduce the maintenance effort needed for keeping the curricula data on a website up to date.
 
 The module is composed of four components, as seen \hyperlink{index_Modules}{below}, each of which provides different functionalities to reduce the administrative effort and all of which are somehow interconnected.\hypertarget{index_Project_Intro}{}\subsubsection{Project}\label{index_Project_Intro}
@@ -60,7 +61,8 @@ The main functional project requirements include the following\+:
 \begin{DoxyRemark}{Remarks}
 This documentation is one of four documents that make up the entire project documentation, namely the operator guide, the user guide and the test documentation.
 \end{DoxyRemark}
-\hypertarget{index_ceusapi}{}\subsection{C\+E\+U\+S A\+P\+I}\label{index_ceusapi}
+\hypertarget{index_Language}{}\subsubsection{Language}\label{index_Language}
+As Drupal is an open source system that is mostly documented in English, with most of the modules available for it also documented in English, we decided to document our module accordingly. It is for this reason that the language of this documentation differs from the other parts of the documentation mentioned above.\hypertarget{index_ceusapi}{}\subsection{C\+E\+U\+S A\+P\+I}\label{index_ceusapi}
 In order to make functional requirements such as displaying curricula and course details possible, it is necessary to extract the required data from C\+E\+U\+S. For this reason, J\+K\+U offers a J\+S\+O\+N A\+P\+I for C\+E\+U\+S at \href{https://lss.jku.at/studienhandbuch/api/0.1}{\tt https\+://lss.\+jku.\+at/studienhandbuch/api/0.\+1} (Note that this U\+R\+L is not available without authentication credentials). This A\+P\+I was developed for this project (hence the version number of {\itshape 0.\+1}) and is still prone to changes. Due to its novelty, no documentation for the A\+P\+I exists, which is why we try our best to document it together with our own module documentation. \begin{DoxyNote}{Note}
 This is not the official documentation of the C\+E\+U\+S A\+P\+I, it is merely based on our own knowledge about it. 
 
@@ -270,7 +272,7 @@ The following interfaces are available\+: \begin{TabularC}{4}
 \hline
 \rowcolor{lightgray}{\bf Name }&{\bf Path }&{\bf Input Parameter }&{\bf Description  }\\\cline{1-4}
 Curriculum List &stukowin/crclmlst &\char`\"{}currtype\char`\"{} \+: Type of curriculum to get (\char`\"{}\+Bachelorstudium\char`\"{} or \char`\"{}\+Masterstudium\char`\"{})~\newline
-\char`\"{}taxtypes\char`\"{} \+: Types of vocabularies to get (\char`\"{}curriculum\char`\"{}, \char`\"{}itsv\char`\"{} and/or \char`\"{}specialisation\char`\"{}) &Returns a list of all curricula currently published (weight $<$ 0), like \hyperlink{index_list}{list.\+php} \\\cline{1-4}
+\char`\"{}taxtypes\char`\"{} \+: Types of vocabularies to get (\char`\"{}curriculum\char`\"{}, \char`\"{}itsv\char`\"{} and/or \char`\"{}specialisation\char`\"{}) &Returns a list of all curricula currently published (weight below 0), like \hyperlink{index_list}{list.\+php} \\\cline{1-4}
 Curriculum Tree &stukowin/crclm &Vocabulary id of the curriculum to get &Returns the curriculum tree of one curriculum, containing all courses and their details \\\cline{1-4}
 Single course &stukowin/lva &Node id of the course to get &Returns the details of a single course \\\cline{1-4}
 \end{TabularC}
@@ -296,9 +298,16 @@ As an example, the output could look like this\+:
 \begin{DoxySeeAlso}{See also}
 \hyperlink{group___drupal2_a_g_g}{Drupal2\+A\+G\+G}
 \end{DoxySeeAlso}
-\hypertarget{index_Other}{}\subsubsection{Other}\label{index_Other}
-All of the components described above need to work together somehow and at the same time be accessible to Drupal itself. For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly\+:
+\hypertarget{index_Integration}{}\subsubsection{Module Integration into Drupal}\label{index_Integration}
+All of the components described above need to work together somehow and at the same time be accessible to Drupal itself. The interaction with Drupal is carried out through so-\/called \char`\"{}hooks\char`\"{}, which are functions that are known to Drupal and called when certain events occur. To quote the \href{https://api.drupal.org/api/drupal/includes!module.inc/group/hooks/7}{\tt Drupal documentation}\+: \begin{quote}
+Drupal's module system is based on the concept of \char`\"{}hooks\char`\"{}. A hook is a P\+H\+P function that is named foo\+\_\+bar(), where \char`\"{}foo\char`\"{} is the name of the module (whose filename is thus foo.\+module) and \char`\"{}bar\char`\"{} is the name of the hook. Each hook has a defined set of parameters and a specified result type.
+
+To extend Drupal, a module need simply implement a hook. When Drupal wishes to allow intervention from modules, it determines which modules implement a hook and calls that hook in all enabled modules that implement it. \end{quote}
+
+
+Thus, all our hooks are prefixed with \char`\"{}stukowin\+\_\+\char`\"{} and are commented with \char`\"{}\+Implements hook\+\_\+$\ast$\char`\"{}. The following hooks are implemented\+:
 \begin{DoxyItemize}
+\item hook\+\_\+help For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly\+:
 \item The \hyperlink{classcontent__manager}{content\+\_\+manager} class is responsible for accessing the imported curricula data
 \item The \hyperlink{stukowin_8install}{stukowin.\+install} file is responsible for installing and uninstalling the module and all the data structures that come with it
 \item The \hyperlink{group___stukowin___module_ga59cfbad113b7aa2d10f0b204a5f7ba0d}{stukowin\+\_\+menu()} function sets up all the callback U\+R\+Ls
@@ -309,7 +318,7 @@ All of the components described above need to work together somehow and at the s
 \begin{DoxyNote}{Note}
 Every file, class, method and member is documented with an {\ttfamily @author} tag. The person tagged as {\ttfamily @author} (thus being shown as the author) is the main/initial author of that file, class, method or member. 
 
-All other authors, (people that have helped during initial development, fixed bugs or made changes) are tagged with the {\ttfamily @author{\bfseries s} }(plural) tag, thus being shown under Author{\bfseries s(plural)}. 
+All other authors, (people that have helped during initial development, fixed bugs or made changes) are tagged with the {\ttfamily @author{\bfseries s} }(plural) tag, thus being shown under Author{\bfseries s} {\bfseries }(plural). 
 
 If a file, class, method or member has been authored by multiple people equally, all of them are tagged with the {\ttfamily @author{\bfseries s} tag} and there is no {\ttfamily @author}. 
 
@@ -318,7 +327,7 @@ If you have any questions regarding the system, feel free to contact the respect
 The following list shows an overview of every person that has participated in writing this module, with a quick summary of what they have mostly contributed to\+:
 \begin{DoxyItemize}
 \item {\bfseries Jakob Strasser} -\/ \href{mailto:jakob.strasser@telenet.be}{\tt jakob.\+strasser@telenet.\+be} ~\newline
-Main author of the \hyperlink{index_CEUS2Drupal}{P\+D\+F generation component} and the \hyperlink{graph_8js}{graph.\+js} file. Participating author in most files/components. 
+Main author of the \hyperlink{index_CEUS2Drupal}{P\+D\+F generation component} and the \hyperlink{graph_8js}{graph.\+js} file. Participating author in most files/components. Functional testing. 
 
 
 \item {\bfseries Konstantinos Dafalias} -\/ \href{mailto:kdafalias@gmail.com}{\tt kdafalias@gmail.\+com} ~\newline
@@ -334,11 +343,11 @@ Co-\/author of the \hyperlink{index_plugin}{C\+K\+Editor Plug-\/in} and the \hyp
 
 
 \item {\bfseries Fabian Puehringer} -\/ \href{mailto:f.puehringer@24speed.at}{\tt f.\+puehringer@24speed.\+at} ~\newline
-Assistance with \hyperlink{index_Drupal2PDF}{Drupal2\+P\+D\+F} and \hyperlink{index_Drupal2AGG}{Drupal2\+A\+G\+G} 
+Assistance with \hyperlink{index_Drupal2PDF}{Drupal2\+P\+D\+F} and \hyperlink{index_Drupal2AGG}{Drupal2\+A\+G\+G} \& Testing 
 
 
 \item {\bfseries Manuel Muehlburger} -\/ \href{mailto:Hansbert92@googlemail.com}{\tt Hansbert92@googlemail.\+com} ~\newline
-Layout and design for the \hyperlink{index_Drupal2AGG}{Drupal2\+A\+G\+G} component (mainly the \hyperlink{index_graph}{Graph.\+js})
+Layout and design for the \hyperlink{index_Drupal2AGG}{Drupal2\+A\+G\+G} component (mainly the \hyperlink{index_graph}{Graph.\+js}) \& Testing
 \end{DoxyItemize}\hypertarget{index_versionnumbers}{}\subsubsection{Version Numbers}\label{index_versionnumbers}
 Every file and class has a version number, composed of four parts\+: {\itshape major.\+minor.\+revision} {\itshape date} 
 \begin{DoxyItemize}
@@ -347,7 +356,14 @@ Every file and class has a version number, composed of four parts\+: {\itshape m
 \item {\itshape Revision} signifies a bug fix or something similarly small
 \item {\itshape Date} shows when the last change was made to the source code (in the format \char`\"{}\+Y\+Y\+Y\+Y-\/\+M\+M-\/\+D\+D\char`\"{})
 \end{DoxyItemize}\hypertarget{index_versioncontrol}{}\subsubsection{Version Control}\label{index_versioncontrol}
-When the project started, there were two groups, each of which used a different version control system. Group 1 used S\+V\+N on \href{http://cloudforge.com}{\tt http\+://cloudforge.\+com} while group 2 used \href{http://bitbucket.org}{\tt http\+://bitbucket.\+org}. When the two groups were merged, the S\+V\+N repository was dropped. Due to privilege problems with bitbucket, it was decided to move the entire repository to \href{http://github.com}{\tt http\+://github.\+com}, as everyone had access there. At the time writing this documentation, the repository is available at \href{http://github.com/TheJake123/DrupalModul}{\tt http\+://github.\+com/\+The\+Jake123/\+Drupal\+Modul}.
+
+\begin{DoxyItemize}
+\item When the project started, there were two groups, each of which used a different version control system.
+\item Group 1 used S\+V\+N on \href{http://cloudforge.com}{\tt http\+://cloudforge.\+com} while group 2 used \href{http://bitbucket.org}{\tt http\+://bitbucket.\+org}.
+\item When the two groups were merged, the S\+V\+N repository was dropped.
+\item Due to privilege problems with bitbucket, it was decided to move the entire repository to \href{http://github.com}{\tt http\+://github.\+com}, as everyone had access there.
+\item At the time writing this documentation, the repository is available at \href{http://github.com/TheJake123/DrupalModul}{\tt http\+://github.\+com/\+The\+Jake123/\+Drupal\+Modul}.
+\end{DoxyItemize}
 
 As the repository is open source, the commit, issue and change history can be publicly viewed. Additionally, every file, class, method and member has been documented with a {\ttfamily @since} tag with the following format\+: \char`\"{}\+Commit $<$hash$>$ on Y\+Y\+Y\+Y-\/\+M\+M-\/\+D\+D\char`\"{}, so that it is easily visible when a file, class, method or member has been added.\hypertarget{index_Included}{}\subsection{Included Libraries/\+Files}\label{index_Included}
 For the P\+D\+F generation, the free and open source library \href{http://www.tcpdf.org/}{\tt T\+C\+P\+D\+F} is used and included in the project.

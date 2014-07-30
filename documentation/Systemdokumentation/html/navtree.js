@@ -5,7 +5,8 @@ var NAVTREE =
       [ "Content", "index.html#pageTOC", null ],
       [ "Introduction", "index.html#Introduction", [
         [ "Module", "index.html#Module_Intro", null ],
-        [ "Project", "index.html#Project_Intro", null ]
+        [ "Project", "index.html#Project_Intro", null ],
+        [ "Language", "index.html#Language", null ]
       ] ],
       [ "CEUS API", "index.html#ceusapi", [
         [ "auth.php", "index.html#auth", null ],
@@ -26,7 +27,7 @@ var NAVTREE =
           [ "CKEditor Plug-in", "index.html#plugin", null ],
           [ "Graph.js", "index.html#graph", null ]
         ] ],
-        [ "Other", "index.html#Other", null ]
+        [ "Module Integration into Drupal", "index.html#Integration", null ]
       ] ],
       [ "Development", "index.html#Development", [
         [ "Authors", "index.html#Authors", null ],

@@ -108,6 +108,7 @@ Content</h1>
 <li><a class="el" href="index.html#Introduction">Introduction</a><ol type="a">
 <li><a class="el" href="index.html#Module_Intro">Module</a></li>
 <li><a class="el" href="index.html#Project_Intro">Project</a></li>
+<li><a class="el" href="index.html#Language">Language</a></li>
 </ol>
 </li>
 <li><a class="el" href="index.html#ceusapi">CEUS API</a><ol type="a">
@@ -132,7 +133,7 @@ Content</h1>
 <li><a class="el" href="index.html#graph">Graph.js</a></li>
 </ol>
 </li>
-<li><a class="el" href="index.html#Other">Other</a></li>
+<li><a class="el" href="index.html#Integration">Module Integration into Drupal</a></li>
 </ol>
 </li>
 <li><a class="el" href="index.html#Development">Development</a><ol type="a">
@@ -162,6 +163,9 @@ Project</h2>
 <li>Archiving and exporting curricula in the form of PDF documents</li>
 </ol>
 <dl class="section remark"><dt>Remarks</dt><dd>This documentation is one of four documents that make up the entire project documentation, namely the operator guide, the user guide and the test documentation.</dd></dl>
+<h2><a class="anchor" id="Language"></a>
+Language</h2>
+<p>As Drupal is an open source system that is mostly documented in English, with most of the modules available for it also documented in English, we decided to document our module accordingly. It is for this reason that the language of this documentation differs from the other parts of the documentation mentioned above.</p>
 <h1><a class="anchor" id="ceusapi"></a>
 CEUS API</h1>
 <p>In order to make functional requirements such as displaying curricula and course details possible, it is necessary to extract the required data from CEUS. For this reason, JKU offers a JSON API for CEUS at <a href="https://lss.jku.at/studienhandbuch/api/0.1">https://lss.jku.at/studienhandbuch/api/0.1</a> (Note that this URL is not available without authentication credentials). This API was developed for this project (hence the version number of <em>0.1</em>) and is still prone to changes. Due to its novelty, no documentation for the API exists, which is why we try our best to document it together with our own module documentation. </p><dl class="section note"><dt>Note</dt><dd>This is not the official documentation of the CEUS API, it is merely based on our own knowledge about it. </dd>
@@ -380,7 +384,7 @@ Drupal JSON Interface</h3>
 <th>Name </th><th>Path </th><th>Input Parameter </th><th>Description  </th></tr>
 <tr>
 <td>Curriculum List </td><td>stukowin/crclmlst </td><td>"currtype" : Type of curriculum to get ("Bachelorstudium" or "Masterstudium")<br />
-"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") </td><td>Returns a list of all curricula currently published (weight &lt; 0), like <a class="el" href="index.html#list">list.php</a> </td></tr>
+"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") </td><td>Returns a list of all curricula currently published (weight below 0), like <a class="el" href="index.html#list">list.php</a> </td></tr>
 <tr>
 <td>Curriculum Tree </td><td>stukowin/crclm </td><td>Vocabulary id of the curriculum to get </td><td>Returns the curriculum tree of one curriculum, containing all courses and their details </td></tr>
 <tr>
@@ -400,9 +404,14 @@ Graph.js</h3>
 <div class="caption">
 Graphical Representation</div></div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group___drupal2_a_g_g.html" title="Module for transforming CEUS data to a proper graphical representation. ">Drupal2AGG</a></dd></dl>
-<h2><a class="anchor" id="Other"></a>
-Other</h2>
-<p>All of the components described above need to work together somehow and at the same time be accessible to Drupal itself. For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly:</p><ul>
+<h2><a class="anchor" id="Integration"></a>
+Module Integration into Drupal</h2>
+<p>All of the components described above need to work together somehow and at the same time be accessible to Drupal itself. The interaction with Drupal is carried out through so-called "hooks", which are functions that are known to Drupal and called when certain events occur. To quote the <a href="https://api.drupal.org/api/drupal/includes!module.inc/group/hooks/7">Drupal documentation</a>: </p><blockquote class="doxtable">
+<p>Drupal's module system is based on the concept of "hooks". A hook is a PHP function that is named foo_bar(), where "foo" is the name of the module (whose filename is thus foo.module) and "bar" is the name of the hook. Each hook has a defined set of parameters and a specified result type.</p>
+<p>To extend Drupal, a module need simply implement a hook. When Drupal wishes to allow intervention from modules, it determines which modules implement a hook and calls that hook in all enabled modules that implement it. </p>
+</blockquote>
+<p>Thus, all our hooks are prefixed with "stukowin_" and are commented with "Implements hook_*". The following hooks are implemented:</p><ul>
+<li>hook_help For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly:</li>
 <li>The <a class="el" href="classcontent__manager.html">content_manager</a> class is responsible for accessing the imported curricula data</li>
 <li>The <a class="el" href="stukowin_8install.html">stukowin.install</a> file is responsible for installing and uninstalling the module and all the data structures that come with it</li>
 <li>The <a class="el" href="group___stukowin___module.html#ga59cfbad113b7aa2d10f0b204a5f7ba0d">stukowin_menu()</a> function sets up all the callback URLs</li>
@@ -415,14 +424,14 @@ Development</h1>
 Authors</h2>
 <dl class="section note"><dt>Note</dt><dd>Every file, class, method and member is documented with an <code>@author</code> tag. The person tagged as <code>@author</code> (thus being shown as the author) is the main/initial author of that file, class, method or member. </dd>
 <dd>
-All other authors, (people that have helped during initial development, fixed bugs or made changes) are tagged with the <code>@author<b>s</b> </code>(plural) tag, thus being shown under Author<b>s(plural)</b>. </dd>
+All other authors, (people that have helped during initial development, fixed bugs or made changes) are tagged with the <code>@author<b>s</b> </code>(plural) tag, thus being shown under Author<b>s</b> <b></b>(plural). </dd>
 <dd>
 If a file, class, method or member has been authored by multiple people equally, all of them are tagged with the <code>@author<b>s</b> tag</code> and there is no <code>@author</code>. </dd>
 <dd>
 If you have any questions regarding the system, feel free to contact the respective author.</dd></dl>
 <p>The following list shows an overview of every person that has participated in writing this module, with a quick summary of what they have mostly contributed to:</p><ul>
 <li><b>Jakob Strasser</b> - <a href="#" onclick="location.href='mai'+'lto:'+'jak'+'ob'+'.st'+'ra'+'sse'+'r@'+'tel'+'en'+'et.'+'be'; return false;">jakob<span style="display: none;">.nosp@m.</span>.str<span style="display: none;">.nosp@m.</span>asser<span style="display: none;">.nosp@m.</span>@tel<span style="display: none;">.nosp@m.</span>enet.<span style="display: none;">.nosp@m.</span>be</a> <br />
-Main author of the <a class="el" href="index.html#CEUS2Drupal">PDF generation component</a> and the <a class="el" href="graph_8js.html">graph.js</a> file. Participating author in most files/components. <hr/>
+Main author of the <a class="el" href="index.html#CEUS2Drupal">PDF generation component</a> and the <a class="el" href="graph_8js.html">graph.js</a> file. Participating author in most files/components. Functional testing. <hr/>
 </li>
 <li><b>Konstantinos Dafalias</b> - <a href="#" onclick="location.href='mai'+'lto:'+'kda'+'fa'+'lia'+'s@'+'gma'+'il'+'.co'+'m'; return false;">kdafa<span style="display: none;">.nosp@m.</span>lias<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a> <br />
 Mostly responsible for the <a class="el" href="index.html#CEUS2Drupal">CEUS import</a> and the <a class="el" href="group___stukowin___module.html">Module Core</a> <hr/>
@@ -434,10 +443,10 @@ Co-author of the <a class="el" href="index.html#plugin">CKEditor Plug-in</a> and
 Co-author of the <a class="el" href="index.html#plugin">CKEditor Plug-in</a> and the <a class="el" href="index.html#Drupal2AGG">Drupal2AGG</a> component in general, as well as the <a class="el" href="index.html#Drupal2ITSV">Drupal2ITSV</a> component. Participated in a lot of debugging. <hr/>
 </li>
 <li><b>Fabian Puehringer</b> - <a href="#" onclick="location.href='mai'+'lto:'+'f.p'+'ue'+'hri'+'ng'+'er@'+'24'+'spe'+'ed'+'.at'; return false;">f.pue<span style="display: none;">.nosp@m.</span>hrin<span style="display: none;">.nosp@m.</span>ger@2<span style="display: none;">.nosp@m.</span>4spe<span style="display: none;">.nosp@m.</span>ed.at</a> <br />
-Assistance with <a class="el" href="index.html#Drupal2PDF">Drupal2PDF</a> and <a class="el" href="index.html#Drupal2AGG">Drupal2AGG</a> <hr/>
+Assistance with <a class="el" href="index.html#Drupal2PDF">Drupal2PDF</a> and <a class="el" href="index.html#Drupal2AGG">Drupal2AGG</a> &amp; Testing <hr/>
 </li>
 <li><b>Manuel Muehlburger</b> - <a href="#" onclick="location.href='mai'+'lto:'+'Han'+'sb'+'ert'+'92'+'@go'+'og'+'lem'+'ai'+'l.c'+'om'; return false;">Hansb<span style="display: none;">.nosp@m.</span>ert9<span style="display: none;">.nosp@m.</span>2@goo<span style="display: none;">.nosp@m.</span>glem<span style="display: none;">.nosp@m.</span>ail.c<span style="display: none;">.nosp@m.</span>om</a> <br />
-Layout and design for the <a class="el" href="index.html#Drupal2AGG">Drupal2AGG</a> component (mainly the <a class="el" href="index.html#graph">Graph.js</a>)</li>
+Layout and design for the <a class="el" href="index.html#Drupal2AGG">Drupal2AGG</a> component (mainly the <a class="el" href="index.html#graph">Graph.js</a>) &amp; Testing</li>
 </ul>
 <h2><a class="anchor" id="versionnumbers"></a>
 Version Numbers</h2>
@@ -449,7 +458,13 @@ Version Numbers</h2>
 </ul>
 <h2><a class="anchor" id="versioncontrol"></a>
 Version Control</h2>
-<p>When the project started, there were two groups, each of which used a different version control system. Group 1 used SVN on <a href="http://cloudforge.com">http://cloudforge.com</a> while group 2 used <a href="http://bitbucket.org">http://bitbucket.org</a>. When the two groups were merged, the SVN repository was dropped. Due to privilege problems with bitbucket, it was decided to move the entire repository to <a href="http://github.com">http://github.com</a>, as everyone had access there. At the time writing this documentation, the repository is available at <a href="http://github.com/TheJake123/DrupalModul">http://github.com/TheJake123/DrupalModul</a>.</p>
+<ul>
+<li>When the project started, there were two groups, each of which used a different version control system.</li>
+<li>Group 1 used SVN on <a href="http://cloudforge.com">http://cloudforge.com</a> while group 2 used <a href="http://bitbucket.org">http://bitbucket.org</a>.</li>
+<li>When the two groups were merged, the SVN repository was dropped.</li>
+<li>Due to privilege problems with bitbucket, it was decided to move the entire repository to <a href="http://github.com">http://github.com</a>, as everyone had access there.</li>
+<li>At the time writing this documentation, the repository is available at <a href="http://github.com/TheJake123/DrupalModul">http://github.com/TheJake123/DrupalModul</a>.</li>
+</ul>
 <p>As the repository is open source, the commit, issue and change history can be publicly viewed. Additionally, every file, class, method and member has been documented with a <code>@since</code> tag with the following format: "Commit &lt;hash&gt; on YYYY-MM-DD", so that it is easily visible when a file, class, method or member has been added.</p>
 <h1><a class="anchor" id="Included"></a>
 Included Libraries/Files</h1>
@@ -460,7 +475,7 @@ Included Libraries/Files</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 22 2014 21:36:30 for stukowin by
+    <li class="footer">Generated on Wed Jul 30 2014 23:10:12 for stukowin by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

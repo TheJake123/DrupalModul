@@ -87,7 +87,7 @@ class overviewPDF extends TCPDF {
 		$this->setFont ( 'times', '', 12 );
 		$this->setY ( - 15 );
 		$this->Line ( $this->getMargins ()['left'], $this->GetY (), $this->getPageDimensions ()['wk'] - $this->getMargins ()['right'], $this->GetY () );
-		$this->Cell ( 0, 0, date('Y-m-d H:i:s'),0,0,'C');
+		$this->Cell ( 0, 0, "Erstellt am " . date('d.m.Y'),0,0,'C');
 		$this->Cell ( 0, 0, $this->getAliasRightShift () . $this->getAliasNumPage () . '/' . $this->getAliasNbPages (), 0, 0, 'R' );
 	}
 	
@@ -377,7 +377,7 @@ EOT;
 		if (property_exists ( $oTopLevel, 'lva' )) {
 			$this->printFach ( $oTopLevel );
 		} else if (property_exists ( $oTopLevel, 'children' )) {
-			$this->printHeading ( $oTopLevel->name, 0, false );
+			$this->printHeading ( $oTopLevel->name, 1, false );
 			foreach ( $oTopLevel->children as $oChild ) {
 				$this->printFach ( $oChild );
 			}
@@ -397,7 +397,7 @@ EOT;
 	 */
 	private function printFach($oFach) {
 		if (! property_exists ( $oFach, 'children' )) {
-			$this->printHeading ( $oFach->lva->title, 1, true );
+			$this->printHeading ( $oFach->lva->title, 2, true );
 			return;
 		}
 		// Print overview table
@@ -419,7 +419,7 @@ EOT;
 		$sHTML = $this->unhtmlentities ( $sHTML );
 		if ($oFach->lva->ziele || $oFach->lva->lehrinhalte) {
 			$this->checkPageBreak ( 30 );
-			$this->printHeading ( $oFach->lva->title, 1, true );
+			$this->printHeading ( $oFach->lva->title, 2, true );
 			$this->printZieleInhalte ( $oFach );
 			$this->checkPageBreak ( $this->getHTMLHeight ( $sHTML ) );
 			$this->writeHTML ( $sHTML );
@@ -427,7 +427,7 @@ EOT;
 		// Print details of each subcourse
 		foreach ( $aChildren as $oChild )
 			if (($oChild->lva->ziele || $oChild->lva->lehrinhalte) && $oChild->lva->lvatype && $oChild->lva->lvatype != '3') {
-				$this->printHeading ( $oChild->lva->typename . ' ' . $oChild->lva->title, 2, true, 'L', false );
+				$this->printHeading ( $oChild->lva->typename . ' ' . $oChild->lva->title, 3, true, 'L', false );
 				$this->printZieleInhalte ( $oChild );
 			}
 		$this->Ln ();
@@ -588,16 +588,17 @@ EOT;
 		$iIndex = $this->getNextIndex ( $iLevel );
 		$sText = $this->unhtmlentities ( $sText );
 		switch ($iLevel) {
-			// Curriculum title
+			// Curriculum title, Section title
 			case 0 :
+			case 1 :
 				$this->SetFont ( 'times', 'B', 20 );
 				break;
 			// Subject title
-			case 1 :
+			case 2 :
 				$this->SetFont ( 'times', 'B', 14 );
 				break;
 			// Module title
-			case 2 :
+			case 3 :
 				$this->SetFont ( 'times', 'I', 12 );
 				break;
 			default :

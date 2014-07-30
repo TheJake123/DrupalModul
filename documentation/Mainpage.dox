@@ -4,6 +4,7 @@
 -# @ref Introduction
 	-# @ref Module_Intro
 	-# @ref Project_Intro
+	-# @ref Language
 -# @ref ceusapi "CEUS API"
 	-# @ref auth
 	-# @ref list
@@ -20,7 +21,7 @@
 		-# @ref json
 		-# @ref plugin
 		-# @ref graph
-	-# @ref Other
+	-# @ref Integration
 -# @ref Development
 	-# @ref Authors
 	-# @ref versionnumbers
@@ -28,7 +29,7 @@
 -# @ref Included "Included Libraries/Files"
 
 @section Introduction
-@latexonly \textrm{\textbf{Please note that was document is automatically generated without much control over the layout. It is only meant to be used in print or to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}} @endlatexonly
+@latexonly \textrm{\textbf{Please note that was document is automatically generated without much control over the layout. It is only meant to be used in print or if it is necessary to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}} @endlatexonly
 @subsection Module_Intro Module
 This documentation describes the custom module "stukowin" for <a target="_blank" href="http://drupal.org/">Drupal</a>. 
 Drupal is a free and widely-used content management system (CMS), which provides the possibility to extend it by implementing proprietary modules that hook into the Drupal core system.
@@ -52,6 +53,10 @@ The main functional project requirements include the following:
 -# Archiving and exporting curricula in the form of PDF documents
 
 @remark This documentation is one of four documents that make up the entire project documentation, namely the operator guide, the user guide and the test documentation.
+
+@subsection Language
+As Drupal is an open source system that is mostly documented in English, with most of the modules available for it also documented in English, we decided to document our module accordingly.
+It is for this reason that the language of this documentation differs from the other parts of the documentation mentioned above.
 
 @section ceusapi CEUS API
 In order to make functional requirements such as displaying curricula and course details possible, it is necessary to extract the required data from CEUS. For this reason,
@@ -270,11 +275,11 @@ To make the curricula data available to clients, several JSON interfaces have be
 This is needed so that the client browser can properly display the curricula.
 
 The following interfaces are available:
-Name            | Path              | Input Parameter                                                                                                                                                         | Description
---------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------
-Curriculum List | stukowin/crclmlst | "currtype" : Type of curriculum to get ("Bachelorstudium" or "Masterstudium")<br>"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") | Returns a list of all curricula currently published (weight < 0), like @ref list
-Curriculum Tree	| stukowin/crclm    | Vocabulary id of the curriculum to get                                                                                                                                  | Returns the curriculum tree of one curriculum, containing all courses and their details
-Single course	| stukowin/lva      | Node id of the course to get                                                                                                                                            | Returns the details of a single course
+Name            | Path              | Input Parameter                                                                                                                                                           | Description
+--------------- | ----------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------   | ---------------------------------------------------------------------------------------
+Curriculum List | stukowin/crclmlst | "currtype" : Type of curriculum to get ("Bachelorstudium" or "Masterstudium")<br>"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") | Returns a list of all curricula currently published (weight below 0), like @ref list
+Curriculum Tree	| stukowin/crclm    | Vocabulary id of the curriculum to get                                                                                                                                    | Returns the curriculum tree of one curriculum, containing all courses and their details
+Single course	| stukowin/lva      | Node id of the course to get                                                                                                                                              | Returns the details of a single course
 
 All of these interfaces are defined in the @ref stukowin.module file.
 
@@ -298,8 +303,21 @@ As an example, the output could look like this:
 
 @see Drupal2AGG
 
-@subsection Other
+@subsection Integration Module Integration into Drupal
 All of the components described above need to work together somehow and at the same time be accessible to Drupal itself.
+The interaction with Drupal is carried out through so-called "hooks", which are functions that are known to Drupal and called when certain events occur. To quote the [Drupal documentation](https://api.drupal.org/api/drupal/includes!module.inc/group/hooks/7):
+> Drupal's module system is based on the concept of "hooks". A hook is a PHP function that is named foo_bar(), where "foo" is the name of the module (whose filename is thus foo.module) and "bar" is the name of the hook.
+> Each hook has a defined set of parameters and a specified result type.
+>
+> To extend Drupal, a module need simply implement a hook. When Drupal wishes to allow intervention from modules,
+> it determines which modules implement a hook and calls that hook in all enabled modules that implement it.
+
+Thus, all our hooks are prefixed with "stukowin_" and are commented with "Implements hook_*". The following hooks are implemented:
+Hook | Implementing method | Description
+---- | ------------------- | -----------
+[hook_help](https://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_help/7) | @ref stukowin_help() | Provides information about the module
+[hook_menu](https://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_menu/7) | @ref stukowin_menu() | Registers menu links/buttons etc. with Drupal
+[
 For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly:
 - The @ref content_manager class is responsible for accessing the imported curricula data
 - The @ref stukowin.install file is responsible for installing and uninstalling the module and all the data structures that come with it
@@ -313,13 +331,13 @@ For this reason there are several methods and files to ensure a smooth cooperati
 @section Development
 @subsection Authors
 @note Every file, class, method and member is documented with an @c @@author tag. The person tagged as @c @@author (thus being shown as the author) is the main/initial author of that file, class, method or member.
-@note All other authors, (people that have helped during initial development, fixed bugs or made changes) are tagged with the @c @@author@b s (plural) tag, thus being shown under Author@b s(plural).
+@note All other authors, (people that have helped during initial development, fixed bugs or made changes) are tagged with the @c @@author@b s (plural) tag, thus being shown under Author@b s @b (plural).
 @note If a file, class, method or member has been authored by multiple people equally, all of them are tagged with the @c @@author@b s tag and there is no @c @@author.
 @note If you have any questions regarding the system, feel free to contact the respective author.
 
 The following list shows an overview of every person that has participated in writing this module, with a quick summary of what they have mostly contributed to:
 - <b>Jakob Strasser</b> - jakob.strasser@telenet.be
-	<br>Main author of the @ref CEUS2Drupal "PDF generation component" and the @ref graph.js file. Participating author in most files/components.
+	<br>Main author of the @ref CEUS2Drupal "PDF generation component" and the @ref graph.js file. Participating author in most files/components. Functional testing.
 	
 ------------------------------
 
@@ -339,12 +357,12 @@ The following list shows an overview of every person that has participated in wr
 ------------------------------
 
 - <b>Fabian Puehringer</b> - f.puehringer@24speed.at
-	<br>Assistance with @ref Drupal2PDF and @ref Drupal2AGG
+	<br>Assistance with @ref Drupal2PDF and @ref Drupal2AGG & Testing
 	
 ------------------------------
 
 - <b>Manuel Muehlburger</b> - Hansbert92@googlemail.com
-	<br>Layout and design for the @ref Drupal2AGG component (mainly the @ref graph)
+	<br>Layout and design for the @ref Drupal2AGG component (mainly the @ref graph) & Testing
 		
 @subsection versionnumbers Version Numbers
 Every file and class has a version number, composed of four parts: @e major.minor.revision @e date
@@ -354,11 +372,11 @@ Every file and class has a version number, composed of four parts: @e major.mino
 - @e Date shows when the last change was made to the source code (in the format "YYYY-MM-DD")
 
 @subsection versioncontrol Version Control
-When the project started, there were two groups, each of which used a different version control system.
-Group 1 used SVN on <http://cloudforge.com> while group 2 used <http://bitbucket.org>.
-When the two groups were merged, the SVN repository was dropped.
-Due to privilege problems with bitbucket, it was decided to move the entire repository to <http://github.com>, as everyone had access there.
-At the time writing this documentation, the repository is available at <http://github.com/TheJake123/DrupalModul>.
+- When the project started, there were two groups, each of which used a different version control system.
+- Group 1 used SVN on <http://cloudforge.com> while group 2 used <http://bitbucket.org>.
+- When the two groups were merged, the SVN repository was dropped.
+- Due to privilege problems with bitbucket, it was decided to move the entire repository to <http://github.com>, as everyone had access there.
+- At the time writing this documentation, the repository is available at <http://github.com/TheJake123/DrupalModul>.
 
 As the repository is open source, the commit, issue and change history can be publicly viewed.
 Additionally, every file, class, method and member has been documented with a @c @@since tag with the following format: "Commit <hash> on YYYY-MM-DD", so that it is easily visible when a file, class, method or member has been added.
