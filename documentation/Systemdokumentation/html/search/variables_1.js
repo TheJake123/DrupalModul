@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['buffer',['buffer',['../union_e_x_s_t_y_p_e.html#acfa12300629fea2a3f9e9651b7baaa97',1,'EXSTYPE']]]
+  ['drupal_5froot',['drupal_root',['../graph_8js.html#a71ae0687fa2aaf9a826ca46bb2b091bb',1,'graph.js']]]
 ];

@@ -492,7 +492,7 @@ EOT;
 	 *
 	 * @param string $sText
 	 *        	The text to split
-	 * @param $iMaxWidth The
+	 * @param integer $iMaxWidth The
 	 *        	The maximum width a line is allowed to have
 	 * @return The @e $sText with @<br@> tags inserted whenever necessary
 	 *        

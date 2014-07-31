@@ -14,7 +14,6 @@ var searchData=
   ['getcurriculum',['getCurriculum',['../classcontent__manager.html#a0fccc30120c83ecc35b6a84b4654f2dc',1,'content_manager']]],
   ['gethtmlheight',['getHTMLHeight',['../classoverview_p_d_f.html#af41675b946292789cecd9416ca809bcc',1,'overviewPDF']]],
   ['getnextindex',['getNextIndex',['../classoverview_p_d_f.html#aedc9466cae51e07e57ba865a69c92efc',1,'overviewPDF']]],
-  ['getopt',['getopt',['../getopt_8h.html#a09d633c0a8afac8b4a910a5dfce67d60',1,'getopt.h']]],
   ['gettotaly',['getTotalY',['../classoverview_p_d_f.html#adca20f06977ea2b3b8737b1d465a1606',1,'overviewPDF']]],
   ['getuniquefilename',['getUniqueFilename',['../classoverview_p_d_f.html#a10c644f1f84ae1b261a8b198a66b5cb1',1,'overviewPDF']]],
   ['getuniquemachinename',['getUniqueMachineName',['../classcontent__manager.html#a5d110b5c929715c771e2d903951ef7ca',1,'content_manager']]]

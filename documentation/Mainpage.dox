@@ -1,11 +1,12 @@
 /**
-@mainpage Module Documentation
+@mainpage Overview
 @section pageTOC Content
 -# @ref Introduction
 	-# @ref Module_Intro
 	-# @ref Project_Intro
 	-# @ref Language
--# @ref ceusapi "CEUS API"
+	-# @ref Graphs
+-# @ref ceusapi
 	-# @ref auth
 	-# @ref list
 	-# @ref curr
@@ -57,6 +58,22 @@ The main functional project requirements include the following:
 @subsection Language
 As Drupal is an open source system that is mostly documented in English, with most of the modules available for it also documented in English, we decided to document our module accordingly.
 It is for this reason that the language of this documentation differs from the other parts of the documentation mentioned above.
+
+@subsection Graphs
+Many functions and classes are documented with class diagrams, collaboration diagrams, call graphs and/or caller graphs. Here is an explanation for the colors in the graphs:
+
+The boxes in the graph have the following meaning:
+- A filled gray box represents the struct or class for which the graph is generated.
+- A box with a black border denotes a documented struct or class.
+- A box with a grey border denotes an undocumented struct or class.
+- A box with a red border denotes a documented struct or class forwhich not all inheritance/containment relations are shown. A graph is truncated if it does not fit within the specified boundaries.
+
+The arrows have the following meaning:
+- A dark blue arrow is used to visualize a public inheritance relation between two classes.
+- A dark green arrow is used for protected inheritance.
+- A dark red arrow is used for private inheritance.
+- A purple dashed arrow is used if a class is contained or used by another class. The arrow is labeled with the variable(s) through which the pointed class or struct is accessible.
+- A yellow dashed arrow denotes a relation between a template instance and the template class it was instantiated from. The arrow is labeled with the template parameters of the instance.
 
 @section ceusapi CEUS API
 In order to make functional requirements such as displaying curricula and course details possible, it is necessary to extract the required data from CEUS. For this reason,

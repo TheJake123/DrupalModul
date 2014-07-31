@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['ge',['GE',['../exparse_8h.html#a38a01c8e60e89c1d671a68259085288f',1,'GE():&#160;exparse.h'],['../exparse_8h.html#a35bc54b32fad7719a611b0d09871c545a558711b4a2a25070b970d85f5926d5ce',1,'GE():&#160;exparse.h']]],
   ['generatetablerechelper',['generateTableRecHelper',['../classoverview_p_d_f.html#ad0ea6c6476d690b08161300e40926dc6',1,'overviewPDF']]],
   ['get_5fcurricula',['get_curricula',['../classceus__importer.html#abd2f9a9afc073169b2badcb571cc983c',1,'ceus_importer']]],
   ['get_5fcurricula_5flist',['get_curricula_list',['../classceus__importer.html#a16485f39c6678a011ff758e76bf1f458',1,'ceus_importer']]],
@@ -15,12 +14,8 @@ var searchData=
   ['getcurriculum',['getCurriculum',['../classcontent__manager.html#a0fccc30120c83ecc35b6a84b4654f2dc',1,'content_manager']]],
   ['gethtmlheight',['getHTMLHeight',['../classoverview_p_d_f.html#af41675b946292789cecd9416ca809bcc',1,'overviewPDF']]],
   ['getnextindex',['getNextIndex',['../classoverview_p_d_f.html#aedc9466cae51e07e57ba865a69c92efc',1,'overviewPDF']]],
-  ['getopt',['getopt',['../getopt_8h.html#a09d633c0a8afac8b4a910a5dfce67d60',1,'getopt.h']]],
-  ['getopt_2eh',['getopt.h',['../getopt_8h.html',1,'']]],
-  ['getopt_5fh',['GETOPT_H',['../getopt_8h.html#a743f7f3565ccf0be8077552153c1f153',1,'getopt.h']]],
   ['gettotaly',['getTotalY',['../classoverview_p_d_f.html#adca20f06977ea2b3b8737b1d465a1606',1,'overviewPDF']]],
   ['getuniquefilename',['getUniqueFilename',['../classoverview_p_d_f.html#a10c644f1f84ae1b261a8b198a66b5cb1',1,'overviewPDF']]],
   ['getuniquemachinename',['getUniqueMachineName',['../classcontent__manager.html#a5d110b5c929715c771e2d903951ef7ca',1,'content_manager']]],
-  ['graph_2ejs',['graph.js',['../graph_8js.html',1,'']]],
-  ['gsub',['GSUB',['../exparse_8h.html#aa9e6883d671f2458cec1698d98a348bd',1,'GSUB():&#160;exparse.h'],['../exparse_8h.html#a35bc54b32fad7719a611b0d09871c545abd51835f2f389ec0eeb6ae7f48cb1c8e',1,'GSUB():&#160;exparse.h']]]
+  ['graph_2ejs',['graph.js',['../graph_8js.html',1,'']]]
 ];

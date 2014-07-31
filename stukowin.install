@@ -7,7 +7,7 @@
  * This file contains the Drupal install script for the stukowin module.
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @version 1.0.0 2014-07-16
+ * @version 1.0.1 2014-07-30
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  * 
  */
@@ -23,7 +23,7 @@
  * 
  * @authors Konstantinos Dafalias - kdafalias@gmail.com
  * @authors Jakob Strasser - jakob.strasser@telenet.be
- * @version 1.0.0 2014-07-07
+ * @version 1.0.1 2014-07-30
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 function stukowin_install() {

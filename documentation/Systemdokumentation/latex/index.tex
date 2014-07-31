@@ -6,6 +6,7 @@
 \item \hyperlink{index_Module_Intro}{Module}
 \item \hyperlink{index_Project_Intro}{Project}
 \item \hyperlink{index_Language}{Language}
+\item \hyperlink{index_Graphs}{Graphs}
 \end{DoxyEnumerate}
 \item \hyperlink{index_ceusapi}{C\+E\+U\+S A\+P\+I}
 \begin{DoxyEnumerate}
@@ -62,7 +63,25 @@ The main functional project requirements include the following\+:
 This documentation is one of four documents that make up the entire project documentation, namely the operator guide, the user guide and the test documentation.
 \end{DoxyRemark}
 \hypertarget{index_Language}{}\subsubsection{Language}\label{index_Language}
-As Drupal is an open source system that is mostly documented in English, with most of the modules available for it also documented in English, we decided to document our module accordingly. It is for this reason that the language of this documentation differs from the other parts of the documentation mentioned above.\hypertarget{index_ceusapi}{}\subsection{C\+E\+U\+S A\+P\+I}\label{index_ceusapi}
+As Drupal is an open source system that is mostly documented in English, with most of the modules available for it also documented in English, we decided to document our module accordingly. It is for this reason that the language of this documentation differs from the other parts of the documentation mentioned above.\hypertarget{index_Graphs}{}\subsubsection{Graphs}\label{index_Graphs}
+Many functions and classes are documented with class diagrams, collaboration diagrams, call graphs and/or caller graphs. Here is an explanation for the colors in the graphs\+:
+
+The boxes in the graph have the following meaning\+:
+\begin{DoxyItemize}
+\item A filled gray box represents the struct or class for which the graph is generated.
+\item A box with a black border denotes a documented struct or class.
+\item A box with a grey border denotes an undocumented struct or class.
+\item A box with a red border denotes a documented struct or class forwhich not all inheritance/containment relations are shown. A graph is truncated if it does not fit within the specified boundaries.
+\end{DoxyItemize}
+
+The arrows have the following meaning\+:
+\begin{DoxyItemize}
+\item A dark blue arrow is used to visualize a public inheritance relation between two classes.
+\item A dark green arrow is used for protected inheritance.
+\item A dark red arrow is used for private inheritance.
+\item A purple dashed arrow is used if a class is contained or used by another class. The arrow is labeled with the variable(s) through which the pointed class or struct is accessible.
+\item A yellow dashed arrow denotes a relation between a template instance and the template class it was instantiated from. The arrow is labeled with the template parameters of the instance.
+\end{DoxyItemize}\hypertarget{index_ceusapi}{}\subsection{C\+E\+U\+S A\+P\+I}\label{index_ceusapi}
 In order to make functional requirements such as displaying curricula and course details possible, it is necessary to extract the required data from C\+E\+U\+S. For this reason, J\+K\+U offers a J\+S\+O\+N A\+P\+I for C\+E\+U\+S at \href{https://lss.jku.at/studienhandbuch/api/0.1}{\tt https\+://lss.\+jku.\+at/studienhandbuch/api/0.\+1} (Note that this U\+R\+L is not available without authentication credentials). This A\+P\+I was developed for this project (hence the version number of {\itshape 0.\+1}) and is still prone to changes. Due to its novelty, no documentation for the A\+P\+I exists, which is why we try our best to document it together with our own module documentation. \begin{DoxyNote}{Note}
 This is not the official documentation of the C\+E\+U\+S A\+P\+I, it is merely based on our own knowledge about it. 
 

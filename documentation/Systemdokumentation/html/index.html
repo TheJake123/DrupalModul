@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.7"/>
-<title>stukowin: Module Documentation</title>
+<title>stukowin: Overview</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -31,7 +31,7 @@
   <td id="projectlogo"><img alt="Logo" src="project logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">stukowin
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">1.1</span>
    </div>
    <div id="projectbrief">Relaunch of stukowin.jku.at</div>
   </td>
@@ -88,7 +88,7 @@ $(document).ready(function(){initNavTree('index.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Module Documentation </div>  </div>
+<div class="title">Overview </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="pageTOC"></a>
@@ -109,6 +109,7 @@ Content</h1>
 <li><a class="el" href="index.html#Module_Intro">Module</a></li>
 <li><a class="el" href="index.html#Project_Intro">Project</a></li>
 <li><a class="el" href="index.html#Language">Language</a></li>
+<li><a class="el" href="index.html#Graphs">Graphs</a></li>
 </ol>
 </li>
 <li><a class="el" href="index.html#ceusapi">CEUS API</a><ol type="a">
@@ -166,6 +167,22 @@ Project</h2>
 <h2><a class="anchor" id="Language"></a>
 Language</h2>
 <p>As Drupal is an open source system that is mostly documented in English, with most of the modules available for it also documented in English, we decided to document our module accordingly. It is for this reason that the language of this documentation differs from the other parts of the documentation mentioned above.</p>
+<h2><a class="anchor" id="Graphs"></a>
+Graphs</h2>
+<p>Many functions and classes are documented with class diagrams, collaboration diagrams, call graphs and/or caller graphs. Here is an explanation for the colors in the graphs:</p>
+<p>The boxes in the graph have the following meaning:</p><ul>
+<li>A filled gray box represents the struct or class for which the graph is generated.</li>
+<li>A box with a black border denotes a documented struct or class.</li>
+<li>A box with a grey border denotes an undocumented struct or class.</li>
+<li>A box with a red border denotes a documented struct or class forwhich not all inheritance/containment relations are shown. A graph is truncated if it does not fit within the specified boundaries.</li>
+</ul>
+<p>The arrows have the following meaning:</p><ul>
+<li>A dark blue arrow is used to visualize a public inheritance relation between two classes.</li>
+<li>A dark green arrow is used for protected inheritance.</li>
+<li>A dark red arrow is used for private inheritance.</li>
+<li>A purple dashed arrow is used if a class is contained or used by another class. The arrow is labeled with the variable(s) through which the pointed class or struct is accessible.</li>
+<li>A yellow dashed arrow denotes a relation between a template instance and the template class it was instantiated from. The arrow is labeled with the template parameters of the instance.</li>
+</ul>
 <h1><a class="anchor" id="ceusapi"></a>
 CEUS API</h1>
 <p>In order to make functional requirements such as displaying curricula and course details possible, it is necessary to extract the required data from CEUS. For this reason, JKU offers a JSON API for CEUS at <a href="https://lss.jku.at/studienhandbuch/api/0.1">https://lss.jku.at/studienhandbuch/api/0.1</a> (Note that this URL is not available without authentication credentials). This API was developed for this project (hence the version number of <em>0.1</em>) and is still prone to changes. Due to its novelty, no documentation for the API exists, which is why we try our best to document it together with our own module documentation. </p><dl class="section note"><dt>Note</dt><dd>This is not the official documentation of the CEUS API, it is merely based on our own knowledge about it. </dd>
@@ -620,7 +637,7 @@ Included Libraries/Files</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jul 31 2014 03:17:04 for stukowin by
+    <li class="footer">Generated on Thu Jul 31 2014 14:53:54 for stukowin by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

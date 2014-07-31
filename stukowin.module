@@ -51,10 +51,9 @@
  * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @authors Werner Breuer - bluescreenwerner@gmail.com
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
- * @version 1.0.0 2014-07-16
+ * @version 1.0.2 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
-
 include_once dirname ( __FILE__ ) . '/ceus_importer.inc.php';
 include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
 include_once dirname ( __FILE__ ) . '/pdf_creator.inc.php';
@@ -99,7 +98,7 @@ function stukowin_help($path, $arg) {
  * 
  * @authors Konstantinos Dafalias - kdafalias@gmail.com
  * @authors Jakob Strasser - jakob.strasser@telenet.be
- * @version 1.0.0 2014-07-16
+ * @version 1.0.1 2014-07-31
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28 
  */
 function stukowin_admin() {
@@ -114,7 +113,7 @@ function stukowin_admin() {
 	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_url'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'URL to CEUS API' ),
-			'#default_value' => variable_get ( 'stukowin_ceus_api_url', 'https://lss.jku.at/studienhandbuch/api/0.1/' ),
+			'#default_value' => variable_get ( 'stukowin_ceus_api_url' ),
 			'#size' => 40,
 			'#maxlength' => 255,
 			'#description' => t ( "The URL to CEUS API" ),
@@ -127,7 +126,7 @@ function stukowin_admin() {
 			'#size' => 20,
 			'#maxlength' => 40,
 			'#description' => t ( "Username for CEUS API" ),
-			'#required' => TRUE 
+			'#required' => FALSE 
 	);
 	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_userpassword'] = array (
 			'#type' => 'password',
@@ -136,7 +135,7 @@ function stukowin_admin() {
 			'#size' => 20,
 			'#maxlength' => 40,
 			'#description' => t ( "Password for CEUS API" ),
-			'#required' => TRUE 
+			'#required' => FALSE 
 	);
 	// PDF generation settings
 	$form ['stukowin_pdf'] = array (
@@ -158,7 +157,7 @@ function stukowin_admin() {
 			'#title' => t ( 'Name' ),
 			'#default_value' => variable_get ( 'stukowin_pdf_name', 'Uebersicht %currtype% %version%' ),
 			'#size' => 40,
-			'#description' => t ( 'The name template to use for new PDFs. Insert %version% for the curriculum version (e.g. "2013W") and %currtype% for the curriculum type (e.g "Bachelorstudium")' ),
+			'#description' => t ( 'The name template to use for new PDFs. Insert %version% where the curriculum version (e.g. "2013W") should be placed and %currtype% where the curriculum type (e.g "Bachelorstudium") should be placed' ),
 			'#required' => TRUE 
 	);
 	return system_settings_form ( $form );
@@ -240,15 +239,28 @@ function stukowin_pdf_menu_submit($form, &$form_state) {
  * @return The filled out form structure
  * 
  * @author Jakob Strasser - jakob.strasser@telenet.be
- * @version 1.0.0 2014-07-16
+ * @version 1.1.0 2014-07-31
  * @since Commit bcdb4bad5d0a81dbf12a98c54f8512035a8661d4 on 2014-06-30
  * 
  * @see stukowin_re_retrieve_submit()
  */
 function stukowin_pre_retreive($form, &$form_state) {
 	$form = array ();
+	if (variable_get ( 'stukowin_ceus_api_url' ) === null) {
+		drupal_set_message ( "Cannot start import: The CEUS API URL is not set", "error" );
+		$form ['error_text'] = array (
+				'#markup' => t ( '<p><strong>Please configure the Stukowin CEUS module first. </strong><a href="' . base_path() . 'admin/stukowin/settings">Link to configuration</a></p>' )
+		);
+		return $form;
+	}
+	$warning = '';
+	$warning = variable_get ( 'stukowin_ceus_api_username' ) == null ? '<li>username</li>' : '';
+	$warning .= variable_get ( 'stukowin_ceus_api_userpassword' ) == null ? '<li>password</li>' : '';
+	if (!empty($warning)) {
+		drupal_set_message ( "The following CEUS API parameters are not set, which may lead to an unsuccessful import:<ul>" . $warning . '</ul>You can configure the module <a href="' . base_path() . 'admin/stukowin/settings">here</a>.', "warning" );
+	}
 	$form ['warning_text'] = array (
-			'#markup' => t ( '<p><strong>Are you sure you want to start the import? (this might take a while)</strong></p>' ) 
+			'#markup' => t ( '<p><strong>Are you sure you want to start the import? (this might take a while)</strong></p>' )
 	);
 	$form ['submit'] = array (
 			'#type' => 'submit',

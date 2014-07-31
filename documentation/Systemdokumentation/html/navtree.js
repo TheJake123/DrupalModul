@@ -1,12 +1,13 @@
 var NAVTREE =
 [
   [ "stukowin", "index.html", [
-    [ "Module Documentation", "index.html", [
+    [ "Overview", "index.html", [
       [ "Content", "index.html#pageTOC", null ],
       [ "Introduction", "index.html#Introduction", [
         [ "Module", "index.html#Module_Intro", null ],
         [ "Project", "index.html#Project_Intro", null ],
-        [ "Language", "index.html#Language", null ]
+        [ "Language", "index.html#Language", null ],
+        [ "Graphs", "index.html#Graphs", null ]
       ] ],
       [ "CEUS API", "index.html#ceusapi", [
         [ "auth.php", "index.html#auth", null ],
@@ -50,13 +51,9 @@ var NAVTREE =
     [ "Files", null, [
       [ "File List", "files.html", "files" ],
       [ "Globals", "globals.html", [
-        [ "All", "globals.html", "globals_dup" ],
+        [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ],
-        [ "Macros", "globals_defs.html", null ]
+        [ "Variables", "globals_vars.html", null ]
       ] ]
     ] ]
   ] ]
@@ -64,8 +61,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"globals_f.html"
+"annotated.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
