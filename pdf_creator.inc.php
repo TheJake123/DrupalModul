@@ -328,7 +328,7 @@ class overviewPDF extends TCPDF {
 	private function printCurriculum($oCurriculum) {
 		$this->AddPage ();
 		$aCourses = $this->getCourses ( $oCurriculum ['vid'] );
-		$this->SetFontSize ( 20 );
+		$this->SetFont ( 'times', 'B', 20 );
 		$this->printHeading ( strtoupper ( $oCurriculum ['type'] ), 0, false, 'C' );
 		$this->SetFont ( 'times', '', 12 );
 		// Print overview table
@@ -377,6 +377,7 @@ EOT;
 		if (property_exists ( $oTopLevel, 'lva' )) {
 			$this->printFach ( $oTopLevel );
 		} else if (property_exists ( $oTopLevel, 'children' )) {
+			$this->SetFont ( 'times', 'B', 20 );
 			$this->printHeading ( $oTopLevel->name, 1, false );
 			foreach ( $oTopLevel->children as $oChild ) {
 				$this->printFach ( $oChild );
@@ -397,6 +398,7 @@ EOT;
 	 */
 	private function printFach($oFach) {
 		if (! property_exists ( $oFach, 'children' )) {
+			$this->SetFont ( 'times', 'B', 14 );
 			$this->printHeading ( $oFach->lva->title, 2, true );
 			return;
 		}
@@ -419,6 +421,7 @@ EOT;
 		$sHTML = $this->unhtmlentities ( $sHTML );
 		if ($oFach->lva->ziele || $oFach->lva->lehrinhalte) {
 			$this->checkPageBreak ( 30 );
+			$this->SetFont ( 'times', 'B', 14 );
 			$this->printHeading ( $oFach->lva->title, 2, true );
 			$this->printZieleInhalte ( $oFach );
 			$this->checkPageBreak ( $this->getHTMLHeight ( $sHTML ) );
@@ -427,6 +430,7 @@ EOT;
 		// Print details of each subcourse
 		foreach ( $aChildren as $oChild )
 			if (($oChild->lva->ziele || $oChild->lva->lehrinhalte) && $oChild->lva->lvatype && $oChild->lva->lvatype != '3') {
+				$this->SetFont ( 'times', 'I', 12 );
 				$this->printHeading ( $oChild->lva->typename . ' ' . $oChild->lva->title, 3, true, 'L', false );
 				$this->printZieleInhalte ( $oChild );
 			}
@@ -587,24 +591,6 @@ EOT;
 	private function printHeading($sText, $iLevel, $bShowIndex = true, $sAlign = 'L', $bAddBookmark = true) {
 		$iIndex = $this->getNextIndex ( $iLevel );
 		$sText = $this->unhtmlentities ( $sText );
-		switch ($iLevel) {
-			// Curriculum title, Section title
-			case 0 :
-			case 1 :
-				$this->SetFont ( 'times', 'B', 20 );
-				break;
-			// Subject title
-			case 2 :
-				$this->SetFont ( 'times', 'B', 14 );
-				break;
-			// Module title
-			case 3 :
-				$this->SetFont ( 'times', 'I', 12 );
-				break;
-			default :
-				$this->SetFont ( 'times', '', 12 );
-				break;
-		}
 		if ($bAddBookmark)
 			$this->Bookmark ( ($bShowIndex ? $iIndex . ') ' : '') . $sText, $iLevel );
 		$this->MultiCell ( 0, 0, ($bShowIndex ? $iIndex . ') ' : '') . $sText, '', $sAlign, false, 1, '', '', true, 0, false, false );

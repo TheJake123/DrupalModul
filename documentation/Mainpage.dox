@@ -29,11 +29,11 @@
 -# @ref Included "Included Libraries/Files"
 
 @section Introduction
-@latexonly \textrm{\textbf{Please note that was document is automatically generated without much control over the layout. It is only meant to be used in print or if it is necessary to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}} @endlatexonly
+@latexonly \begin{large}\textrm{\textbf{Please note that this document was automatically generated without much control over the layout. It is only meant to be used in print or if it is necessary to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}} \end{large}@endlatexonly
 @subsection Module_Intro Module
-This documentation describes the custom module "stukowin" for <a target="_blank" href="http://drupal.org/">Drupal</a>. 
+This documentation describes the custom module "stukowin" for [Drupal](http://drupal.org/). 
 Drupal is a free and widely-used content management system (CMS), which provides the possibility to extend it by implementing proprietary modules that hook into the Drupal core system.
-The basic idea of this module is to connect the Drupal system with the curricula development and support system (CEUS) provided by the <a target="_blank" href="http://jku.at">Johannes Kepler University in Linz</a>,
+The basic idea of this module is to connect the Drupal system with the curricula development and support system (CEUS) provided by the [Johannes Kepler University in Linz](http://jku.at),
 available at https://lss.jku.at/wiki/index.php/Main/CEUS and https://lss.jku.at/studienhandbuch/.
 The main goal of this method was to reduce the maintenance effort needed for keeping the curricula data on a website up to date.
 
@@ -277,17 +277,29 @@ This is needed so that the client browser can properly display the curricula.
 The following interfaces are available:
 Name            | Path              | Input Parameter                                                                                                                                                           | Description
 --------------- | ----------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------   | ---------------------------------------------------------------------------------------
-Curriculum List | stukowin/crclmlst | "currtype" : Type of curriculum to get ("Bachelorstudium" or "Masterstudium")<br>"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") | Returns a list of all curricula currently published (weight below 0), like @ref list
-Curriculum Tree	| stukowin/crclm    | Vocabulary id of the curriculum to get                                                                                                                                    | Returns the curriculum tree of one curriculum, containing all courses and their details
-Single course	| stukowin/lva      | Node id of the course to get                                                                                                                                              | Returns the details of a single course
+Curriculum List | stukowin/crclmlst | "currtype" : Type of curriculum to get ("Bachelorstudium" or "Masterstudium")<br>"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") | Returns a list of all curricula currently published (weight below 0), like @ref list (see first image below)
+Curriculum Tree	| stukowin/crclm    | Vocabulary id of the curriculum to get                                                                                                                                    | Returns the curriculum tree of one curriculum, containing all courses and their details (see second image below)
+Single course	| stukowin/lva      | Node id of the course to get                                                                                                                                              | Returns the details of a single course (see third image below)
 
+@image html Curriculum1.jpg "Curriculum Objects"
+@image latex Curriculum1.eps "Curriculum Objects"
+Example:
+@include "crclmlst.json"
+@image html CurriculumItem.jpg "Items in a Curriculum Tree"
+@image latex CurriculumItem.eps "Items in a Curriculum Tree"
+Example:
+@include "crclm.json"
+@image html Course.jpg "Course Objects"
+@image latex Course.eps "Course Objects"
+Example:
+@include "lva.json"
 All of these interfaces are defined in the @ref stukowin.module file.
 
 @subsubsection plugin CKEditor Plug-in
 As the dynamic display of curricula in the browser requires a strict HTML document structure, we refrained from letting the administrator insert the code himself wherever a curriculum display was needed
 and instead implemented a plug-in for the CKEditor (<https://www.drupal.org/project/ckeditor>) which inserts the code automatically on the click of a button.
-The plug-in is registered with drupal in the @ref stukowin_ckeditor_plugin() method. It is then defined in the @ref plugin.js file
-and the dialog for inserting a curriculum view is defined in the @ref stukowin_curriculum.js file.
+The plug-in is registered with Drupal in the @ref stukowin_ckeditor_plugin() method. It is then defined in the @ref plugin.js file
+and the dialogue for inserting a curriculum view is defined in the @ref stukowin_curriculum.js file.
 
 @note In order for this plug-in to work properly, some settings have to be made in the CKEditor. This is described in the operator manual.
 
@@ -295,6 +307,11 @@ and the dialog for inserting a curriculum view is defined in the @ref stukowin_c
 The main task of displaying the curricula in the client's browser is performed by this file. It fetches the data from the JSON interfaces described @ref json "above" and creates the DOM elements in the browser.
 It also registers click handlers for things such as expanding/reducing a course, showing prerequisites and selecting a different curriculum.
 @note The display layout is configured in the curriculum_stlye.css file (not included in this documentation)
+
+@htmlonly The process of generating the graphical representation will flow as follows: @endhtmlonly
+
+@image html "FlowchartDrupal2AGG.svg" "Generation of the Graphical Representation"
+@latexonly The process of generating the graphical representation will flow as shown in the included \href[pdfnewwindow]{./FlowchartDrupal2AGG.pdf}{FlowchartDrupal2AGG.pdf} file. @endlatexonly
 
 As an example, the output could look like this:
 
@@ -315,14 +332,18 @@ The interaction with Drupal is carried out through so-called "hooks", which are 
 Thus, all our hooks are prefixed with "stukowin_" and are commented with "Implements hook_*". The following hooks are implemented:
 Hook | Implementing method | Description
 ---- | ------------------- | -----------
-[hook_help](https://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_help/7) | @ref stukowin_help() | Provides information about the module
-[hook_menu](https://api.drupal.org/api/drupal/modules!system!system.api.php/function/hook_menu/7) | @ref stukowin_menu() | Registers menu links/buttons etc. with Drupal
-[
-For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly:
+[hook_install](https://api.drupal.org/api/function/hook_install/7) | @ref stukowin_install() | Method that is run on the first activation of the module (=installation)
+[hook_uninstall](https://api.drupal.org/api/function/hook_uninstall/7) | @ref stukowin_uninstall() | Method that is run to uninstall the module
+[hook_help](https://api.drupal.org/api/function/hook_help/7) | @ref stukowin_help() | Provides information about the module
+[hook_menu](https://api.drupal.org/api/function/hook_menu/7) | @ref stukowin_menu() | Registers menu links/buttons etc. with Drupal
+[hook_theme_registry_alter](https://api.drupal.org/api/function/hook_theme_registry_alter/7) | @ref stukowin_theme_registry_alter() | Registers our custom view template for displaying courses
+[hook_ckeditor_plugin](http://drupalcontrib.org/api/function/hook_INCLUDE_plugin/7) | @ref stukowin_ckeditor_plugin() | Registers our own CKEditor Plugin with CKEditor/Drupal
+
+
+These hooks and other methods and files to ensure a smooth cooperation are spread across the following files:
 - The @ref content_manager class is responsible for accessing the imported curricula data
 - The @ref stukowin.install file is responsible for installing and uninstalling the module and all the data structures that come with it
-- The @ref stukowin_menu() function sets up all the callback URLs
-- The @ref stukowin_admin() function is responsible for the configuration menu
+- The @ref stukowin.module file contains all the core hooks except for the installation routines
 - The stukowin.info file contains all meta information about the module
 
 
@@ -376,7 +397,7 @@ Every file and class has a version number, composed of four parts: @e major.mino
 - Group 1 used SVN on <http://cloudforge.com> while group 2 used <http://bitbucket.org>.
 - When the two groups were merged, the SVN repository was dropped.
 - Due to privilege problems with bitbucket, it was decided to move the entire repository to <http://github.com>, as everyone had access there.
-- At the time writing this documentation, the repository is available at <http://github.com/TheJake123/DrupalModul>.
+- At the time of writing this documentation, the repository is available at <http://github.com/TheJake123/DrupalModul>.
 
 As the repository is open source, the commit, issue and change history can be publicly viewed.
 Additionally, every file, class, method and member has been documented with a @c @@since tag with the following format: "Commit <hash> on YYYY-MM-DD", so that it is easily visible when a file, class, method or member has been added.

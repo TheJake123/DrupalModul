@@ -1,0 +1,63 @@
+﻿[
+    {
+        "tid": "1",
+        "vid": "2",
+        "name": "Studienfach: Grundlagen der Wirtschaftsinformatik",
+        "description": "1",
+        "format": null,
+        "weight": "0",
+        "depth": 0,
+        "parents": [
+            "0"
+        ],
+        "lva": {
+            "title": "Grundlagen der Wirtschaftsinformatik",
+            "ceusid": "2895",
+            "code": "526GLWN11",
+            "ects": "24",
+            "verantname": "Friedrich Roithmayr",
+            "verantemail": "friedrich.roithmayr@jku.at",
+            "changedate": "2012-02-14 00:00:00",
+            "lvatype": "1",
+            "typename": "Studienfach",
+            "ziele": "Die Studierenden beherrschen die Fachterminologie, besitzen einen Überblick über Aufgabenstellungen, Konzepte, Methoden und Werkzeuge der Wirtschaftsinformatik. Sie sind mit den Grundlagen der Datenmodellierung, der Prozess- und Kommunikatonsmodellierung und der Algorithmik vertraut. Die Studierenden verstehen die daten- und verhaltensorientierten Aspekte betrieblicher Informationssysteme.\n",
+            "lehrinhalte": "Das Fach dient der Vermittlung von Grundlagenwissen in verschiedenen Teilbereichen der Wirtschaftsinformatik. Details der Lehrinhalte können den zugehörigen Modulen entnommen werden.\n",
+            "id": "1"
+        },
+        "id": "1",
+        "children": {
+            "2": {
+                "tid": "2",
+                "vid": "2",
+                "name": "Modul: Einführung in die Wirtschaftsinformatik",
+                "description": "2",
+                "format": null,
+                "weight": "0",
+                "depth": 1,
+                "parents": [
+                    "1"
+                ],
+                "lva": {
+                    "title": "Einführung in die Wirtschaftsinformatik",
+                    "ceusid": "7209",
+                    "code": "526GLWNEWI13",
+                    "ects": "6",
+                    "verantname": "Friedrich Roithmayr",
+                    "verantemail": "friedrich.roithmayr@jku.at",
+                    "changedate": "2013-08-23 00:00:00",
+                    "lvatype": "2",
+                    "typename": "Modul",
+                    "ziele": "Die Studierenden können begründen, dass Wirtschaftsinformatik eine Wissenschaft ist. Sie kennen die Aufgaben der Wirtschaftsinformatik und die Bedeutung der Fachsprache für die Wirtschaftsinformatik. Sie kennen die grundlegenden Phänomene, mit denen sich Wirtschaftsinformatik beschäftigt. Sie können den Gegenstandsbereich der Wirtschaftsinformatik systemtheoretisch erklären und erkennen, dass Wirtschaftsinformatik eine Interdisziplin ist. Sie kennen die Bezeichnung und Bedeutung von Instrumenten zur Konstruktion, Implementierung und zum Management von Informationssystemen und IT-Infrastrukturen. Ziele, Methoden, Modelle und Werkzeuge dazu können sie anhand von Beispielen erklären.\n",
+                    "lehrinhalte": "Gegenstandsbereich der Wirtschaftsinformatik, Berufsbilder in der Wirtschaftsinformatik, Studiengang und Studienpläne der Wirtschaftsinformatik, Lehrveranstaltungsformen und Lehrmethoden der Wirtschaftsinformatik, Geschichte der Wirtschaftsinformatik, Wissenschaftscharakter der Wirtschaftsinformatik, Begriffssystem der Wirtschaftsinformatik, Forschungsziele und Forschungsmethoden der Wirtschaftsinformatik, Nachbardisziplinen der Wirtschaftsinformatik, Praxisorientierung der Wirtschaftsinformatik, Information und Kommunikation, Informationsfunktion und -bedarf, Informationsverhalten und Informationsbedürfnis, Informations- und Kommunikationstechnik, Informationssystem und -infrastruktur, Benutzer und Benutzersystem, Ziele und Zielsystem, Methodik, Ansätze und Strategien, Grundsätze und Prinzipien, Modelle und Konzepte, Methoden und Werkzeuge, Evaluation und Bewertung.\n",
+                    "empfehlung": [
+                        "56",
+                        "63",
+                        "75"
+                    ],
+                    "id": "2"
+                },
+                "id": "2",
+			}
+		}
+	}
+]

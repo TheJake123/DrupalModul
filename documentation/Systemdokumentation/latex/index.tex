@@ -40,7 +40,7 @@
 \end{DoxyEnumerate}
 \item \hyperlink{index_Included}{Included Libraries/\+Files}
 \end{DoxyEnumerate}\hypertarget{index_Introduction}{}\subsection{Introduction}\label{index_Introduction}
- \textrm{\textbf{Please note that was document is automatically generated without much control over the layout. It is only meant to be used in print or if it is necessary to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}}  \hypertarget{index_Module_Intro}{}\subsubsection{Module}\label{index_Module_Intro}
+ \begin{large}\textrm{\textbf{Please note that this document was automatically generated without much control over the layout. It is only meant to be used in print or if it is necessary to have one single file. For everything else, please refer to the HTML documentation, which is easier to navigate, better structured and prettier!}} \end{large} \hypertarget{index_Module_Intro}{}\subsubsection{Module}\label{index_Module_Intro}
 This documentation describes the custom module \char`\"{}stukowin\char`\"{} for \href{http://drupal.org/}{\tt Drupal}. Drupal is a free and widely-\/used content management system (C\+M\+S), which provides the possibility to extend it by implementing proprietary modules that hook into the Drupal core system. The basic idea of this module is to connect the Drupal system with the curricula development and support system (C\+E\+U\+S) provided by the \href{http://jku.at}{\tt Johannes Kepler University in Linz}, available at \href{https://lss.jku.at/wiki/index.php/Main/CEUS}{\tt https\+://lss.\+jku.\+at/wiki/index.\+php/\+Main/\+C\+E\+U\+S} and \href{https://lss.jku.at/studienhandbuch/}{\tt https\+://lss.\+jku.\+at/studienhandbuch/}. The main goal of this method was to reduce the maintenance effort needed for keeping the curricula data on a website up to date.
 
 The module is composed of four components, as seen \hyperlink{index_Modules}{below}, each of which provides different functionalities to reduce the administrative effort and all of which are somehow interconnected.\hypertarget{index_Project_Intro}{}\subsubsection{Project}\label{index_Project_Intro}
@@ -272,12 +272,171 @@ The following interfaces are available\+: \begin{TabularC}{4}
 \hline
 \rowcolor{lightgray}{\bf Name }&{\bf Path }&{\bf Input Parameter }&{\bf Description  }\\\cline{1-4}
 Curriculum List &stukowin/crclmlst &\char`\"{}currtype\char`\"{} \+: Type of curriculum to get (\char`\"{}\+Bachelorstudium\char`\"{} or \char`\"{}\+Masterstudium\char`\"{})~\newline
-\char`\"{}taxtypes\char`\"{} \+: Types of vocabularies to get (\char`\"{}curriculum\char`\"{}, \char`\"{}itsv\char`\"{} and/or \char`\"{}specialisation\char`\"{}) &Returns a list of all curricula currently published (weight below 0), like \hyperlink{index_list}{list.\+php} \\\cline{1-4}
-Curriculum Tree &stukowin/crclm &Vocabulary id of the curriculum to get &Returns the curriculum tree of one curriculum, containing all courses and their details \\\cline{1-4}
-Single course &stukowin/lva &Node id of the course to get &Returns the details of a single course \\\cline{1-4}
+\char`\"{}taxtypes\char`\"{} \+: Types of vocabularies to get (\char`\"{}curriculum\char`\"{}, \char`\"{}itsv\char`\"{} and/or \char`\"{}specialisation\char`\"{}) &Returns a list of all curricula currently published (weight below 0), like \hyperlink{index_list}{list.\+php} (see first image below) \\\cline{1-4}
+Curriculum Tree &stukowin/crclm &Vocabulary id of the curriculum to get &Returns the curriculum tree of one curriculum, containing all courses and their details (see second image below) \\\cline{1-4}
+Single course &stukowin/lva &Node id of the course to get &Returns the details of a single course (see third image below) \\\cline{1-4}
 \end{TabularC}
-All of these interfaces are defined in the \hyperlink{stukowin_8module}{stukowin.\+module} file.\hypertarget{index_plugin}{}\paragraph{C\+K\+Editor Plug-\/in}\label{index_plugin}
-As the dynamic display of curricula in the browser requires a strict H\+T\+M\+L document structure, we refrained from letting the administrator insert the code himself wherever a curriculum display was needed and instead implemented a plug-\/in for the C\+K\+Editor (\href{https://www.drupal.org/project/ckeditor}{\tt https\+://www.\+drupal.\+org/project/ckeditor}) which inserts the code automatically on the click of a button. The plug-\/in is registered with drupal in the \hyperlink{group___drupal2_a_g_g_gae3c906d1ab9c3d8ed245d58c1ebf2a4a}{stukowin\+\_\+ckeditor\+\_\+plugin()} method. It is then defined in the \hyperlink{plugin_8js}{plugin.\+js} file and the dialog for inserting a curriculum view is defined in the \hyperlink{stukowin__curriculum_8js}{stukowin\+\_\+curriculum.\+js} file.
+
+\begin{DoxyImage}
+\includegraphics{Curriculum1}
+\caption{Curriculum Objects}
+\end{DoxyImage}
+Example\+: 
+\begin{DoxyCodeInclude}
+[
+
+    \{
+        \textcolor{stringliteral}{"vid"}: \textcolor{stringliteral}{"2"},
+        \textcolor{stringliteral}{"name"}: \textcolor{stringliteral}{"Wirtschaftsinformatik, Bachelorstudium 2013W"},
+        \textcolor{stringliteral}{"type"}: \textcolor{stringliteral}{"Bachelorstudium"},
+        \textcolor{stringliteral}{"faculty"}: \textcolor{stringliteral}{"Sozial- und Wirtschaftswissenschaftliche Fakultät"},
+        \textcolor{stringliteral}{"version"}: \textcolor{stringliteral}{"2013W"}
+    \},
+    \{
+        \textcolor{stringliteral}{"vid"}: \textcolor{stringliteral}{"3"},
+        \textcolor{stringliteral}{"name"}: \textcolor{stringliteral}{"Wirtschaftsinformatik, Bachelorstudium 2014W"},
+        \textcolor{stringliteral}{"type"}: \textcolor{stringliteral}{"Bachelorstudium"},
+        \textcolor{stringliteral}{"faculty"}: \textcolor{stringliteral}{"Sozial- und Wirtschaftswissenschaftliche Fakultät"},
+        \textcolor{stringliteral}{"version"}: \textcolor{stringliteral}{"2014W"}
+    \},
+    \{
+        \textcolor{stringliteral}{"vid"}: \textcolor{stringliteral}{"4"},
+        \textcolor{stringliteral}{"name"}: \textcolor{stringliteral}{"Wirtschaftsinformatik, Masterstudium 2013W"},
+        \textcolor{stringliteral}{"type"}: \textcolor{stringliteral}{"Masterstudium"},
+        \textcolor{stringliteral}{"faculty"}: \textcolor{stringliteral}{"Sozial- und Wirtschaftswissenschaftliche Fakultät"},
+        \textcolor{stringliteral}{"version"}: \textcolor{stringliteral}{"2013W"}
+    \},
+    \{
+        \textcolor{stringliteral}{"vid"}: \textcolor{stringliteral}{"5"},
+        \textcolor{stringliteral}{"name"}: \textcolor{stringliteral}{"Wirtschaftsinformatik, Masterstudium 2014W"},
+        \textcolor{stringliteral}{"type"}: \textcolor{stringliteral}{"Masterstudium"},
+        \textcolor{stringliteral}{"faculty"}: \textcolor{stringliteral}{"Sozial- und Wirtschaftswissenschaftliche Fakultät"},
+        \textcolor{stringliteral}{"version"}: \textcolor{stringliteral}{"2014W"}
+    \}
+
+]
+\end{DoxyCodeInclude}
+ 
+\begin{DoxyImage}
+\includegraphics{CurriculumItem}
+\caption{Items in a Curriculum Tree}
+\end{DoxyImage}
+Example\+: 
+\begin{DoxyCodeInclude}
+[
+    \{
+        \textcolor{stringliteral}{"tid"}: \textcolor{stringliteral}{"1"},
+        \textcolor{stringliteral}{"vid"}: \textcolor{stringliteral}{"2"},
+        \textcolor{stringliteral}{"name"}: \textcolor{stringliteral}{"Studienfach: Grundlagen der Wirtschaftsinformatik"},
+        \textcolor{stringliteral}{"description"}: \textcolor{stringliteral}{"1"},
+        \textcolor{stringliteral}{"format"}: null,
+        \textcolor{stringliteral}{"weight"}: \textcolor{stringliteral}{"0"},
+        \textcolor{stringliteral}{"depth"}: 0,
+        \textcolor{stringliteral}{"parents"}: [
+            \textcolor{stringliteral}{"0"}
+        ],
+        \textcolor{stringliteral}{"lva"}: \{
+            \textcolor{stringliteral}{"title"}: \textcolor{stringliteral}{"Grundlagen der Wirtschaftsinformatik"},
+            \textcolor{stringliteral}{"ceusid"}: \textcolor{stringliteral}{"2895"},
+            \textcolor{stringliteral}{"code"}: \textcolor{stringliteral}{"526GLWN11"},
+            \textcolor{stringliteral}{"ects"}: \textcolor{stringliteral}{"24"},
+            \textcolor{stringliteral}{"verantname"}: \textcolor{stringliteral}{"Friedrich Roithmayr"},
+            \textcolor{stringliteral}{"verantemail"}: \textcolor{stringliteral}{"friedrich.roithmayr@jku.at"},
+            \textcolor{stringliteral}{"changedate"}: \textcolor{stringliteral}{"2012-02-14 00:00:00"},
+            \textcolor{stringliteral}{"lvatype"}: \textcolor{stringliteral}{"1"},
+            \textcolor{stringliteral}{"typename"}: \textcolor{stringliteral}{"Studienfach"},
+            \textcolor{stringliteral}{"ziele"}: \textcolor{stringliteral}{"Die Studierenden beherrschen die Fachterminologie, besitzen einen Überblick über
+       Aufgabenstellungen, Konzepte, Methoden und Werkzeuge der Wirtschaftsinformatik. Sie sind mit den Grundlagen der
+       Datenmodellierung, der Prozess- und Kommunikatonsmodellierung und der Algorithmik vertraut. Die Studierenden
+       verstehen die daten- und verhaltensorientierten Aspekte betrieblicher Informationssysteme.\(\backslash\)n"},
+            \textcolor{stringliteral}{"lehrinhalte"}: \textcolor{stringliteral}{"Das Fach dient der Vermittlung von Grundlagenwissen in verschiedenen
+       Teilbereichen der Wirtschaftsinformatik. Details der Lehrinhalte können den zugehörigen Modulen entnommen werden.\(\backslash\)n"},
+            \textcolor{stringliteral}{"id"}: \textcolor{stringliteral}{"1"}
+        \},
+        \textcolor{stringliteral}{"id"}: \textcolor{stringliteral}{"1"},
+        \textcolor{stringliteral}{"children"}: \{
+            \textcolor{stringliteral}{"2"}: \{
+                \textcolor{stringliteral}{"tid"}: \textcolor{stringliteral}{"2"},
+                \textcolor{stringliteral}{"vid"}: \textcolor{stringliteral}{"2"},
+                \textcolor{stringliteral}{"name"}: \textcolor{stringliteral}{"Modul: Einführung in die Wirtschaftsinformatik"},
+                \textcolor{stringliteral}{"description"}: \textcolor{stringliteral}{"2"},
+                \textcolor{stringliteral}{"format"}: null,
+                \textcolor{stringliteral}{"weight"}: \textcolor{stringliteral}{"0"},
+                \textcolor{stringliteral}{"depth"}: 1,
+                \textcolor{stringliteral}{"parents"}: [
+                    \textcolor{stringliteral}{"1"}
+                ],
+                \textcolor{stringliteral}{"lva"}: \{
+                    \textcolor{stringliteral}{"title"}: \textcolor{stringliteral}{"Einführung in die Wirtschaftsinformatik"},
+                    \textcolor{stringliteral}{"ceusid"}: \textcolor{stringliteral}{"7209"},
+                    \textcolor{stringliteral}{"code"}: \textcolor{stringliteral}{"526GLWNEWI13"},
+                    \textcolor{stringliteral}{"ects"}: \textcolor{stringliteral}{"6"},
+                    \textcolor{stringliteral}{"verantname"}: \textcolor{stringliteral}{"Friedrich Roithmayr"},
+                    \textcolor{stringliteral}{"verantemail"}: \textcolor{stringliteral}{"friedrich.roithmayr@jku.at"},
+                    \textcolor{stringliteral}{"changedate"}: \textcolor{stringliteral}{"2013-08-23 00:00:00"},
+                    \textcolor{stringliteral}{"lvatype"}: \textcolor{stringliteral}{"2"},
+                    \textcolor{stringliteral}{"typename"}: \textcolor{stringliteral}{"Modul"},
+                    \textcolor{stringliteral}{"ziele"}: \textcolor{stringliteral}{"Die Studierenden können begründen, dass Wirtschaftsinformatik eine
+       Wissenschaft ist. Sie kennen die Aufgaben der Wirtschaftsinformatik und die Bedeutung der Fachsprache für die
+       Wirtschaftsinformatik. Sie kennen die grundlegenden Phänomene, mit denen sich Wirtschaftsinformatik beschäftigt. Sie
+       können den Gegenstandsbereich der Wirtschaftsinformatik systemtheoretisch erklären und erkennen, dass
+       Wirtschaftsinformatik eine Interdisziplin ist. Sie kennen die Bezeichnung und Bedeutung von Instrumenten zur
+       Konstruktion, Implementierung und zum Management von Informationssystemen und IT-Infrastrukturen. Ziele,
+       Methoden, Modelle und Werkzeuge dazu können sie anhand von Beispielen erklären.\(\backslash\)n"},
+                    \textcolor{stringliteral}{"lehrinhalte"}: \textcolor{stringliteral}{"Gegenstandsbereich der Wirtschaftsinformatik, Berufsbilder in der
+       Wirtschaftsinformatik, Studiengang und Studienpläne der Wirtschaftsinformatik, Lehrveranstaltungsformen und
+       Lehrmethoden der Wirtschaftsinformatik, Geschichte der Wirtschaftsinformatik, Wissenschaftscharakter der
+       Wirtschaftsinformatik, Begriffssystem der Wirtschaftsinformatik, Forschungsziele und Forschungsmethoden der
+       Wirtschaftsinformatik, Nachbardisziplinen der Wirtschaftsinformatik, Praxisorientierung der Wirtschaftsinformatik,
+       Information und Kommunikation, Informationsfunktion und -bedarf, Informationsverhalten und
+       Informationsbedürfnis, Informations- und Kommunikationstechnik, Informationssystem und -infrastruktur, Benutzer und
+       Benutzersystem, Ziele und Zielsystem, Methodik, Ansätze und Strategien, Grundsätze und Prinzipien, Modelle und
+       Konzepte, Methoden und Werkzeuge, Evaluation und Bewertung.\(\backslash\)n"},
+                    \textcolor{stringliteral}{"empfehlung"}: [
+                        \textcolor{stringliteral}{"56"},
+                        \textcolor{stringliteral}{"63"},
+                        \textcolor{stringliteral}{"75"}
+                    ],
+                    \textcolor{stringliteral}{"id"}: \textcolor{stringliteral}{"2"}
+                \},
+                \textcolor{stringliteral}{"id"}: \textcolor{stringliteral}{"2"},
+            \}
+        \}
+    \}
+]
+\end{DoxyCodeInclude}
+ 
+\begin{DoxyImage}
+\includegraphics{Course}
+\caption{Course Objects}
+\end{DoxyImage}
+Example\+: 
+\begin{DoxyCodeInclude}
+\{
+
+    \textcolor{stringliteral}{"title"}: \textcolor{stringliteral}{"Prozess- und Kommunikationsmodellierung"},
+    \textcolor{stringliteral}{"ceusid"}: \textcolor{stringliteral}{"6841"},
+    \textcolor{stringliteral}{"code"}: \textcolor{stringliteral}{"1WBWPKU"},
+    \textcolor{stringliteral}{"ects"}: \textcolor{stringliteral}{"3"},
+    \textcolor{stringliteral}{"wst"}: \textcolor{stringliteral}{"2"},
+    \textcolor{stringliteral}{"verantname"}: \textcolor{stringliteral}{"Christian Stary"},
+    \textcolor{stringliteral}{"verantemail"}: \textcolor{stringliteral}{"christian.stary@jku.at"},
+    \textcolor{stringliteral}{"changedate"}: \textcolor{stringliteral}{"2013-07-09 00:00:00"},
+    \textcolor{stringliteral}{"lvtypname"}: \textcolor{stringliteral}{"Übung"},
+    \textcolor{stringliteral}{"lvtypshort"}: \textcolor{stringliteral}{"UE"},
+    \textcolor{stringliteral}{"lvatype"}: \textcolor{stringliteral}{"3"},
+    \textcolor{stringliteral}{"typename"}: \textcolor{stringliteral}{"Lehrveranstaltung"},
+    \textcolor{stringliteral}{"ziele"}: \textcolor{stringliteral}{"Siehe <a class='wikilink'
+       href='https://lss.jku.at/wiki/index.php/CurriculumWirtschaftsinformatikB02008W/ModulProzess-UndKommunikationsmodellierung'> Prozess- und Kommunikationsmodellierung</a>\(\backslash\)n"},
+    \textcolor{stringliteral}{"lehrinhalte"}: \textcolor{stringliteral}{"Siehe <a class='wikilink'
+       href='https://lss.jku.at/wiki/index.php/CurriculumWirtschaftsinformatikB02008W/ModulProzess-UndKommunikationsmodellierung'> Prozess- und Kommunikationsmodellierung</a>\(\backslash\)n
+      "},
+    \textcolor{stringliteral}{"id"}: \textcolor{stringliteral}{"13"}
+
+\}
+\end{DoxyCodeInclude}
+ All of these interfaces are defined in the \hyperlink{stukowin_8module}{stukowin.\+module} file.\hypertarget{index_plugin}{}\paragraph{C\+K\+Editor Plug-\/in}\label{index_plugin}
+As the dynamic display of curricula in the browser requires a strict H\+T\+M\+L document structure, we refrained from letting the administrator insert the code himself wherever a curriculum display was needed and instead implemented a plug-\/in for the C\+K\+Editor (\href{https://www.drupal.org/project/ckeditor}{\tt https\+://www.\+drupal.\+org/project/ckeditor}) which inserts the code automatically on the click of a button. The plug-\/in is registered with Drupal in the \hyperlink{group___drupal2_a_g_g_gae3c906d1ab9c3d8ed245d58c1ebf2a4a}{stukowin\+\_\+ckeditor\+\_\+plugin()} method. It is then defined in the \hyperlink{plugin_8js}{plugin.\+js} file and the dialogue for inserting a curriculum view is defined in the \hyperlink{stukowin__curriculum_8js}{stukowin\+\_\+curriculum.\+js} file.
 
 \begin{DoxyNote}{Note}
 In order for this plug-\/in to work properly, some settings have to be made in the C\+K\+Editor. This is described in the operator manual.
@@ -286,6 +445,10 @@ In order for this plug-\/in to work properly, some settings have to be made in t
 The main task of displaying the curricula in the client's browser is performed by this file. It fetches the data from the J\+S\+O\+N interfaces described \hyperlink{index_json}{above} and creates the D\+O\+M elements in the browser. It also registers click handlers for things such as expanding/reducing a course, showing prerequisites and selecting a different curriculum. \begin{DoxyNote}{Note}
 The display layout is configured in the curriculum\+\_\+stlye.\+css file (not included in this documentation)
 \end{DoxyNote}
+
+
+ The process of generating the graphical representation will flow as shown in the included \href[pdfnewwindow]{./FlowchartDrupal2AGG.pdf}{FlowchartDrupal2AGG.pdf} file. 
+
 As an example, the output could look like this\+:
 
 
@@ -305,13 +468,23 @@ Drupal's module system is based on the concept of \char`\"{}hooks\char`\"{}. A h
 To extend Drupal, a module need simply implement a hook. When Drupal wishes to allow intervention from modules, it determines which modules implement a hook and calls that hook in all enabled modules that implement it. \end{quote}
 
 
-Thus, all our hooks are prefixed with \char`\"{}stukowin\+\_\+\char`\"{} and are commented with \char`\"{}\+Implements hook\+\_\+$\ast$\char`\"{}. The following hooks are implemented\+:
+Thus, all our hooks are prefixed with \char`\"{}stukowin\+\_\+\char`\"{} and are commented with \char`\"{}\+Implements hook\+\_\+$\ast$\char`\"{}. The following hooks are implemented\+: \begin{TabularC}{3}
+\hline
+\rowcolor{lightgray}{\bf Hook }&{\bf Implementing method }&{\bf Description  }\\\cline{1-3}
+\href{https://api.drupal.org/api/function/hook_install/7}{\tt hook\+\_\+install} &\hyperlink{group___stukowin___module_ga67989d3a763f2efa2fc0b07460639558}{stukowin\+\_\+install()} &Method that is run on the first activation of the module (=installation) \\\cline{1-3}
+\href{https://api.drupal.org/api/function/hook_uninstall/7}{\tt hook\+\_\+uninstall} &\hyperlink{group___stukowin___module_gad831696eae7eb1a0e48c4e9621323bca}{stukowin\+\_\+uninstall()} &Method that is run to uninstall the module \\\cline{1-3}
+\href{https://api.drupal.org/api/function/hook_help/7}{\tt hook\+\_\+help} &\hyperlink{stukowin_8module_a46a55e87f2112648570edbf437a083ef}{stukowin\+\_\+help()} &Provides information about the module \\\cline{1-3}
+\href{https://api.drupal.org/api/function/hook_menu/7}{\tt hook\+\_\+menu} &\hyperlink{group___stukowin___module_ga59cfbad113b7aa2d10f0b204a5f7ba0d}{stukowin\+\_\+menu()} &Registers menu links/buttons etc. with Drupal \\\cline{1-3}
+\href{https://api.drupal.org/api/function/hook_theme_registry_alter/7}{\tt hook\+\_\+theme\+\_\+registry\+\_\+alter} &\hyperlink{group___drupal2_a_g_g_ga3bf2203298453c41bf9a5ec48d3c2de3}{stukowin\+\_\+theme\+\_\+registry\+\_\+alter()} &Registers our custom view template for displaying courses \\\cline{1-3}
+\href{http://drupalcontrib.org/api/function/hook_INCLUDE_plugin/7}{\tt hook\+\_\+ckeditor\+\_\+plugin} &\hyperlink{group___drupal2_a_g_g_gae3c906d1ab9c3d8ed245d58c1ebf2a4a}{stukowin\+\_\+ckeditor\+\_\+plugin()} &Registers our own C\+K\+Editor Plugin with C\+K\+Editor/\+Drupal \\\cline{1-3}
+\end{TabularC}
+
+
+These hooks and other methods and files to ensure a smooth cooperation are spread across the following files\+:
 \begin{DoxyItemize}
-\item hook\+\_\+help For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly\+:
 \item The \hyperlink{classcontent__manager}{content\+\_\+manager} class is responsible for accessing the imported curricula data
 \item The \hyperlink{stukowin_8install}{stukowin.\+install} file is responsible for installing and uninstalling the module and all the data structures that come with it
-\item The \hyperlink{group___stukowin___module_ga59cfbad113b7aa2d10f0b204a5f7ba0d}{stukowin\+\_\+menu()} function sets up all the callback U\+R\+Ls
-\item The \hyperlink{group___stukowin___module_ga55d453d5b6f8ae4e643308d8814e67a5}{stukowin\+\_\+admin()} function is responsible for the configuration menu
+\item The \hyperlink{stukowin_8module}{stukowin.\+module} file contains all the core hooks except for the installation routines
 \item The stukowin.\+info file contains all meta information about the module
 \end{DoxyItemize}\hypertarget{index_Development}{}\subsection{Development}\label{index_Development}
 \hypertarget{index_Authors}{}\subsubsection{Authors}\label{index_Authors}
@@ -362,7 +535,7 @@ Every file and class has a version number, composed of four parts\+: {\itshape m
 \item Group 1 used S\+V\+N on \href{http://cloudforge.com}{\tt http\+://cloudforge.\+com} while group 2 used \href{http://bitbucket.org}{\tt http\+://bitbucket.\+org}.
 \item When the two groups were merged, the S\+V\+N repository was dropped.
 \item Due to privilege problems with bitbucket, it was decided to move the entire repository to \href{http://github.com}{\tt http\+://github.\+com}, as everyone had access there.
-\item At the time writing this documentation, the repository is available at \href{http://github.com/TheJake123/DrupalModul}{\tt http\+://github.\+com/\+The\+Jake123/\+Drupal\+Modul}.
+\item At the time of writing this documentation, the repository is available at \href{http://github.com/TheJake123/DrupalModul}{\tt http\+://github.\+com/\+The\+Jake123/\+Drupal\+Modul}.
 \end{DoxyItemize}
 
 As the repository is open source, the commit, issue and change history can be publicly viewed. Additionally, every file, class, method and member has been documented with a {\ttfamily @since} tag with the following format\+: \char`\"{}\+Commit $<$hash$>$ on Y\+Y\+Y\+Y-\/\+M\+M-\/\+D\+D\char`\"{}, so that it is easily visible when a file, class, method or member has been added.\hypertarget{index_Included}{}\subsection{Included Libraries/\+Files}\label{index_Included}

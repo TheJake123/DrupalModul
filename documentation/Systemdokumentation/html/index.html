@@ -31,7 +31,7 @@
   <td id="projectlogo"><img alt="Logo" src="project logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">stukowin
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.0</span>
    </div>
    <div id="projectbrief">Relaunch of stukowin.jku.at</div>
   </td>
@@ -148,7 +148,7 @@ Content</h1>
 Introduction</h1>
  <h2><a class="anchor" id="Module_Intro"></a>
 Module</h2>
-<p>This documentation describes the custom module "stukowin" for <a href="http://drupal.org/" target="_blank">Drupal</a>. Drupal is a free and widely-used content management system (CMS), which provides the possibility to extend it by implementing proprietary modules that hook into the Drupal core system. The basic idea of this module is to connect the Drupal system with the curricula development and support system (CEUS) provided by the <a href="http://jku.at" target="_blank">Johannes Kepler University in Linz</a>, available at <a href="https://lss.jku.at/wiki/index.php/Main/CEUS">https://lss.jku.at/wiki/index.php/Main/CEUS</a> and <a href="https://lss.jku.at/studienhandbuch/">https://lss.jku.at/studienhandbuch/</a>. The main goal of this method was to reduce the maintenance effort needed for keeping the curricula data on a website up to date.</p>
+<p>This documentation describes the custom module "stukowin" for <a href="http://drupal.org/">Drupal</a>. Drupal is a free and widely-used content management system (CMS), which provides the possibility to extend it by implementing proprietary modules that hook into the Drupal core system. The basic idea of this module is to connect the Drupal system with the curricula development and support system (CEUS) provided by the <a href="http://jku.at">Johannes Kepler University in Linz</a>, available at <a href="https://lss.jku.at/wiki/index.php/Main/CEUS">https://lss.jku.at/wiki/index.php/Main/CEUS</a> and <a href="https://lss.jku.at/studienhandbuch/">https://lss.jku.at/studienhandbuch/</a>. The main goal of this method was to reduce the maintenance effort needed for keeping the curricula data on a website up to date.</p>
 <p>The module is composed of four components, as seen <a class="el" href="index.html#Modules">below</a>, each of which provides different functionalities to reduce the administrative effort and all of which are somehow interconnected.</p>
 <h2><a class="anchor" id="Project_Intro"></a>
 Project</h2>
@@ -384,20 +384,151 @@ Drupal JSON Interface</h3>
 <th>Name </th><th>Path </th><th>Input Parameter </th><th>Description  </th></tr>
 <tr>
 <td>Curriculum List </td><td>stukowin/crclmlst </td><td>"currtype" : Type of curriculum to get ("Bachelorstudium" or "Masterstudium")<br />
-"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") </td><td>Returns a list of all curricula currently published (weight below 0), like <a class="el" href="index.html#list">list.php</a> </td></tr>
+"taxtypes" : Types of vocabularies to get ("curriculum", "itsv" and/or "specialisation") </td><td>Returns a list of all curricula currently published (weight below 0), like <a class="el" href="index.html#list">list.php</a> (see first image below) </td></tr>
 <tr>
-<td>Curriculum Tree </td><td>stukowin/crclm </td><td>Vocabulary id of the curriculum to get </td><td>Returns the curriculum tree of one curriculum, containing all courses and their details </td></tr>
+<td>Curriculum Tree </td><td>stukowin/crclm </td><td>Vocabulary id of the curriculum to get </td><td>Returns the curriculum tree of one curriculum, containing all courses and their details (see second image below) </td></tr>
 <tr>
-<td>Single course </td><td>stukowin/lva </td><td>Node id of the course to get </td><td>Returns the details of a single course </td></tr>
+<td>Single course </td><td>stukowin/lva </td><td>Node id of the course to get </td><td>Returns the details of a single course (see third image below) </td></tr>
 </table>
-<p>All of these interfaces are defined in the <a class="el" href="stukowin_8module.html">stukowin.module</a> file.</p>
+<div class="image">
+<img src="Curriculum1.jpg" alt="Curriculum1.jpg"/>
+<div class="caption">
+Curriculum Objects</div></div>
+Example: </p><div class="fragment"><div class="line">[</div>
+<div class="line"></div>
+<div class="line">    {</div>
+<div class="line">        <span class="stringliteral">&quot;vid&quot;</span>: <span class="stringliteral">&quot;2&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;name&quot;</span>: <span class="stringliteral">&quot;Wirtschaftsinformatik, Bachelorstudium 2013W&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;Bachelorstudium&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;faculty&quot;</span>: <span class="stringliteral">&quot;Sozial- und Wirtschaftswissenschaftliche Fakultät&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;version&quot;</span>: <span class="stringliteral">&quot;2013W&quot;</span></div>
+<div class="line">    },</div>
+<div class="line">    {</div>
+<div class="line">        <span class="stringliteral">&quot;vid&quot;</span>: <span class="stringliteral">&quot;3&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;name&quot;</span>: <span class="stringliteral">&quot;Wirtschaftsinformatik, Bachelorstudium 2014W&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;Bachelorstudium&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;faculty&quot;</span>: <span class="stringliteral">&quot;Sozial- und Wirtschaftswissenschaftliche Fakultät&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;version&quot;</span>: <span class="stringliteral">&quot;2014W&quot;</span></div>
+<div class="line">    },</div>
+<div class="line">    {</div>
+<div class="line">        <span class="stringliteral">&quot;vid&quot;</span>: <span class="stringliteral">&quot;4&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;name&quot;</span>: <span class="stringliteral">&quot;Wirtschaftsinformatik, Masterstudium 2013W&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;Masterstudium&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;faculty&quot;</span>: <span class="stringliteral">&quot;Sozial- und Wirtschaftswissenschaftliche Fakultät&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;version&quot;</span>: <span class="stringliteral">&quot;2013W&quot;</span></div>
+<div class="line">    },</div>
+<div class="line">    {</div>
+<div class="line">        <span class="stringliteral">&quot;vid&quot;</span>: <span class="stringliteral">&quot;5&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;name&quot;</span>: <span class="stringliteral">&quot;Wirtschaftsinformatik, Masterstudium 2014W&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;Masterstudium&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;faculty&quot;</span>: <span class="stringliteral">&quot;Sozial- und Wirtschaftswissenschaftliche Fakultät&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;version&quot;</span>: <span class="stringliteral">&quot;2014W&quot;</span></div>
+<div class="line">    }</div>
+<div class="line"></div>
+<div class="line">]</div>
+</div><!-- fragment --> <div class="image">
+<img src="CurriculumItem.jpg" alt="CurriculumItem.jpg"/>
+<div class="caption">
+Items in a Curriculum Tree</div></div>
+Example: </p><div class="fragment"><div class="line">[</div>
+<div class="line">    {</div>
+<div class="line">        <span class="stringliteral">&quot;tid&quot;</span>: <span class="stringliteral">&quot;1&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;vid&quot;</span>: <span class="stringliteral">&quot;2&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;name&quot;</span>: <span class="stringliteral">&quot;Studienfach: Grundlagen der Wirtschaftsinformatik&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;1&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;format&quot;</span>: null,</div>
+<div class="line">        <span class="stringliteral">&quot;weight&quot;</span>: <span class="stringliteral">&quot;0&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;depth&quot;</span>: 0,</div>
+<div class="line">        <span class="stringliteral">&quot;parents&quot;</span>: [</div>
+<div class="line">            <span class="stringliteral">&quot;0&quot;</span></div>
+<div class="line">        ],</div>
+<div class="line">        <span class="stringliteral">&quot;lva&quot;</span>: {</div>
+<div class="line">            <span class="stringliteral">&quot;title&quot;</span>: <span class="stringliteral">&quot;Grundlagen der Wirtschaftsinformatik&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;ceusid&quot;</span>: <span class="stringliteral">&quot;2895&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;code&quot;</span>: <span class="stringliteral">&quot;526GLWN11&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;ects&quot;</span>: <span class="stringliteral">&quot;24&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;verantname&quot;</span>: <span class="stringliteral">&quot;Friedrich Roithmayr&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;verantemail&quot;</span>: <span class="stringliteral">&quot;friedrich.roithmayr@jku.at&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;changedate&quot;</span>: <span class="stringliteral">&quot;2012-02-14 00:00:00&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;lvatype&quot;</span>: <span class="stringliteral">&quot;1&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;typename&quot;</span>: <span class="stringliteral">&quot;Studienfach&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;ziele&quot;</span>: <span class="stringliteral">&quot;Die Studierenden beherrschen die Fachterminologie, besitzen einen Überblick über Aufgabenstellungen, Konzepte, Methoden und Werkzeuge der Wirtschaftsinformatik. Sie sind mit den Grundlagen der Datenmodellierung, der Prozess- und Kommunikatonsmodellierung und der Algorithmik vertraut. Die Studierenden verstehen die daten- und verhaltensorientierten Aspekte betrieblicher Informationssysteme.\n&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;lehrinhalte&quot;</span>: <span class="stringliteral">&quot;Das Fach dient der Vermittlung von Grundlagenwissen in verschiedenen Teilbereichen der Wirtschaftsinformatik. Details der Lehrinhalte können den zugehörigen Modulen entnommen werden.\n&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;id&quot;</span>: <span class="stringliteral">&quot;1&quot;</span></div>
+<div class="line">        },</div>
+<div class="line">        <span class="stringliteral">&quot;id&quot;</span>: <span class="stringliteral">&quot;1&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;children&quot;</span>: {</div>
+<div class="line">            <span class="stringliteral">&quot;2&quot;</span>: {</div>
+<div class="line">                <span class="stringliteral">&quot;tid&quot;</span>: <span class="stringliteral">&quot;2&quot;</span>,</div>
+<div class="line">                <span class="stringliteral">&quot;vid&quot;</span>: <span class="stringliteral">&quot;2&quot;</span>,</div>
+<div class="line">                <span class="stringliteral">&quot;name&quot;</span>: <span class="stringliteral">&quot;Modul: Einführung in die Wirtschaftsinformatik&quot;</span>,</div>
+<div class="line">                <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;2&quot;</span>,</div>
+<div class="line">                <span class="stringliteral">&quot;format&quot;</span>: null,</div>
+<div class="line">                <span class="stringliteral">&quot;weight&quot;</span>: <span class="stringliteral">&quot;0&quot;</span>,</div>
+<div class="line">                <span class="stringliteral">&quot;depth&quot;</span>: 1,</div>
+<div class="line">                <span class="stringliteral">&quot;parents&quot;</span>: [</div>
+<div class="line">                    <span class="stringliteral">&quot;1&quot;</span></div>
+<div class="line">                ],</div>
+<div class="line">                <span class="stringliteral">&quot;lva&quot;</span>: {</div>
+<div class="line">                    <span class="stringliteral">&quot;title&quot;</span>: <span class="stringliteral">&quot;Einführung in die Wirtschaftsinformatik&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;ceusid&quot;</span>: <span class="stringliteral">&quot;7209&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;code&quot;</span>: <span class="stringliteral">&quot;526GLWNEWI13&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;ects&quot;</span>: <span class="stringliteral">&quot;6&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;verantname&quot;</span>: <span class="stringliteral">&quot;Friedrich Roithmayr&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;verantemail&quot;</span>: <span class="stringliteral">&quot;friedrich.roithmayr@jku.at&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;changedate&quot;</span>: <span class="stringliteral">&quot;2013-08-23 00:00:00&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;lvatype&quot;</span>: <span class="stringliteral">&quot;2&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;typename&quot;</span>: <span class="stringliteral">&quot;Modul&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;ziele&quot;</span>: <span class="stringliteral">&quot;Die Studierenden können begründen, dass Wirtschaftsinformatik eine Wissenschaft ist. Sie kennen die Aufgaben der Wirtschaftsinformatik und die Bedeutung der Fachsprache für die Wirtschaftsinformatik. Sie kennen die grundlegenden Phänomene, mit denen sich Wirtschaftsinformatik beschäftigt. Sie können den Gegenstandsbereich der Wirtschaftsinformatik systemtheoretisch erklären und erkennen, dass Wirtschaftsinformatik eine Interdisziplin ist. Sie kennen die Bezeichnung und Bedeutung von Instrumenten zur Konstruktion, Implementierung und zum Management von Informationssystemen und IT-Infrastrukturen. Ziele, Methoden, Modelle und Werkzeuge dazu können sie anhand von Beispielen erklären.\n&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;lehrinhalte&quot;</span>: <span class="stringliteral">&quot;Gegenstandsbereich der Wirtschaftsinformatik, Berufsbilder in der Wirtschaftsinformatik, Studiengang und Studienpläne der Wirtschaftsinformatik, Lehrveranstaltungsformen und Lehrmethoden der Wirtschaftsinformatik, Geschichte der Wirtschaftsinformatik, Wissenschaftscharakter der Wirtschaftsinformatik, Begriffssystem der Wirtschaftsinformatik, Forschungsziele und Forschungsmethoden der Wirtschaftsinformatik, Nachbardisziplinen der Wirtschaftsinformatik, Praxisorientierung der Wirtschaftsinformatik, Information und Kommunikation, Informationsfunktion und -bedarf, Informationsverhalten und Informationsbedürfnis, Informations- und Kommunikationstechnik, Informationssystem und -infrastruktur, Benutzer und Benutzersystem, Ziele und Zielsystem, Methodik, Ansätze und Strategien, Grundsätze und Prinzipien, Modelle und Konzepte, Methoden und Werkzeuge, Evaluation und Bewertung.\n&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;empfehlung&quot;</span>: [</div>
+<div class="line">                        <span class="stringliteral">&quot;56&quot;</span>,</div>
+<div class="line">                        <span class="stringliteral">&quot;63&quot;</span>,</div>
+<div class="line">                        <span class="stringliteral">&quot;75&quot;</span></div>
+<div class="line">                    ],</div>
+<div class="line">                    <span class="stringliteral">&quot;id&quot;</span>: <span class="stringliteral">&quot;2&quot;</span></div>
+<div class="line">                },</div>
+<div class="line">                <span class="stringliteral">&quot;id&quot;</span>: <span class="stringliteral">&quot;2&quot;</span>,</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line">]</div>
+</div><!-- fragment --> <div class="image">
+<img src="Course.jpg" alt="Course.jpg"/>
+<div class="caption">
+Course Objects</div></div>
+Example: </p><div class="fragment"><div class="line">{</div>
+<div class="line"></div>
+<div class="line">    <span class="stringliteral">&quot;title&quot;</span>: <span class="stringliteral">&quot;Prozess- und Kommunikationsmodellierung&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;ceusid&quot;</span>: <span class="stringliteral">&quot;6841&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;code&quot;</span>: <span class="stringliteral">&quot;1WBWPKU&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;ects&quot;</span>: <span class="stringliteral">&quot;3&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;wst&quot;</span>: <span class="stringliteral">&quot;2&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;verantname&quot;</span>: <span class="stringliteral">&quot;Christian Stary&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;verantemail&quot;</span>: <span class="stringliteral">&quot;christian.stary@jku.at&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;changedate&quot;</span>: <span class="stringliteral">&quot;2013-07-09 00:00:00&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;lvtypname&quot;</span>: <span class="stringliteral">&quot;Übung&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;lvtypshort&quot;</span>: <span class="stringliteral">&quot;UE&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;lvatype&quot;</span>: <span class="stringliteral">&quot;3&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;typename&quot;</span>: <span class="stringliteral">&quot;Lehrveranstaltung&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;ziele&quot;</span>: <span class="stringliteral">&quot;Siehe &lt;a class=&#39;wikilink&#39; href=&#39;https://lss.jku.at/wiki/index.php/CurriculumWirtschaftsinformatikB02008W/ModulProzess-UndKommunikationsmodellierung&#39;&gt; Prozess- und Kommunikationsmodellierung&lt;/a&gt;\n&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;lehrinhalte&quot;</span>: <span class="stringliteral">&quot;Siehe &lt;a class=&#39;wikilink&#39; href=&#39;https://lss.jku.at/wiki/index.php/CurriculumWirtschaftsinformatikB02008W/ModulProzess-UndKommunikationsmodellierung&#39;&gt; Prozess- und Kommunikationsmodellierung&lt;/a&gt;\n&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;id&quot;</span>: <span class="stringliteral">&quot;13&quot;</span></div>
+<div class="line"></div>
+<div class="line">}</div>
+</div><!-- fragment --><p> All of these interfaces are defined in the <a class="el" href="stukowin_8module.html">stukowin.module</a> file.</p>
 <h3><a class="anchor" id="plugin"></a>
 CKEditor Plug-in</h3>
-<p>As the dynamic display of curricula in the browser requires a strict HTML document structure, we refrained from letting the administrator insert the code himself wherever a curriculum display was needed and instead implemented a plug-in for the CKEditor (<a href="https://www.drupal.org/project/ckeditor">https://www.drupal.org/project/ckeditor</a>) which inserts the code automatically on the click of a button. The plug-in is registered with drupal in the <a class="el" href="group___drupal2_a_g_g.html#gae3c906d1ab9c3d8ed245d58c1ebf2a4a">stukowin_ckeditor_plugin()</a> method. It is then defined in the <a class="el" href="plugin_8js.html">plugin.js</a> file and the dialog for inserting a curriculum view is defined in the <a class="el" href="stukowin__curriculum_8js.html">stukowin_curriculum.js</a> file.</p>
+<p>As the dynamic display of curricula in the browser requires a strict HTML document structure, we refrained from letting the administrator insert the code himself wherever a curriculum display was needed and instead implemented a plug-in for the CKEditor (<a href="https://www.drupal.org/project/ckeditor">https://www.drupal.org/project/ckeditor</a>) which inserts the code automatically on the click of a button. The plug-in is registered with Drupal in the <a class="el" href="group___drupal2_a_g_g.html#gae3c906d1ab9c3d8ed245d58c1ebf2a4a">stukowin_ckeditor_plugin()</a> method. It is then defined in the <a class="el" href="plugin_8js.html">plugin.js</a> file and the dialogue for inserting a curriculum view is defined in the <a class="el" href="stukowin__curriculum_8js.html">stukowin_curriculum.js</a> file.</p>
 <dl class="section note"><dt>Note</dt><dd>In order for this plug-in to work properly, some settings have to be made in the CKEditor. This is described in the operator manual.</dd></dl>
 <h3><a class="anchor" id="graph"></a>
 Graph.js</h3>
 <p>The main task of displaying the curricula in the client's browser is performed by this file. It fetches the data from the JSON interfaces described <a class="el" href="index.html#json">above</a> and creates the DOM elements in the browser. It also registers click handlers for things such as expanding/reducing a course, showing prerequisites and selecting a different curriculum. </p><dl class="section note"><dt>Note</dt><dd>The display layout is configured in the curriculum_stlye.css file (not included in this documentation)</dd></dl>
+<p> The process of generating the graphical representation will flow as follows: </p>
+<div class="image">
+<img src="FlowchartDrupal2AGG.svg" alt="FlowchartDrupal2AGG.svg"/>
+<div class="caption">
+Generation of the Graphical Representation</div></div>
 <p>As an example, the output could look like this:</p>
 <div class="image">
 <img src="Drupal2AGG.png" alt="Drupal2AGG.png"/>
@@ -410,12 +541,26 @@ Module Integration into Drupal</h2>
 <p>Drupal's module system is based on the concept of "hooks". A hook is a PHP function that is named foo_bar(), where "foo" is the name of the module (whose filename is thus foo.module) and "bar" is the name of the hook. Each hook has a defined set of parameters and a specified result type.</p>
 <p>To extend Drupal, a module need simply implement a hook. When Drupal wishes to allow intervention from modules, it determines which modules implement a hook and calls that hook in all enabled modules that implement it. </p>
 </blockquote>
-<p>Thus, all our hooks are prefixed with "stukowin_" and are commented with "Implements hook_*". The following hooks are implemented:</p><ul>
-<li>hook_help For this reason there are several methods and files to ensure a smooth cooperation, some of which are worth mentioning explicitly:</li>
+<p>Thus, all our hooks are prefixed with "stukowin_" and are commented with "Implements hook_*". The following hooks are implemented: </p><table class="doxtable">
+<tr>
+<th>Hook </th><th>Implementing method </th><th>Description  </th></tr>
+<tr>
+<td><a href="https://api.drupal.org/api/function/hook_install/7">hook_install</a> </td><td><a class="el" href="group___stukowin___module.html#ga67989d3a763f2efa2fc0b07460639558">stukowin_install()</a> </td><td>Method that is run on the first activation of the module (=installation) </td></tr>
+<tr>
+<td><a href="https://api.drupal.org/api/function/hook_uninstall/7">hook_uninstall</a> </td><td><a class="el" href="group___stukowin___module.html#gad831696eae7eb1a0e48c4e9621323bca">stukowin_uninstall()</a> </td><td>Method that is run to uninstall the module </td></tr>
+<tr>
+<td><a href="https://api.drupal.org/api/function/hook_help/7">hook_help</a> </td><td><a class="el" href="stukowin_8module.html#a46a55e87f2112648570edbf437a083ef">stukowin_help()</a> </td><td>Provides information about the module </td></tr>
+<tr>
+<td><a href="https://api.drupal.org/api/function/hook_menu/7">hook_menu</a> </td><td><a class="el" href="group___stukowin___module.html#ga59cfbad113b7aa2d10f0b204a5f7ba0d">stukowin_menu()</a> </td><td>Registers menu links/buttons etc. with Drupal </td></tr>
+<tr>
+<td><a href="https://api.drupal.org/api/function/hook_theme_registry_alter/7">hook_theme_registry_alter</a> </td><td><a class="el" href="group___drupal2_a_g_g.html#ga3bf2203298453c41bf9a5ec48d3c2de3">stukowin_theme_registry_alter()</a> </td><td>Registers our custom view template for displaying courses </td></tr>
+<tr>
+<td><a href="http://drupalcontrib.org/api/function/hook_INCLUDE_plugin/7">hook_ckeditor_plugin</a> </td><td><a class="el" href="group___drupal2_a_g_g.html#gae3c906d1ab9c3d8ed245d58c1ebf2a4a">stukowin_ckeditor_plugin()</a> </td><td>Registers our own CKEditor Plugin with CKEditor/Drupal </td></tr>
+</table>
+<p>These hooks and other methods and files to ensure a smooth cooperation are spread across the following files:</p><ul>
 <li>The <a class="el" href="classcontent__manager.html">content_manager</a> class is responsible for accessing the imported curricula data</li>
 <li>The <a class="el" href="stukowin_8install.html">stukowin.install</a> file is responsible for installing and uninstalling the module and all the data structures that come with it</li>
-<li>The <a class="el" href="group___stukowin___module.html#ga59cfbad113b7aa2d10f0b204a5f7ba0d">stukowin_menu()</a> function sets up all the callback URLs</li>
-<li>The <a class="el" href="group___stukowin___module.html#ga55d453d5b6f8ae4e643308d8814e67a5">stukowin_admin()</a> function is responsible for the configuration menu</li>
+<li>The <a class="el" href="stukowin_8module.html">stukowin.module</a> file contains all the core hooks except for the installation routines</li>
 <li>The stukowin.info file contains all meta information about the module</li>
 </ul>
 <h1><a class="anchor" id="Development"></a>
@@ -463,7 +608,7 @@ Version Control</h2>
 <li>Group 1 used SVN on <a href="http://cloudforge.com">http://cloudforge.com</a> while group 2 used <a href="http://bitbucket.org">http://bitbucket.org</a>.</li>
 <li>When the two groups were merged, the SVN repository was dropped.</li>
 <li>Due to privilege problems with bitbucket, it was decided to move the entire repository to <a href="http://github.com">http://github.com</a>, as everyone had access there.</li>
-<li>At the time writing this documentation, the repository is available at <a href="http://github.com/TheJake123/DrupalModul">http://github.com/TheJake123/DrupalModul</a>.</li>
+<li>At the time of writing this documentation, the repository is available at <a href="http://github.com/TheJake123/DrupalModul">http://github.com/TheJake123/DrupalModul</a>.</li>
 </ul>
 <p>As the repository is open source, the commit, issue and change history can be publicly viewed. Additionally, every file, class, method and member has been documented with a <code>@since</code> tag with the following format: "Commit &lt;hash&gt; on YYYY-MM-DD", so that it is easily visible when a file, class, method or member has been added.</p>
 <h1><a class="anchor" id="Included"></a>
@@ -475,7 +620,7 @@ Included Libraries/Files</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 30 2014 23:10:12 for stukowin by
+    <li class="footer">Generated on Thu Jul 31 2014 03:17:04 for stukowin by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

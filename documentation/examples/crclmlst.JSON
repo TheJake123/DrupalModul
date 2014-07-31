@@ -1,0 +1,32 @@
+﻿[
+
+    {
+        "vid": "2",
+        "name": "Wirtschaftsinformatik, Bachelorstudium 2013W",
+        "type": "Bachelorstudium",
+        "faculty": "Sozial- und Wirtschaftswissenschaftliche Fakultät",
+        "version": "2013W"
+    },
+    {
+        "vid": "3",
+        "name": "Wirtschaftsinformatik, Bachelorstudium 2014W",
+        "type": "Bachelorstudium",
+        "faculty": "Sozial- und Wirtschaftswissenschaftliche Fakultät",
+        "version": "2014W"
+    },
+    {
+        "vid": "4",
+        "name": "Wirtschaftsinformatik, Masterstudium 2013W",
+        "type": "Masterstudium",
+        "faculty": "Sozial- und Wirtschaftswissenschaftliche Fakultät",
+        "version": "2013W"
+    },
+    {
+        "vid": "5",
+        "name": "Wirtschaftsinformatik, Masterstudium 2014W",
+        "type": "Masterstudium",
+        "faculty": "Sozial- und Wirtschaftswissenschaftliche Fakultät",
+        "version": "2014W"
+    }
+
+]
