@@ -7,7 +7,7 @@
  * This file contains the Drupal install script for the stukowin module.
  * 
  * @author Konstantinos Dafalias - kdafalias@gmail.com
- * @version 1.0.1 2014-07-30
+ * @version 1.0.3 2014-07-31
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  * 
  */
@@ -21,9 +21,9 @@
  * + Creates relation types for requirements and recommendations.
  * + Adds 3 fields to taxonomy nodes for @c faculty, @c version and @c type of curriculum
  * 
- * @authors Konstantinos Dafalias - kdafalias@gmail.com
+ * @author Konstantinos Dafalias - kdafalias@gmail.com
  * @authors Jakob Strasser - jakob.strasser@telenet.be
- * @version 1.0.1 2014-07-30
+ * @version 1.0.3 2014-07-31
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 function stukowin_install() {
@@ -150,7 +150,7 @@ function _stukowin_installed_taxonomy_instances() {
 	$t = get_t ();
 	return array (
 			'faculty' => array (
-					'label' => $t ( 'Fakultät' ),
+					'label' => $t ( 'Fakultï¿½t' ),
 					'field_name' => 'faculty',
 					'type' => 'text',
 					'widget' => array (
@@ -607,9 +607,9 @@ function _stukowin_relation_types() {
 			array (
 					'disabled' => FALSE,
 					'api_version' => 1,
-					'relation_type' => 'empfehlung',
-					'label' => 'Empfohlen',
-					'reverse_label' => 'Empfohlen für',
+					'relation_type' => 'voraussetzung',
+					'label' => 'Voraussetzung',
+					'reverse_label' => 'Vorausgesetzt von',
 					'directional' => 1,
 					'transitive' => 0,
 					'r_unique' => 1,
@@ -625,9 +625,9 @@ function _stukowin_relation_types() {
 			array (
 					'disabled' => FALSE,
 					'api_version' => 1,
-					'relation_type' => 'voraussetzung',
-					'label' => 'Voraussetzung',
-					'reverse_label' => 'Vorausgesetzt von',
+					'relation_type' => 'empfehlung',
+					'label' => 'Empfohlen',
+					'reverse_label' => 'Empfohlen fuer',
 					'directional' => 1,
 					'transitive' => 0,
 					'r_unique' => 1,
