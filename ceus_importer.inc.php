@@ -25,7 +25,7 @@
  * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @authors Werner Breuer - bluescreenwerner@gmail.com
- * @version 1.0.0 2014-07-16
+ * @version 1.0.1 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  */
 include_once __DIR__ . '/include/simple_html_dom.php';
@@ -42,7 +42,7 @@ include_once dirname ( __FILE__ ) . '/content_manager.inc.php';
  * @authors Jakob Strasser - jakob.strasser@telenet.be
  * @authors Markus Gutmayer - m.gutmayer@gmail.com
  * @authors Werner Breuer - bluescreenwerner@gmail.com
- * @version 1.0.0 2014-07-16
+ * @version 1.0.1 2014-07-16
  * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
  *       
  */
@@ -191,7 +191,6 @@ class ceus_importer {
 	 * Creates a new instance of @ref ceus_importer and reads the CEUS API configuration data from Drupal.
 	 *
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 *       
 	 * @see $sCeusUrl
@@ -199,7 +198,7 @@ class ceus_importer {
 	 * @see $sPassword
 	 */
 	public function __construct() {
-		$this->sCeusUrl = variable_get ( 'stukowin_ceus_api_url' );
+		$this->sCeusUrl = rtrim(variable_get ( 'stukowin_ceus_api_url' ),"/");
 		$this->sUsername = variable_get ( 'stukowin_ceus_api_username' );
 		$this->sPassword = variable_get ( 'stukowin_ceus_api_userpassword' );
 	}
@@ -215,7 +214,6 @@ class ceus_importer {
 	 *        	@retval false An error occurred. The error is stored in the @ref $sError member
 	 *        	
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function check_return_value($sReturn) {
@@ -241,7 +239,6 @@ class ceus_importer {
 	 * @retval false Connection and/or authentication @b failed
 	 *
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	public function connect() {
@@ -266,7 +263,6 @@ class ceus_importer {
 	 *        	
 	 * @authors Konstantinos Dafalias - kdafalias@gmail.com
 	 * @authors Jakob Strasser - jakob.strasser@telenet.be
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 *       
 	 * @see get_details()
@@ -302,7 +298,6 @@ class ceus_importer {
 	 *        
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
 	 * @authors Jakob Strasser - jakob.strasser@telenet.be
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function save_node($aDetail, $tid) {
@@ -398,7 +393,6 @@ class ceus_importer {
 	 *        	@retval false The course does @b not have recommendations or prerequisites
 	 *        	
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function has_relation($sRelationfield) {
@@ -442,7 +436,6 @@ class ceus_importer {
 	 *        	@retval false No content node with this title or code could be found
 	 *        	
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 *       
 	 * @see get_term_ids()
@@ -477,7 +470,6 @@ class ceus_importer {
 	 * @return Drupal content node ids of related courses
 	 *        
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 * 
 	 * @see find_nodeid_by_field()
@@ -526,7 +518,6 @@ class ceus_importer {
 	 * and stores them in the node
 	 *
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 * 
 	 * @see get_term_ids()
@@ -630,7 +621,6 @@ class ceus_importer {
 	 * @retval false The subtree has reached a leaf
 	 * 
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 * 
 	 * @see get_detail()
@@ -679,7 +669,6 @@ class ceus_importer {
 	 *        
 	 * @authors Konstantinos Dafalias - kdafalias@gmail.com
 	 * @author Jakob Strasser - jakob.strasser@telenet.be
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 * 
 	 * @see get_curricula_list()
@@ -721,7 +710,6 @@ class ceus_importer {
 	 *        	Curriculum from CEUS as returned by @ref get_curricula_list()
 	 *        	
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function check_vocabulary($aCurriculum) {
@@ -763,7 +751,6 @@ class ceus_importer {
 	 * @return Associative array containing all curricula
 	 *        
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function get_curricula_list() {
@@ -781,7 +768,6 @@ class ceus_importer {
 	 * @return Nested array of course ids
 	 *        
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 */
 	private function get_curriculum($iID) {
@@ -796,7 +782,6 @@ class ceus_importer {
 	 *
 	 * @return string
 	 * @author Konstantinos Dafalias - kdafalias@gmail.com
-	 * @version 1.0.0 2014-07-16
 	 * @since Commit d179abcc5e05743086cd67cf1ce30b08923a7183 on 2014-06-28
 	 * 
 	 * @see $sError

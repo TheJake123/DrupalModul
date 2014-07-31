@@ -83,8 +83,7 @@ function stukowin_install() {
 		}
 		drupal_set_message ( 'StukoWIN CEUS module installed. <a href="' . url ( 'admin/stukowin/settings' ) . '">Configure</a>' );
 	} catch ( Exception $e ) {
-		print $e->getTrace ();
-		die ();
+		drupal_set_message($e->getMessage(),'error');
 	}
 }
 

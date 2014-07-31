@@ -112,16 +112,16 @@ function stukowin_admin() {
 	);
 	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_url'] = array (
 			'#type' => 'textfield',
-			'#title' => t ( 'URL to CEUS API' ),
+			'#title' => t ( 'URL' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_url' ),
 			'#size' => 40,
 			'#maxlength' => 255,
-			'#description' => t ( "The URL to CEUS API" ),
+			'#description' => t ( "URL to CEUS API" ),
 			'#required' => TRUE 
 	);
 	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_username'] = array (
 			'#type' => 'textfield',
-			'#title' => t ( 'Username for CEUS API' ),
+			'#title' => t ( 'Username' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_username' ),
 			'#size' => 20,
 			'#maxlength' => 40,
@@ -130,7 +130,7 @@ function stukowin_admin() {
 	);
 	$form ['stukowin_ceus_api'] ['stukowin_ceus_api_userpassword'] = array (
 			'#type' => 'password',
-			'#title' => t ( 'Password for CEUS API' ),
+			'#title' => t ( 'Password' ),
 			'#default_value' => variable_get ( 'stukowin_ceus_api_userpassword' ),
 			'#size' => 20,
 			'#maxlength' => 40,
