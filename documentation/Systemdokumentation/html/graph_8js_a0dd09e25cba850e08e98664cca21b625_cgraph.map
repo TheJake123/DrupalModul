@@ -1,5 +1,0 @@
-<map id="expandAndScrollToElement" name="expandAndScrollToElement">
-<area shape="rect" id="node2" href="$graph_8js.html#ac6ee0322be8a49fdf390d82d6bf998cf" title="Toggles the expansion/reduction of a course &lt;div&gt; " alt="" coords="236,5,347,32"/>
-<area shape="rect" id="node3" href="$graph_8js.html#a5c1c7770c4c44dde3dcba63aa2a48056" title="Gets a list of all courses. " alt="" coords="395,68,455,95"/>
-<area shape="rect" id="node4" href="$graph_8js.html#a0726fbe63d87bbdd3a3e383db303150a" title="Checks if an element is fully visible. " alt="" coords="242,131,341,157"/>
-</map>

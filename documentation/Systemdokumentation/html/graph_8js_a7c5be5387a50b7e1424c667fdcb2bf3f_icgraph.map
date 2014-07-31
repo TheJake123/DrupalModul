@@ -1,5 +1,0 @@
-<map id="getCurricula" name="getCurricula">
-<area shape="rect" id="node2" href="$graph_8js.html#a5c1c7770c4c44dde3dcba63aa2a48056" title="Gets a list of all courses. " alt="" coords="202,5,262,32"/>
-<area shape="rect" id="node3" href="$group___drupal2_p_d_f.html#ga3649714a54a489d8c0096116fd9cb367" title="Menu callback for generating PDF documents (&quot;admin/settings/stukowin/pdf&quot;) " alt="" coords="164,56,300,83"/>
-<area shape="rect" id="node4" href="$group___drupal2_i_t_s_v.html#gab706d935ca9d9998c5e25a9ad6486d6a" title="Menu callback for creating a new ITSV or specialisation vocabulary. " alt="" coords="144,107,320,133"/>
-</map>
